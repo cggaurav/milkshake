@@ -1,5 +1,5 @@
 {
-  "BundleIdentifier" : "visualizer",
+  "BundleIdentifier" : "viz",
   "BundleType"       : "Application",
   "BundleVersion"    : "0.1.3",
   "VendorIdentifier" : "com.spotify",
@@ -16,7 +16,7 @@
     "trackPlayer": ["public"]
   },
   "AppName": {
-    "en": "Visualizer"
+    "en": "MilkShake"
   },
   "AppDescription": {
     "en": "Audio spectrum visualizer"
