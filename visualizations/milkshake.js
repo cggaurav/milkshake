@@ -6,10 +6,12 @@ var milk = (function(){
      * MIT Licensed.
      */
     // Inspired by base2 and Prototype
-  var Class =  (function(){
-    var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+
+  var Class = (function(){
+    var initializing = false;
+    var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
     var _Class = function(){};
-    _Class.extend = function(prop) {
+    var extend = function ext(prop) {
       var _super = this.prototype;
       initializing = true;
       var prototype = new this();
@@ -34,9 +36,10 @@ var milk = (function(){
       }
       Class.prototype = prototype;
       Class.prototype.constructor = Class;
-      Class.extend = arguments.callee;
+      Class.extend = extend;
       return Class;
     };
+    _Class.extend = extend;
     return _Class;
   })();
 
@@ -113,59 +116,59 @@ var milk = (function(){
     	    this.music.reset();
     	},
 
-    	renderFrame: function() {
-    	    this.timestart = TimeKeeper.getTicks(this.timeKeeper.startTime);
-    	    this.timeKeeper.UpdateTimers();
-    	    this.mspf = Math.floor(1000.0/this.settings.fps);
-    	    this.pipelineContext.time = this.timeKeeper.GetRunningTime();
-    	    this.pipelineContext.frame = this.timeKeeper.PresetFrameA();
-    	    this.pipelineContext.progress = this.timeKeeper.PresetProgressA();
-    	    this.music.detectFromSamples();
+      renderFrame: function() {
+        this.timestart = TimeKeeper.getTicks(this.timeKeeper.startTime);
+        this.timeKeeper.UpdateTimers();
+        this.mspf = Math.floor(1000.0/this.settings.fps);
+        this.pipelineContext.time = this.timeKeeper.GetRunningTime();
+        this.pipelineContext.frame = this.timeKeeper.PresetFrameA();
+        this.pipelineContext.progress = this.timeKeeper.PresetProgressA();
+        this.music.detectFromSamples();
 
-    	    /*if (this.renderer.noSwitch == false && !this.havePresets()) {
-    		if (this.timeKeeper.PresetProgressA() >= 1.0 && !this.timeKeeper.IsSmoothing())
-    		    this.selectNext(false);
-    		else if ((this.music.vol - this.music.vol_old > this.music.beat_sensitivity) &&
-    		          this.timeKeeper.CanHardCut())
-    		    this.selectNext(true);
-    	    }
-    	    if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() <= 1.0 && !this.havePresets()){
-    		this.activePreset.Render(this.music, this.pipelineContext);
-    		this.evaluateSecondPreset();
-    		var pipeline = new Pipeline();
-    		pipeline.setStaticPerPixel(this.settings.meshX, this.settings.meshY);
-    		PipelineMerger.mergePipelines(this.activePreset.pipeline(), this.activePreset2.pipeline(), pipeline,
-    					      this.matcher.matchResults(), this.merger, this.timeKeeper.SmoothRatio());
-    		this.renderer.RenderFrame(pipeline, this.pipelineContext);
-    		pipeline.drawables.clear();
-    	    } else {
-    		if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() > 1.0) {
-    		    this.activePreset = this.activePreset2;
-    		    this.timeKeeper.EndSmoothing();
-    		}
-    		this.activePreset.Render(this.music, this.pipelineContext);
-    		this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
-    		}*/
+        if (this.renderer.noSwitch == false && !this.havePresets()) {
+          if (this.timeKeeper.PresetProgressA() >= 1.0 && !this.timeKeeper.IsSmoothing()) {
+            this.selectNext(false);
+          }
+          else if ((this.music.vol - this.music.vol_old > this.music.beat_sensitivity) &&
+                   this.timeKeeper.CanHardCut()) {
+            this.selectNext(true);
+          }
+        }
+        if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() <= 1.0 && !this.havePresets()){
+          this.activePreset.Render(this.music, this.pipelineContext);
+          this.evaluateSecondPreset();
+          var pipeline = new Pipeline();
+          pipeline.setStaticPerPixel(this.settings.meshX, this.settings.meshY);
+          PipelineMerger.mergePipelines(this.activePreset.pipeline(), this.activePreset2.pipeline(), pipeline, this.matcher.matchResults(), this.merger, this.timeKeeper.SmoothRatio());
+                                        this.renderer.RenderFrame(pipeline, this.pipelineContext);
+                                        pipeline.drawables.clear();
+        } else {
+          if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() > 1.0) {
+            this.activePreset = this.activePreset2;
+            this.timeKeeper.EndSmoothing();
+          }
+          this.activePreset.Render(this.music, this.pipelineContext);
+          this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
+        }
 
     	    this.activePreset.Render(this.music, this.pipelineContext);
     	    this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
 
 
-    	    this.count++;
-    	    if (this.count % 100 == 0) {
-    		this.renderer.realfps = 100.0/((TimeKeeper.getTicks(this.timeKeeper.startTime)-this.fpsstart)/1000);
-    		this.infoMessages["fps"] = "rendering at " + Math.round(this.renderer.realfps*100)/100 + " frames per second";
-    		this.fpsstart = TimeKeeper.getTicks(this.timeKeeper.startTime);
-    	    }
-    	    if (this.count % 400 == 0)
-    		this.renderInfoBox();
+          this.count++;
+          if (this.count % 100 == 0) {
+            this.renderer.realfps = 100.0/((TimeKeeper.getTicks(this.timeKeeper.startTime)-this.fpsstart)/1000);
+            this.infoMessages["fps"] = "rendering at " + Math.round(this.renderer.realfps*100)/100 + " frames per second";
+            this.fpsstart = TimeKeeper.getTicks(this.timeKeeper.startTime);
+          }
+          if (this.count % 400 == 0)
+            this.renderInfoBox();
 
-    	    var timediff = TimeKeeper.getTicks(this.timeKeeper.startTime) - this.timestart;
-    	    if (timediff < this.mspf)
-    		return Math.floor(this.mspf-timediff);
-    	    return 0;
-
-    	},
+          var timediff = TimeKeeper.getTicks(this.timeKeeper.startTime) - this.timestart;
+          if (timediff < this.mspf)
+            return Math.floor(this.mspf-timediff);
+          return 0;
+      },
 
     	evaluateSecondPreset: function () {
     	    this.pipelineContext2.time = this.timeKeeper.GetRunningTime();
@@ -288,12 +291,12 @@ var Music = Class.extend({
 
 	    this.PCML = new Float32Array(this.numsamples);
 	    this.PCMR = new Float32Array(this.numsamples);
-	    
+
 	    this.pcmdataL = new Float32Array(this.numsamples);
 	    this.pcmdataR = new Float32Array(this.numsamples);
 
 	},
-	
+
 	reset: function() {
 	    this.bass = 0;
 	    this.mid = 0;
@@ -399,7 +402,7 @@ var Music = Class.extend({
 
 	getPCM: function(PCMdata, samples, channel, freq, smoothing) {
 	    PCMd = (channel == 0) ? this.PCML : this.PCMR;
-	    
+
 	    PCMdata[0] = PCMd[this.numsamples - 1];
 	    for (var i = 1; i < samples; i++)
 		PCMdata[i] = (1 - smoothing)*PCMd[this.numsamples - 1 - i] + smoothing * PCMdata[i-1];
@@ -407,8 +410,8 @@ var Music = Class.extend({
 		throw Error("fourier transform not implemented");
 		//this.rdft(samples, PCMdata);
 	},
-	
-		       
+
+
     });
 
     // req.open("GET", "/milkshake/HTML5Audio.js", false); req.send(); eval(req.responseText);
@@ -427,8 +430,8 @@ var Music = Class.extend({
     var WebkitAudioAPI = Class.extend({
 
     	init: function() {
-    	    
-    		this.context = new webkitAudioContext();   
+
+    		this.context = new webkitAudioContext();
     		this.source = context.createBufferSource();
     		this.processor = context.createJavaScriptNode(512);
     		this.processor.onaudioprocess = this.audioAvailable;
@@ -437,13 +440,13 @@ var Music = Class.extend({
     		this.loadSample("song.ogg");
 
     	},
-    	
+
     	loadSample: function(url) {
 
     	    var request = new XMLHttpRequest();
     	    request.open("GET", url, true);
     	    request.responseType = "arraybuffer";
-    	
+
     	    request.onload = function() {
     		this.context.decodeAudioData(request.response, function(buffer) {
     			this.source.buffer = buffer;
@@ -455,18 +458,18 @@ var Music = Class.extend({
     	},
 
     	audioAvailable: function(event) {
-    	
+
     	    var inputArrayL = event.inputBuffer.getChannelData(0);
     	    var inputArrayR = event.inputBuffer.getChannelData(1);
     	    var outputArrayL = event.outputBuffer.getChannelData(0);
-    	    var outputArrayR = event.outputBuffer.getChannelData(1);  
+    	    var outputArrayR = event.outputBuffer.getChannelData(1);
     	    var n = inputArrayL.length;
-    	
+
     	    for (var i = 0; i < n; ++i) {
     		outputArrayL[i] = inputArrayL[i];
     		outputArrayR[i] = inputArrayR[i];
     	    }
-    	
+
     	    if (typeof shaker != "undefined")
     		shaker.music.addPCM(inputArrayL, inputArrayR);
     	}
@@ -487,8 +490,8 @@ var Music = Class.extend({
     	    this.rate = this.context.mozSampleRate;
     	    this.frameBufferLength = this.context.mozFrameBufferLength;
     	},
-        
-    	audioAvailable: function (event) {	
+
+    	audioAvailable: function (event) {
     	    var fb = event.frameBuffer;
     	    var signalL = new Float32Array(fb.length / 2);
     	    var signalR = new Float32Array(fb.length / 2);
@@ -496,11 +499,11 @@ var Music = Class.extend({
     		signalL[i] = fb[2*i];
     		signalR[i] = fb[2*i+1];
     	    }
-    	    
+
     	    if (typeof shaker != "undefined")
     		shaker.music.addPCM(signalL, signalR);
     	}
-    	
+
         });
     // req.open("GET", "/milkshake/SoundCloudAudio.js", false); req.send(); eval(req.responseText);
 
@@ -540,7 +543,7 @@ var Music = Class.extend({
     		soundManager.onready(function() {
     			var jsonp = document.createElement("script");
     			jsonp.type = "text/javascript";
-    			jsonp.src = "http://api.soundcloud.com/resolve.json?url=" + escape(audio.playlistURL) + 
+    			jsonp.src = "http://api.soundcloud.com/resolve.json?url=" + escape(audio.playlistURL) +
     			            "&client_id=" + audio.clientId + "&callback=milk.soundCloudJSONCallback";
     			document.body.appendChild(jsonp);
     		});
@@ -548,7 +551,7 @@ var Music = Class.extend({
     	    smjs.src = "SoundManager2/soundmanager2.js";
     	    document.body.appendChild(smjs);
     	},
-    	
+
     	gotStreamURL: function(response) {
     	    var songs;
     	    if ("tracks" in response)
@@ -564,7 +567,7 @@ var Music = Class.extend({
     		var url = song.stream_url + ((song.stream_url.indexOf("?") == -1) ? "?" : "&") + "client_id=" + audio.clientId;
     		var trackId = "track_" + song.id;
     		audio.tracks.push(trackId);
-    		
+
     		soundManager.createSound({
     			id: trackId,
     			url: url,
@@ -596,14 +599,14 @@ var Music = Class.extend({
     			}
     		 });
     	    }
-        
+
     	},
 
     	updateInfoBox: function(info) {
     	    this.infoBox.innerHTML = info;
     	}
-    	    
-    	  
+
+
         });
     // req.open("GET", "/milkshake/Renderer.js", false); req.send(); eval(req.responseText);
     /**
