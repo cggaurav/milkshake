@@ -1,4 +1,5 @@
 var milk = (function(){
+
     // var req = new XMLHttpRequest();
     // req.open("GET", "/milkshake/Class.js", false); req.send(); eval(req.responseText);
     /* Simple JavaScript Inheritance
