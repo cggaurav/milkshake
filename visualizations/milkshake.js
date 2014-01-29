@@ -26661,7 +26661,8 @@ var Music = Class.extend({
 			}, 10000);
 		});
 	} catch (e) {
-		console.log("FUCK");
+		console.log("Couldn't initiate webgl:");
+    console.log(e.message);
 	    // canvas.outerHTML = "<div style='padding:20px;'>" + canvas.innerHTML + "</div>";
 	}
 
@@ -26676,8 +26677,8 @@ var Music = Class.extend({
     }
 
 
-    /* 
-     * Global WebGL, Programmable Shader, and Linear Algebra Routines 
+    /*
+     * Global WebGL, Programmable Shader, and Linear Algebra Routines
      */
 
     var gl;
@@ -26685,11 +26686,11 @@ var Music = Class.extend({
     var U_PROJECTION = 0;
     var U_MODELVIEW = 1;
     var U_TEXTURE = 2;
-    
+
     var U_VERTEX_ARRAY = 0;
     var U_TEXTURE_COORD_ARRAY = 1;
     var U_COLOR_ARRAY = 2;
-    
+
     var mvMatrix  = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
     var prMatrix  = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
     var mvpMatrix = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
@@ -26707,11 +26708,11 @@ var Music = Class.extend({
     var ucolg = 1.0;
     var ucolb = 1.0;
     var ucola = 1.0;
-    
+
     var vertexPos;
     var colorPos;
     var texCoordPos;
-    
+
     var ucolorloc;
     var stextureloc;
     var upointsizeloc;
@@ -26726,15 +26727,17 @@ var Music = Class.extend({
 
     function initGL(callback) {
 
-	gl = canvas.getContext("experimental-webgl", {
-		alpha: false,
-		depth: false,
-		stencil: false,
-		antialias: false,
-		premultipliedAlpha: true,
-		preserveDrawingBuffer: false,
-	    });
+      gl = vz.canvas.getContext("experimental-webgl", {
+        alpha: false,
+        depth: false,
+        stencil: false,
+        antialias: false,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: false,
+      });
+      console.log(gl);
 
+  // app currently breaks here because g1 is null
 	var vertexShader = loadShader(gl.VERTEX_SHADER,
          "precision mediump float; \
           attribute vec4 a_position; \
@@ -26776,8 +26779,8 @@ var Music = Class.extend({
 	gl.linkProgram(shaderProgram);
 	if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
 	    throw Error("Unable to initialize the shader program.");
-	gl.useProgram(shaderProgram); 
-    
+	gl.useProgram(shaderProgram);
+
 	vertexPos = gl.getAttribLocation(shaderProgram,"a_position");
 	colorPos = gl.getAttribLocation(shaderProgram,"a_color");
 	texCoordPos = gl.getAttribLocation(shaderProgram,"a_texCoord");
@@ -26788,7 +26791,7 @@ var Music = Class.extend({
 	txmatrixloc = gl.getUniformLocation(shaderProgram,"tx_matrix");
 	enablestexloc = gl.getUniformLocation(shaderProgram,"enable_s_texture");
 	enablevcoloc = gl.getUniformLocation(shaderProgram,"enable_v_color");
-	
+
 	for (var i = 0; i < texture_list.length; i++) {
 	    var img = new Image();
 	    img.tex = gl.createTexture();
@@ -26799,7 +26802,7 @@ var Music = Class.extend({
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.bindTexture(gl.TEXTURE_2D, null);	
+		gl.bindTexture(gl.TEXTURE_2D, null);
 		textures[this.src.split("/").pop()] = this.tex;
 		texloads += 1;
 		if (texloads == texture_list.length)
@@ -26811,26 +26814,26 @@ var Music = Class.extend({
     }
 
     function loadShader(type,source) {
-	var shader; 
-	shader = gl.createShader(type);
-	gl.shaderSource(shader, source);
-	gl.compileShader(shader);
-	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-	    throw Error("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
-	return shader;
+      var shader;
+      shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+        throw Error("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+      return shader;
     }
 
     function uMatrixMode(mode) {
-	if (mode == U_PROJECTION) {
-	    activeMatrix = prMatrix;
-	    activeStack = prStack;
-	} else if (mode == U_MODELVIEW) {
-	    activeMatrix = mvMatrix;
-	    activeStack = mvStack;
-	} else if (mode == U_TEXTURE) {
-	    activeMatrix = txMatrix;
-	    activeStack = txStack;
-	}
+      if (mode == U_PROJECTION) {
+        activeMatrix = prMatrix;
+        activeStack = prStack;
+      } else if (mode == U_MODELVIEW) {
+        activeMatrix = mvMatrix;
+        activeStack = mvStack;
+      } else if (mode == U_TEXTURE) {
+        activeMatrix = txMatrix;
+        activeStack = txStack;
+      }
     }
 
     function uLoadIdentity() {
@@ -26853,9 +26856,9 @@ var Music = Class.extend({
     }
 
     function multiply(result, srcA, srcB) {
-	
+
 	var tmp = new Float32Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
-	
+
 	for (var i = 0; i < 4; i++) {
 	    var a = 4*i;
 	    var b = a + 1;
@@ -26865,15 +26868,15 @@ var Music = Class.extend({
 		srcA[b] * srcB[4] +
 		srcA[c] * srcB[8] +
 		srcA[d] * srcB[12];
-	    tmp[b] = srcA[a] * srcB[1] + 
+	    tmp[b] = srcA[a] * srcB[1] +
 		srcA[b] * srcB[5] +
 		srcA[c] * srcB[9] +
 		srcA[d] * srcB[13];
-	    tmp[c] = srcA[a] * srcB[2] + 
+	    tmp[c] = srcA[a] * srcB[2] +
 		srcA[b] * srcB[6] +
 		srcA[c] * srcB[10] +
-		srcA[d] * srcB[14];	    
-	    tmp[d] = srcA[a] * srcB[3] + 
+		srcA[d] * srcB[14];
+	    tmp[d] = srcA[a] * srcB[3] +
 		srcA[b] * srcB[7] +
 		srcA[c] * srcB[11] +
 		srcA[d] * srcB[15];
@@ -26905,14 +26908,14 @@ var Music = Class.extend({
 	    y = y/mag;
 	    z = z/mag;
 	}
-  
+
 	var xy = x*y;
 	var yz = y*z;
 	var zx = z*x;
 	var ys = y*s;
 	var xs = x*s;
 	var zs = z*s;
-	
+
 	var rot = new Float32Array([omc*x*x+c, omc*xy-zs, omc*zx+ys, 0.0,
 				    omc*xy+zs, omc*y*y+c, omc*yz-xs, 0.0,
 				    omc*zx-ys, omc*yz+xs, omc*z*z+c, 0.0,
@@ -26925,18 +26928,18 @@ var Music = Class.extend({
 	activeMatrix[1] *= x;
 	activeMatrix[2] *= x;
 	activeMatrix[3] *= x;
-	
+
 	activeMatrix[4] *= y;
 	activeMatrix[5] *= y;
 	activeMatrix[6] *= y;
 	activeMatrix[7] *= y;
-	
+
 	activeMatrix[8] *= z;
 	activeMatrix[9] *= z;
 	activeMatrix[10] *= z;
 	activeMatrix[11] *= z;
     }
-    
+
     function uOrthof(left, right, bottom, top, near, far) {
 	var dX = right - left;
 	var dY = top - bottom;
@@ -26944,14 +26947,14 @@ var Music = Class.extend({
 	var orth = new Float32Array([2/dX, 0, 0, 0,
 				     0, 2/dY, 0, 0,
 				     0, 0, -2/dZ, 0,
-				     -(right+left)/dX, -(top+bottom)/dY, -(near+far)/dZ, 1.0]);	
+				     -(right+left)/dX, -(top+bottom)/dY, -(near+far)/dZ, 1.0]);
 	uMultMatrix(orth);
     }
 
     function uPushMatrix() {
 	var store = new Float32Array(16);
 	for (var i = 0; i < 16; i++)
-	    store[i] = activeMatrix[i]; 
+	    store[i] = activeMatrix[i];
 	activeStack.push(store);
     }
 
@@ -26977,7 +26980,7 @@ var Music = Class.extend({
 	gl.vertexAttribPointer(vertexPos, size, type, false, size*4, 0);
 	gl.enableVertexAttribArray(vertexPos);
     }
-  
+
 
     function uColorPointer(size, type, stride, buf) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, buf);
