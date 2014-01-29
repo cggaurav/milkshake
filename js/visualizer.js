@@ -9,7 +9,7 @@ require([
   'visualizations/boids/simple',
   'visualizations/waveform-interp',
   'visualizations/raymarching',
-  'visualizations/beatdetection',
+  'visualizations/beatdetection'
   'visualizations/milkshake'
 //  'visualizations/sample'
 ], function (models, audio) {
