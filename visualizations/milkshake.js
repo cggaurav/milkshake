@@ -16,13 +16,13 @@ var milk = (function(){
     	var prototype = new this();
     	initializing = false;
     	for (var name in prop) {
-    	    prototype[name] = typeof prop[name] == "function" && 
+    	    prototype[name] = typeof prop[name] == "function" &&
     		typeof _super[name] == "function" && fnTest.test(prop[name]) ?
     		(function(name, fn){
     		    return function() {
     			var tmp = this._super;
     			this._super = _super[name];
-    			var ret = fn.apply(this, arguments);        
+    			var ret = fn.apply(this, arguments);
     			this._super = tmp;
     			return ret;
     		    };
@@ -41,7 +41,7 @@ var milk = (function(){
     })();
     // req.open("GET", "/milkshake/Shaker.js", false); req.send(); eval(req.responseText);
     var Shaker = Class.extend({
-    	
+
     	init: function() {
     	    this.settings = {
     		meshX: 32,
@@ -66,18 +66,18 @@ var milk = (function(){
     	    this.timestart = 0;
     	    this.count = 0;
     	    this.fpsstart = 0;
-     
+
     	    this.renderer = new Renderer(this.settings.windowWidth, this.settings.windowHeight,
     					 this.settings.meshX, this.settings.meshY,
     					 this.settings.textureSize, this.music);
     	    this.running = true;
 
-    	    this.presetNames = [];
-    	    for (var presetName in Presets) {
-    		this.presetNames.push(presetName);
-    		Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName], 
-    							 this.settings.meshX, this.settings.meshY);
-    	    }
+          this.presetNames = [];
+          for (var presetName in Presets) {
+            this.presetNames.push(presetName);
+            Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName],
+                                                     this.settings.meshX, this.settings.meshY);
+          }
 
     	    this.presetPos = 0;
     	    this.activePreset = this.loadPreset();
@@ -85,11 +85,11 @@ var milk = (function(){
 
     	    this.matcher = new RenderItemMatcher();
     	    this.merger = new MasterRenderItemMerge();
-    	   
+
     	    this.merger.add(new ShapeMerge());
     	    this.merger.add(new BorderMerge());
     	    //this.matcher.distanceFunction().addMetric(new ShapeXYDistance());
-    	    
+
     	    this.reset();
     	    this.renderer.reset(this.settings.windowWidth, this.settings.windowHeight);
 
@@ -109,7 +109,7 @@ var milk = (function(){
     	    this.timestart = 0;
     	    this.count = 0;
     	    this.fpsstart = 0;
-    	    this.music.reset();	    
+    	    this.music.reset();
     	},
 
     	renderFrame: function() {
@@ -145,10 +145,10 @@ var milk = (function(){
     		this.activePreset.Render(this.music, this.pipelineContext);
     		this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
     		}*/
-    	    
+
     	    this.activePreset.Render(this.music, this.pipelineContext);
     	    this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
-    	    
+
 
     	    this.count++;
     	    if (this.count % 100 == 0) {
@@ -200,53 +200,49 @@ var milk = (function(){
 
     	havePresets: function() {
     	    return this.presetPos < this.presetNames.length - 1;
-    	},	    
+    	},
 
     	presetSwitchedEvent: function() {
 
     	},
 
-    	createInfoBox: function() {
+      createInfoBox: function() {
+        this.infoBox = document.createElement('div');
+        this.infoBox.style.position = "absolute";
+        this.infoBox.style.height = "0px";
+        this.infoBox.style.width = (canvas.width - 80) + "px";
+        this.infoBox.style.left = (canvas.offsetLeft + 30) + "px";
+        this.infoBox.style.top = (canvas.offsetTop + canvas.offsetHeight - 60) + "px";
 
-    	    this.infoBox = document.createElement('div');
-                this.infoBox.style.position = "absolute";
-                this.infoBox.style.height = "0px";
-                this.infoBox.style.width = (canvas.width - 80) + "px";
-    	    this.infoBox.style.left = (canvas.offsetLeft + 30) + "px";
-                this.infoBox.style.top = (canvas.offsetTop + canvas.offsetHeight - 60) + "px";
+        this.infoBox.style.fontSize = "9pt";
+        this.infoBox.style.fontFamily = "Lucida Grande";
+        this.infoBox.style.fontWeight = "bold";
+        this.infoBox.style.paddingLeft = "20px";
+        this.infoBox.style.paddingTop = "5px";
+        this.infoBox.style.paddingBottom = "5px";
+        this.infoBox.style.borderRadius = "3px";
+        this.infoBox.style.textAlign = "center";
 
-                this.infoBox.style.fontSize = "9pt";
-                this.infoBox.style.fontFamily = "Lucida Grande";
-    	    this.infoBox.style.fontWeight = "bold";
-                this.infoBox.style.paddingLeft = "20px";
-                this.infoBox.style.paddingTop = "5px";
-                this.infoBox.style.paddingBottom = "5px";
-    	    this.infoBox.style.borderRadius = "3px";
-    	    this.infoBox.style.textAlign = "center";
+        this.infoBox.style.backgroundColor = "rgba(255,255,255,0.5)";
+      },
 
-                this.infoBox.style.backgroundColor = "rgba(255,255,255,0.5)";
+      renderInfoBox: function() {
+        if (this.infoBoxPos == -1 && Object.keys(this.infoMessages).length > 0) {
+          this.infoBoxPos = 0;
+          document.body.appendChild(this.infoBox);
+          this.infoMessages["ShamelessPlug"] = "fork me on <a href='http://github.com/gattis/milkshake'>github</a>!";
+          this.infoMessages["ChooseTracks"] = "<a href='bookmarklet.html'>Choose Audio Tracks</a>";
+        }
+        if (this.infoBoxPos > -1) {
+          this.infoBox.style.height = "15px";
+          this.infoBox.innerHTML = this.infoMessages[Object.keys(this.infoMessages)[this.infoBoxPos]];
+          this.infoBoxPos++;
+          if (this.infoBoxPos == Object.keys(this.infoMessages).length)
+            this.infoBoxPos = 0;
+        }
+      }
+    });
 
-    	    
-            },
-
-    	renderInfoBox: function() {
-    	    if (this.infoBoxPos == -1 && Object.keys(this.infoMessages).length > 0) {
-    		this.infoBoxPos = 0;
-    		document.body.appendChild(this.infoBox);
-    		this.infoMessages["ShamelessPlug"] = "fork me on <a href='http://github.com/gattis/milkshake'>github</a>!";
-    		this.infoMessages["ChooseTracks"] = "<a href='bookmarklet.html'>Choose Audio Tracks</a>";
-    	    }
-    	    if (this.infoBoxPos > -1) {
-    		this.infoBox.style.height = "15px";
-    		this.infoBox.innerHTML = this.infoMessages[Object.keys(this.infoMessages)[this.infoBoxPos]];
-    		this.infoBoxPos++;
-    		if (this.infoBoxPos == Object.keys(this.infoMessages).length)
-    		    this.infoBoxPos = 0;
-    	    }
-    	}
-    	
-    	
-        });
     // req.open("GET", "/milkshake/Music.js", false); req.send(); eval(req.responseText);
     /**
  * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
@@ -2963,7 +2959,7 @@ var Music = Class.extend({
     	    return Math.max(1,Math.min(60, RandomNumberGenerators.gaussian(this.presetDuration)));
     	}
         });
-    	
+
     TimeKeeper.getTicks = function(start) {
         return (new Date()) - start;
     }
@@ -3034,22 +3030,22 @@ var Music = Class.extend({
         mv_g: 1.0,
         mv_b: 1.0,
         mv_a: 0.0,
-        per_pixel_code: function(_){with(_){
-          rot = rot - 0.1*min((2-rad)*bass_att,(2-rad)*treb_att);
+        per_pixel_code: function(_){
+          rot = rot - 0.1*_.min((2-rad)*bass_att,(2-rad)*treb_att);
           grad = sqrt(x*x + y*y)*2;
           dx = dx - 0.02*(1-rad);
           dy = dy + 0.02*(1-rad);
-          zoom = zoom - max(grad*(bass/8 - treb/8), 0);
-        }},
-        per_frame_code: function(_){with(_){
+          zoom = zoom - _.max(grad*(bass/8 - treb/8), 0);
+        },
+        per_frame_code: function(_){
           wave_r = wave_r + 0.9;
           wave_g = 0.9 - 0.5*bass;
           wave_b = 0.9 - 0.5*bass;
-          q1 = 0.05*sin(time*1.14);
-          q2 = 0.03*sin(time*0.93+2);
+          q1 = 0.05*_.sin(time*1.14);
+          q2 = 0.03*_.sin(time*0.93+2);
           wave_x = wave_x + q1;
           wave_y = wave_y + q2;
-        }},
+        },
         shapes: [
     {enabled: 1,
      sides: 4,
@@ -3074,19 +3070,19 @@ var Music = Class.extend({
      border_g: 0,
      border_b: 0,
      border_a: 0,
-     per_frame_code: function(_){with(_){
+     per_frame_code: function(_){
        x = x + q1;
        y = y + q2;
        r = r + 0.9;
        g = 0.9 - 0.5*bass;
        b = 0.9 - 0.5*bass;
        rad = rad + 0.1 * bass_att;
-    	}}}
+    	}}
         ],
         waves: [
         ],
       };
-
+/*
     Presets["bmelgren - Godhead.milk"] = {
         fRating: 3.0,
         fGammaAdj: 2.0,
@@ -3147,15 +3143,15 @@ var Music = Class.extend({
         mv_g: 1.0,
         mv_b: 1.0,
         mv_a: 0.0,
-        per_pixel_code: function(_){with(_){
+        per_pixel_code: function(_){
           rot=0.1*pow(ang,3);
           zoom=sin(pow(rad,mid))+.8;
-        }},
-        per_frame_code: function(_){with(_){
+        },
+        per_frame_code: function(_){
           wave_r = bass-1;
           wave_g = mid-1.2;
           wave_b = treb-.5;
-        }},
+        },
         shapes: [
         ],
         waves: [
@@ -3225,13 +3221,13 @@ var Music = Class.extend({
         mv_g: 0.5,
         mv_b: 0.0,
         mv_a: 1.0,
-        per_pixel_code: function(_){with(_){
+        per_pixel_code: function(_){
           zone=below(sin(sin(49*q7)*14*x-sin(36*q7)*14*y),-.2);
           zoom=1+.33*q8*ifcond(zone,-.5+.1*sin(1.08*q6),.5+.1*sin(.96*q6));
           zoomexp=exp(sin(ifcond(zone,q6,-q6)));
           rot=q8*.03*sin(q6+q7+q7*zone);
-        }},
-        per_frame_code: function(_){with(_){
+        },
+        per_frame_code: function(_){
           // timed sidon sensor
           // le = signal level; desired average value = 2
           le=1.4*bass_att+.1*bass+.5*treb;
@@ -3254,7 +3250,7 @@ var Music = Class.extend({
           th=ifcond(above(le,th),le+114/(le+10)-7.407,
           th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
           th=ifcond(above(th,6),6,th);
-          
+
           q8=30/fps;
           ccl=ccl+beat;
           minorccl=minorccl+le*q8;
@@ -3268,11 +3264,11 @@ var Music = Class.extend({
           ib_r=.25+.25*sin(72*ccl+.016*minorccl);
           ib_g=.25+.25*sin(48*ccl+.021*minorccl);
           ib_b=.5+.3*sin(86*ccl)+.2*(.028*minorccl);
-          
+
           echo_alpha=.5+.5*cos(68*ccl+.0041*minorccl);
           echo_zoom=exp(sin(13.7*ccl+.017*minorccl));
           echo_orient=ccl%4;
-          
+
           mvrot=ccl%6;
           mv_r=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.039,
           ifcond(equal(mvrot,3),.137,.835)),ifcond(above(mvrot,1),.651,
@@ -3283,7 +3279,7 @@ var Music = Class.extend({
           mv_b=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.694,
           ifcond(equal(mvrot,3),.776,.851)),ifcond(above(mvrot,1),.114,
           ifcond(equal(mvrot,0),1,.145)));
-        }},
+        },
         shapes: [
         ],
         waves: [
@@ -3353,16 +3349,16 @@ var Music = Class.extend({
         mv_g: 1.0,
         mv_b: 1.0,
         mv_a: 0.2,
-        per_pixel_code: function(_){with(_){
+        per_pixel_code: function(_){
           dqv=above(x,.5)-above(y,.5);
           rot=sin(sin(rad*(13+5*sin(.01*q2))+.06*q2)*q1*.01);
           zoom=1+ifcond(q3,dqv,1)*.1*sin(7*ang+.03*q2);
           zoom=ifcond(q4,ifcond(below(rad,.8*sqr(sin(.016*q2))),.75+.4*cos(.021*q2),zoom),zoom);
-        }},
-        init_code: function(_){with(_){
+        },
+        init_code: function(_){
           dle=1;
-        }},
-        per_frame_code: function(_){with(_){
+        },
+        per_frame_code: function(_){
           // timed sidon sensor
           // le = signal level; desired average value = 2
           le=1.4*bass_att+.1*bass+.5*treb;
@@ -3386,29 +3382,29 @@ var Music = Class.extend({
           th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
           th=ifcond(above(th,6),6,th);
           thccl=thccl+(th-2.5144);
-          
+
           q1=le;
           q2=thccl+.2*leccl;
           leccl=leccl+dle*le;
           dle=ifcond(beat,-dle,dle);
           bccl=bccl+beat;
-          
+
           wave_r=.1+.8*sqr(sin(.011*thccl))+.1*sin(leccl*.061);
           wave_g=.1+.8*sqr(sin(.013*thccl))+.1*cos(leccl*.067);
           wave_b=.1+.8*sqr(cos(.017*thccl))+.1*sin(leccl*.065);
-          
+
           ib_r=ib_r+.1*sin(1.3*time+.012*leccl);
           ib_g=ib_g+.1*sin(1.7*time+.019*leccl);
           ib_b=ib_b+.1*sin(1.9*time+.017*leccl);
           mv_r=.5*(ib_r+wave_r);mv_g=.5*(ib_g+wave_g);mv_b=.5*(ib_b+wave_b);
           mv_a=.5*sqr(sin(.01*leccl+bccl));
-          
+
           echo_alpha=.5+.2*cos(.07*leccl+.02*thccl);
           eo=ifcond(band(equal(bccl%3,0),beat),rand(4),eo);
           q3=(equal(eo,2)+equal(eo,1))*equal(bccl%2,0);
           q4=(equal(eo,0)+equal(eo,3))*equal(bccl%2,0);
           echo_orient=eo;
-        }},
+        },
         shapes: [
         ],
         waves: [
@@ -26632,14 +26628,14 @@ var Music = Class.extend({
         waves: [
         ],
       };
+*/
 
 
 
 
 
-
-    /* 
-     * Core Animation Interface 
+    /*
+     * Core Animation Interface
      */
 
     var shaker;
@@ -26657,7 +26653,7 @@ var Music = Class.extend({
 		    animationLoop();
 		    setInterval(function() {
 			    shaker.selectNext(true);
-			}, 10000);		
+			}, 10000);
 		});
 	} catch (e) {
 		console.log("FUCK");
