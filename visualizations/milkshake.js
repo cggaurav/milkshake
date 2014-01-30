@@ -1,17 +1,19 @@
-var milk = (function(){
+var milk = (function() {
 
-    // var req = new XMLHttpRequest();
-    // req.open("GET", "/milkshake/Class.js", false); req.send(); eval(req.responseText);
-    /* Simple JavaScript Inheritance
-     * By John Resig http://ejohn.org/
-     * MIT Licensed.
-     */
-    // Inspired by base2 and Prototype
+  // var req = new XMLHttpRequest();
+  // req.open("GET", "/milkshake/Class.js", false); req.send(); eval(req.responseText);
+  /* Simple JavaScript Inheritance
+   * By John Resig http://ejohn.org/
+   * MIT Licensed.
+   */
+  // Inspired by base2 and Prototype
 
-  var Class = (function(){
+  var Class = (function() {
     var initializing = false;
-    var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-    var _Class = function(){};
+    var fnTest = /xyz/.test(function() {
+      xyz;
+    }) ? /\b_super\b/ : /.*/;
+    var _Class = function() {};
     var extend = function ext(prop) {
       var _super = this.prototype;
       initializing = true;
@@ -20,7 +22,7 @@ var milk = (function(){
       for (var name in prop) {
         prototype[name] = typeof prop[name] == "function" &&
           typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-          (function(name, fn){
+          (function(name, fn) {
           return function() {
             var tmp = this._super;
             this._super = _super[name];
@@ -31,8 +33,9 @@ var milk = (function(){
         })(name, prop[name]) :
           prop[name];
       }
+
       function Class() {
-        if ( !initializing && this.init )
+        if (!initializing && this.init)
           this.init.apply(this, arguments);
       }
       Class.prototype = prototype;
@@ -44,3050 +47,3120 @@ var milk = (function(){
     return _Class;
   })();
 
-    // req.open("GET", "/milkshake/Shaker.js", false); req.send(); eval(req.responseText);
-    var Shaker = Class.extend({
+  // req.open("GET", "/milkshake/Shaker.js", false); req.send(); eval(req.responseText);
+  var Shaker = Class.extend({
 
-    	init: function() {
-    	    this.settings = {
-    		meshX: 32,
-    		meshY: 24,
-    		fps: 60,
-    		textureSize: 1024,
-    		windowWidth: window.innerWidth,
-    		windowHeight: window.innerHeight,
-    		smoothPresetDuration: 5,
-    		presetDuration: 30,
-    		beatSensitivity: 10,
-    		aspectCorrection: true
-    	    };
-    	    this.pipelineContext = new PipelineContext();
-    	    this.pipelineContext2 = new PipelineContext();
-    	    this.timeKeeper = new TimeKeeper(this.settings.presetDuration);
-    	    this.music = new Music();
-    	    if (this.settings.fps > 0)
-    		this.mspf = Math.floor(1000.0/this.settings.fps);
-    	    else this.mspf = 0;
-    	    this.timed = 0;
-    	    this.timestart = 0;
-    	    this.count = 0;
-    	    this.fpsstart = 0;
+    init: function() {
+      this.settings = {
+        meshX: 32,
+        meshY: 24,
+        fps: 60,
+        textureSize: 1024,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+        smoothPresetDuration: 5,
+        presetDuration: 30,
+        beatSensitivity: 10,
+        aspectCorrection: true
+      };
+      this.pipelineContext = new PipelineContext();
+      this.pipelineContext2 = new PipelineContext();
+      this.timeKeeper = new TimeKeeper(this.settings.presetDuration);
+      this.music = new Music();
+      if (this.settings.fps > 0) {
+        this.mspf = Math.floor(1000.0 / this.settings.fps);
+      } else this.mspf = 0;
+      this.timed = 0;
+      this.timestart = 0;
+      this.count = 0;
+      this.fpsstart = 0;
 
-    	    this.renderer = new Renderer(this.settings.windowWidth, this.settings.windowHeight,
-    					 this.settings.meshX, this.settings.meshY,
-    					 this.settings.textureSize, this.music);
-    	    this.running = true;
+      this.renderer = new Renderer(this.settings.windowWidth, this.settings.windowHeight, this.settings.meshX, this.settings.meshY, this.settings.textureSize, this.music);
+      this.running = true;
 
-          this.presetNames = [];
-          for (var presetName in Presets) {
-            this.presetNames.push(presetName);
-            Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName],
-                                                     this.settings.meshX, this.settings.meshY);
-          }
+      this.presetNames = [];
+      for (var presetName in Presets) {
+        this.presetNames.push(presetName);
+        Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName], this.settings.meshX, this.settings.meshY);
+      }
 
-    	    this.presetPos = 0;
-    	    this.activePreset = this.loadPreset();
-    	    Renderer.SetPipeline(this.activePreset.pipeline());
+      this.presetPos = 0;
+      this.activePreset = this.loadPreset();
+      Renderer.SetPipeline(this.activePreset.pipeline());
 
-    	    this.matcher = new RenderItemMatcher();
-    	    this.merger = new MasterRenderItemMerge();
+      this.matcher = new RenderItemMatcher();
+      this.merger = new MasterRenderItemMerge();
 
-    	    this.merger.add(new ShapeMerge());
-    	    this.merger.add(new BorderMerge());
-    	    //this.matcher.distanceFunction().addMetric(new ShapeXYDistance());
+      this.merger.add(new ShapeMerge());
+      this.merger.add(new BorderMerge());
+      //this.matcher.distanceFunction().addMetric(new ShapeXYDistance());
 
-    	    this.reset();
-    	    this.renderer.reset(this.settings.windowWidth, this.settings.windowHeight);
+      this.reset();
+      this.renderer.reset(this.settings.windowWidth, this.settings.windowHeight);
 
-    	    this.renderer.correction = this.settings.aspectCorrection;
-    	    this.music.beat_sensitivity = this.settings.beatSensitivity;
+      this.renderer.correction = this.settings.aspectCorrection;
+      this.music.beat_sensitivity = this.settings.beatSensitivity;
 
-    	    this.infoMessages = {};
-    	    this.infoBoxPos = -1;
-    	    this.createInfoBox();
-    	    this.timeKeeper.StartPreset();
+      this.infoMessages = {};
+      this.infoBoxPos = -1;
+      this.createInfoBox();
+      this.timeKeeper.StartPreset();
 
-    	},
+    },
 
-    	reset: function() {
-    	    this.mspf = 0;
-    	    this.timed = 0;
-    	    this.timestart = 0;
-    	    this.count = 0;
-    	    this.fpsstart = 0;
-    	    this.music.reset();
-    	},
+    reset: function() {
+      this.mspf = 0;
+      this.timed = 0;
+      this.timestart = 0;
+      this.count = 0;
+      this.fpsstart = 0;
+      this.music.reset();
+    },
 
-      renderFrame: function() {
-        this.timestart = TimeKeeper.getTicks(this.timeKeeper.startTime);
-        this.timeKeeper.UpdateTimers();
-        this.mspf = Math.floor(1000.0/this.settings.fps);
-        this.pipelineContext.time = this.timeKeeper.GetRunningTime();
-        this.pipelineContext.frame = this.timeKeeper.PresetFrameA();
-        this.pipelineContext.progress = this.timeKeeper.PresetProgressA();
-        this.music.detectFromSamples();
+    renderFrame: function() {
+      this.timestart = TimeKeeper.getTicks(this.timeKeeper.startTime);
+      this.timeKeeper.UpdateTimers();
+      this.mspf = Math.floor(1000.0 / this.settings.fps);
+      this.pipelineContext.time = this.timeKeeper.GetRunningTime();
+      this.pipelineContext.frame = this.timeKeeper.PresetFrameA();
+      this.pipelineContext.progress = this.timeKeeper.PresetProgressA();
+      this.music.detectFromSamples();
 
-        if (this.renderer.noSwitch == false && !this.havePresets()) {
-          if (this.timeKeeper.PresetProgressA() >= 1.0 && !this.timeKeeper.IsSmoothing()) {
-            this.selectNext(false);
-          }
-          else if ((this.music.vol - this.music.vol_old > this.music.beat_sensitivity) &&
-                   this.timeKeeper.CanHardCut()) {
-            this.selectNext(true);
-          }
-        }
-        if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() <= 1.0 && !this.havePresets()){
-          this.activePreset.Render(this.music, this.pipelineContext);
-          this.evaluateSecondPreset();
-          var pipeline = new Pipeline();
-          pipeline.setStaticPerPixel(this.settings.meshX, this.settings.meshY);
-          PipelineMerger.mergePipelines(this.activePreset.pipeline(), this.activePreset2.pipeline(), pipeline, this.matcher.matchResults(), this.merger, this.timeKeeper.SmoothRatio());
-                                        this.renderer.RenderFrame(pipeline, this.pipelineContext);
-                                        pipeline.drawables.clear();
-        } else {
-          if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() > 1.0) {
-            this.activePreset = this.activePreset2;
-            this.timeKeeper.EndSmoothing();
-          }
-          this.activePreset.Render(this.music, this.pipelineContext);
-          this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
-        }
-
-    	    this.activePreset.Render(this.music, this.pipelineContext);
-    	    this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
-
-
-          this.count++;
-          if (this.count % 100 == 0) {
-            this.renderer.realfps = 100.0/((TimeKeeper.getTicks(this.timeKeeper.startTime)-this.fpsstart)/1000);
-            this.infoMessages["fps"] = "rendering at " + Math.round(this.renderer.realfps*100)/100 + " frames per second";
-            this.fpsstart = TimeKeeper.getTicks(this.timeKeeper.startTime);
-          }
-          if (this.count % 400 == 0)
-            this.renderInfoBox();
-
-          var timediff = TimeKeeper.getTicks(this.timeKeeper.startTime) - this.timestart;
-          if (timediff < this.mspf)
-            return Math.floor(this.mspf-timediff);
-          return 0;
-      },
-
-    	evaluateSecondPreset: function () {
-    	    this.pipelineContext2.time = this.timeKeeper.GetRunningTime();
-    	    this.pipelineContext2.frame = this.timeKeeper.PresetFrameB();
-    	    this.pipelineContext2.progress = this.timeKeeper.PresetProgressB();
-    	    this.m_activePreset2.Render(this.music, this.pipelineContext2);
-    	},
-
-    	selectNext: function(hardCut) {
-    	    if (this.presetPos >= this.presetNames.length - 1) return;
-    	    if (!hardCut)
-    		this.timeKeeper.StartSmoothing();
-    	    this.presetPos++;
-    	    if (!hardCut)
-    		this.activePreset2 = this.switchPreset();
-    	    else {
-    		this.activePreset = this.switchPreset();
-    		this.timeKeeper.StartPreset();
-    	    }
-    	    this.presetSwitchedEvent(hardCut, this.presetPos);
-    	},
-
-    	switchPreset: function() {
-    	    var targetPreset = this.loadPreset();
-    	    Renderer.SetPipeline(targetPreset.pipeline());
-    	    return targetPreset;
-    	},
-
-    	loadPreset: function() {
-    	    var preset = Presets[this.presetNames[this.presetPos]];
-    	    return preset;
-    	},
-
-    	havePresets: function() {
-    	    return this.presetPos < this.presetNames.length - 1;
-    	},
-
-    	presetSwitchedEvent: function() {
-
-    	},
-
-      createInfoBox: function() {
-        this.infoBox = document.createElement('div');
-        this.infoBox.style.position = "absolute";
-        this.infoBox.style.height = "0px";
-        this.infoBox.style.width = (canvas.width - 80) + "px";
-        this.infoBox.style.left = (canvas.offsetLeft + 30) + "px";
-        this.infoBox.style.top = (canvas.offsetTop + canvas.offsetHeight - 60) + "px";
-
-        this.infoBox.style.fontSize = "9pt";
-        this.infoBox.style.fontFamily = "Lucida Grande";
-        this.infoBox.style.fontWeight = "bold";
-        this.infoBox.style.paddingLeft = "20px";
-        this.infoBox.style.paddingTop = "5px";
-        this.infoBox.style.paddingBottom = "5px";
-        this.infoBox.style.borderRadius = "3px";
-        this.infoBox.style.textAlign = "center";
-
-        this.infoBox.style.backgroundColor = "rgba(255,255,255,0.5)";
-      },
-
-      renderInfoBox: function() {
-        if (this.infoBoxPos == -1 && Object.keys(this.infoMessages).length > 0) {
-          this.infoBoxPos = 0;
-          document.body.appendChild(this.infoBox);
-          this.infoMessages["ShamelessPlug"] = "fork me on <a href='http://github.com/gattis/milkshake'>github</a>!";
-          this.infoMessages["ChooseTracks"] = "<a href='bookmarklet.html'>Choose Audio Tracks</a>";
-        }
-        if (this.infoBoxPos > -1) {
-          this.infoBox.style.height = "15px";
-          this.infoBox.innerHTML = this.infoMessages[Object.keys(this.infoMessages)[this.infoBoxPos]];
-          this.infoBoxPos++;
-          if (this.infoBoxPos == Object.keys(this.infoMessages).length)
-            this.infoBoxPos = 0;
+      if (this.renderer.noSwitch == false && !this.havePresets()) {
+        if (this.timeKeeper.PresetProgressA() >= 1.0 && !this.timeKeeper.IsSmoothing()) {
+          this.selectNext(false);
+        } else if ((this.music.vol - this.music.vol_old > this.music.beat_sensitivity) && this.timeKeeper.CanHardCut()) {
+          this.selectNext(true);
         }
       }
-    });
-
-    // req.open("GET", "/milkshake/Music.js", false); req.send(); eval(req.responseText);
-    /**
- * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
- * Copyright (C)2011 Matt Gattis and contributors
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * See 'LICENSE.txt' included within this release
- *
- */
-
-var Music = Class.extend({
-	init: function () {
-	    this.vol_instant = 0;
-	    this.vol_history = 0;
-	    this.vol_buffer = new Float32Array(80);
-	    this.beat_buffer_pos = 0;
-	    this.beat_instant = new Float32Array(32);
-	    this.beat_history = new Float32Array(32);
-	    this.beat_val = new Float32Array(32);
-	    this.beat_variance = new Float32Array(32);
-	    this.beat_buffer = []
-	    for (var i = 0; i < 32; i++)
-		this.beat_buffer.push(new Float32Array(80));
-
-	    this.beat_sensitivity = 10.0;
-	    this.vol = 0;
-	    this.vol_old = 0;
-
-	    this.numsamples = 512;
-
-	    this.PCML = new Float32Array(this.numsamples);
-	    this.PCMR = new Float32Array(this.numsamples);
-
-	    this.pcmdataL = new Float32Array(this.numsamples);
-	    this.pcmdataR = new Float32Array(this.numsamples);
-
-	},
-
-	reset: function() {
-	    this.bass = 0;
-	    this.mid = 0;
-	    this.treb = 0;
-	    this.bass_att = 0;
-	    this.mid_att = 0;
-	    this.treb_att = 0;
-
-	},
-
-	addPCM: function(left, right) {
-
-	    if (this.numsamples == left.length && this.numsamples.right == right.length)
-		for (var i = 0; i < this.numsamples; i++) {
-		    this.PCML[i] = left[i];
-		    this.PCMR[i] = right[i];
-		}
-	    else { // assume 256 samples and interpolate
-		for (var i = 0; i < 255; i++) {
-		    this.PCML[2*i] = left[i];
-		    this.PCML[2*i+1] = (left[i] + left[i+1]) / 2;
-		    this.PCMR[2*i] = right[i];
-		    this.PCMR[2*i+1] = (right[i] + right[i+1]) / 2;
-		}
-		this.PCML[510] = this.PCML[511] = left[255];
-		this.PCMR[510] = this.PCMR[511] = right[255];
-	    }
-
-
-	    for (var i = 0; i < this.numsamples; i++) {
-		this.pcmdataL[i] = this.PCML[this.numsamples - 1 - i];
-		this.pcmdataR[i] = this.PCMR[this.numsamples - 1 - i];
-	    }
-	},
-
-	detectFromSamples: function() {
-
-	    this.vol_old = this.vol;
-	    this.bass = 0; this.mid = 0; this.treb = 0;
-	    var linear = 0;
-	    var i,j;
-	    var temp2 = 0;
-	    this.vol_instant = 0;
-	    for (i = 0; i < 16; i++) {
-		this.beat_instant[i] = 0;
-		for (j = linear * 2; j < (linear + 8 + i) * 2; j++) {
-		    this.beat_instant[i] += ((this.pcmdataL[j] * this.pcmdataL[j]) + (this.pcmdataR[j] * this.pcmdataR[j]))/(8 + i);
-		    this.vol_instant += ((this.pcmdataL[j] * this.pcmdataL[j]) + (this.pcmdataR[j] * this.pcmdataR[j]))/512;
-		}
-		linear = j / 2;
-		this.beat_history[i] -= this.beat_buffer[i][this.beat_buffer_pos] * 0.0125;
-		this.beat_buffer[i][this.beat_buffer_pos] = this.beat_instant[i];
-		this.beat_history[i] += this.beat_instant[i] * 0.0125;
-		this.beat_val[i] = this.beat_instant[i] / this.beat_history[i];
-	    }
-
-	    this.vol_history -= this.vol_buffer[this.beat_buffer_pos] * 0.0125;
-	    this.vol_buffer[this.beat_buffer_pos] = this.vol_instant;
-	    this.vol_history += this.vol_instant * 0.0125;
-
-	    this.mid = 0;
-	    for (i = 1; i < 10; i++) {
-		this.mid += this.beat_instant[i];
-		temp2 += this.beat_history[i];
-	    }
-	    this.mid = this.mid / (1.5 * temp2);
-
-	    temp2 = 0;
-	    this.treb = 0;
-	    for (i = 10; i < 16; i++) {
-		this.treb += this.beat_instant[i];
-		temp2 += this.beat_history[i];
-	    }
-	    this.treb = this.treb / (1.5 * temp2);
-	    this.vol = this.vol_instant / (1.5 * this.vol_history);
-	    this.bass = this.beat_instant[0] / (1.5 * this.beat_history[0]);
-
-	    if (!isFinite(this.treb))
-		this.treb = 0;
-
-	    if (!isFinite(this.mid))
-		this.mid = 0;
-
-	    if (!isFinite(this.bass))
-		this.bass = 0;
-
-	    this.treb_att = 0.6 * this.treb_att + 0.4 * this.treb;
-	    this.mid_att = 0.6 * this.mid_att + 0.4 * this.mid;
-	    this.bass_att = 0.6 * this.bass_att + 0.4 * this.bass;
-
-	    if (this.bass_att > 100) this.bass_att = 100;
-	    if (this.bass > 100) this.bass = 100;
-	    if (this.mid_att > 100) this.mid_att = 100;
-	    if (this.mid > 100) this.mid = 100;
-	    if (this.treb_att > 100) this.treb_att = 100;
-	    if (this.treb > 100) this.treb = 100;
-	    if (this.vol > 100) this.vol = 100;
-
-	    this.beat_buffer_pos++;
-	    if (this.beat_buffer_pos > 79) this.beat_buffer_pos = 0;
-
-	},
-
-	getPCM: function(PCMdata, samples, channel, freq, smoothing) {
-	    PCMd = (channel == 0) ? this.PCML : this.PCMR;
-
-	    PCMdata[0] = PCMd[this.numsamples - 1];
-	    for (var i = 1; i < samples; i++)
-		PCMdata[i] = (1 - smoothing)*PCMd[this.numsamples - 1 - i] + smoothing * PCMdata[i-1];
-	    if (freq)
-		throw Error("fourier transform not implemented");
-		//this.rdft(samples, PCMdata);
-	},
-
-
-    });
-
-    // req.open("GET", "/milkshake/HTML5Audio.js", false); req.send(); eval(req.responseText);
-    var HTML5Audio = Class.extend({
-    	init: function () {
-    	    this.context = null;
-    	    this.source = null;
-
-    	    if (typeof webkitAudioContext != "undefined")
-    		this.audioAPI = new WebkitHTML5Audio();
-    	    else
-    		this.audioAPI = new MozAudioAPI();
-    	}
-        });
-
-    var WebkitAudioAPI = Class.extend({
-
-    	init: function() {
-
-    		this.context = new webkitAudioContext();
-    		this.source = context.createBufferSource();
-    		this.processor = context.createJavaScriptNode(512);
-    		this.processor.onaudioprocess = this.audioAvailable;
-    		this.source.connect(processor);
-    		this.processor.connect(context.destination);
-    		this.loadSample("song.ogg");
-
-    	},
-
-    	loadSample: function(url) {
-
-    	    var request = new XMLHttpRequest();
-    	    request.open("GET", url, true);
-    	    request.responseType = "arraybuffer";
-
-    	    request.onload = function() {
-    		this.context.decodeAudioData(request.response, function(buffer) {
-    			this.source.buffer = buffer;
-    			this.source.looping = true;
-    			this.source.noteOn(0);
-    		    });
-    	    }
-    	    request.send();
-    	},
-
-    	audioAvailable: function(event) {
-
-    	    var inputArrayL = event.inputBuffer.getChannelData(0);
-    	    var inputArrayR = event.inputBuffer.getChannelData(1);
-    	    var outputArrayL = event.outputBuffer.getChannelData(0);
-    	    var outputArrayR = event.outputBuffer.getChannelData(1);
-    	    var n = inputArrayL.length;
-
-    	    for (var i = 0; i < n; ++i) {
-    		outputArrayL[i] = inputArrayL[i];
-    		outputArrayR[i] = inputArrayR[i];
-    	    }
-
-    	    if (typeof shaker != "undefined")
-    		shaker.music.addPCM(inputArrayL, inputArrayR);
-    	}
-        });
-
-    var MozAudioAPI = Class.extend({
-
-    	init: function() {
-    	    this.context = new Audio();
-    	    this.context.src = "song.ogg";
-    	    this.context.addEventListener('MozAudioAvailable', this.audioAvailable);
-    	    this.context.addEventListener('loadedmetadata', this.loadedMetadata, false);
-    	    this.context.play();
-    	},
-
-    	loadedMetadata: function () {
-    	    this.channels = this.context.mozChannels;
-    	    this.rate = this.context.mozSampleRate;
-    	    this.frameBufferLength = this.context.mozFrameBufferLength;
-    	},
-
-    	audioAvailable: function (event) {
-    	    var fb = event.frameBuffer;
-    	    var signalL = new Float32Array(fb.length / 2);
-    	    var signalR = new Float32Array(fb.length / 2);
-    	    for (var i = 0; i < this.frameBufferLength / 2; i++) {
-    		signalL[i] = fb[2*i];
-    		signalR[i] = fb[2*i+1];
-    	    }
-
-    	    if (typeof shaker != "undefined")
-    		shaker.music.addPCM(signalL, signalR);
-    	}
-
-        });
-    // req.open("GET", "/milkshake/SoundCloudAudio.js", false); req.send(); eval(req.responseText);
-
-    var SoundCloudAudio = Class.extend({
-
-    	clientId: "4d9749247dccda26471f3fa442daa07d",
-
-    	init: function () {
-
-    	    this.tracks = [];
-    	    this.trackPos = 0;
-
-    	    this.playlistURL = "http://soundcloud.com/mattgattis/favorites";
-    	    var args = window.location.search.substring(1).split("&");
-    	    for (var i = 0; i < args.length; i++) {
-    		var arg = args[i].split("=");
-    		if (arg[0] == "tracks") {
-    		    this.playlistURL = unescape(arg[1]);
-    		    break;
-    		}
-    	    }
-
-    	    var smjs = document.createElement("script");
-    	    smjs.type = "text/javascript";
-
-    	    milk.soundCloudJSONCallback = this.gotStreamURL;
-    	    smjs.onload = function() {
-    		soundManager.url = "SoundManager2/";
-    		soundManager.usePolicyFile = true;
-    		soundManager.flashVersion = 9;
-    		soundManager.useHTML5Audio = false;
-    		soundManager.useFlashBlock = false;
-    		soundManager.useHighPerformance = true;
-    		soundManager.wmode = 'transparent';
-    		soundManager.useFastPolling = true;
-    		soundManager.useWaveformData = true;
-    		soundManager.onready(function() {
-    			var jsonp = document.createElement("script");
-    			jsonp.type = "text/javascript";
-    			jsonp.src = "http://api.soundcloud.com/resolve.json?url=" + escape(audio.playlistURL) +
-    			            "&client_id=" + audio.clientId + "&callback=milk.soundCloudJSONCallback";
-    			document.body.appendChild(jsonp);
-    		});
-    	    };
-    	    smjs.src = "SoundManager2/soundmanager2.js";
-    	    document.body.appendChild(smjs);
-    	},
-
-    	gotStreamURL: function(response) {
-    	    var songs;
-    	    if ("tracks" in response)
-    		songs = response.tracks;
-    	    else if (0 in response)
-    		songs = response;
-    	    else
-    		songs = [response];
-    	    audio.songs = songs;
-
-    	    for (var i = 0; i < songs.length; i++) {
-    		var song = songs[i];
-    		var url = song.stream_url + ((song.stream_url.indexOf("?") == -1) ? "?" : "&") + "client_id=" + audio.clientId;
-    		var trackId = "track_" + song.id;
-    		audio.tracks.push(trackId);
-
-    		soundManager.createSound({
-    			id: trackId,
-    			url: url,
-    			autoPlay: (i == 0),
-    			useWaveformData: true,
-    			whileplaying: function() {
-    			    if (typeof shaker != "undefined") {
-    				var left = this.waveformData.left;
-    				var right = this.waveformData.right;
-    				for (i = 0; i < 256; i++) {
-    				    left[i] = parseFloat(left[i]);
-    				    right[i] = parseFloat(right[i]);
-    				}
-    				shaker.music.addPCM(left, right);
-    			    }
-    			},
-    			onplay: function() {
-    			    var s = audio.songs[audio.trackPos];
-    			    shaker.infoMessages["SoundCloud"] = "music courtesy of <a href='" +
-    				s.user.permalink_url + "'>" + s.user.username + "</a>" + 
-    				" - <a href='" + s.permalink_url + "'>" + s.title + "</a> - " +
-    				"powered by <a href='http://soundcloud.com/'>soundcloud</a>";
-    			},
-    			onfinish: function() {
-    			    soundManager.stopAll();
-    			    if (audio.trackPos < audio.tracks.length - 1)
-    				audio.trackPos++;
-    			    soundManager.play(audio.tracks[audio.trackPos]);
-    			}
-    		 });
-    	    }
-
-    	},
-
-    	updateInfoBox: function(info) {
-    	    this.infoBox.innerHTML = info;
-    	}
-
-
-        });
-    // req.open("GET", "/milkshake/Renderer.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-    var Renderer = Class.extend({
-    	init: function(width, height, gx, gy, texsize, music) {
-    	    this.presetName = "None";
-    	    this.vw = width;
-    	    this.vh = height;
-    	    this.texsize = texsize;
-    	    this.mesh = new PerPixelMesh(gx,gy);
-    	    this.totalframes = 1;
-    	    this.noSwitch = false;
-    	    this.realfps = 0;
-    	    this.correction = true;
-    	    this.aspect = height / width;
-    	    this.renderTarget = new RenderTarget(texsize, width, height);
-    	    this.music = music;
-    	    this.renderContext = {};
-
-    	    this.p = new Float32Array(this.mesh.width * 2 * 2);
-    	    this.pbuf = gl.createBuffer();
-
-    	    this.t = new Float32Array(this.mesh.width * 2 * 2);
-    	    this.tbuf = gl.createBuffer();
-
-    	    this.cot = new Float32Array([0,1,0,0,1,0,1,1])
-    	    this.cotbuf = gl.createBuffer();
-    	    
-    	    this.cop = new Float32Array([-0.5,-0.5,-0.5,0.5,0.5,0.5,0.5,-0.5])
-    	    this.copbuf = gl.createBuffer();
-    	    
-    	},
-
-    	ResetTextures: function() {
-    	    delete this.renderTarget;
-    	    this.reset(this.vw, this.vh);
-    	},
-
-    	SetupPass1: function () {
-    	    this.totalframes++;
-    	    this.renderTarget.lock();
-    	    gl.viewport(0, 0, this.renderTarget.texsize, this.renderTarget.texsize);
-
-    	    uEnableClientState(U_TEXTURE_COORD_ARRAY);
-
-    	    uMatrixMode(U_TEXTURE);
-    	    uLoadIdentity();
-    	    uMatrixMode(U_PROJECTION);
-    	    uLoadIdentity();
-    	    uOrthof(0.0, 1, 0.0, 1, -40, 40);
-    	    uMatrixMode(U_MODELVIEW);
-    	    uLoadIdentity();
-    	},
-
-    	RenderItems: function (pipeline, pipelineContext) {
-    	    this.renderContext.time = pipelineContext.time;
-    	    this.renderContext.texsize = this.texsize;
-    	    this.renderContext.aspectCorrect = this.correction;
-    	    this.renderContext.aspectRatio = this.aspect;
-    	    this.renderContext.music = this.music;
-    	    
-    	    for (var pos = 0; pos < pipeline.drawables.length; pos++)
-    		if (pipeline.drawables[pos] != null)
-    		    pipeline.drawables[pos].Draw(this.renderContext);
-    	},
-
-    	FinishPass1: function() {
-    	    this.renderTarget.unlock();
-    	},
-
-    	Pass2: function(pipeline, pipelineContext) {
-    	    gl.viewport(0, 0, this.vw, this.vh);
-    	    gl.bindTexture(gl.TEXTURE_2D, this.renderTarget.textureID[0]);
-    	    uMatrixMode(U_PROJECTION);
-    	    uLoadIdentity();
-    	    uOrthof(-0.5, 0.5, -0.5, 0.5, -40, 40);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    gl.lineWidth(this.renderTarget.texsize < 512 ? 1 : this.renderTarget.texsize / 512.0);
-    	    this.CompositeOutput(pipeline, pipelineContext);
-
-    	    uMatrixMode(U_MODELVIEW);
-    	    uLoadIdentity();
-    	    uTranslatef(-0.5, -0.5, 0);
-    	    uTranslatef(0.5, 0.5, 0);
-
-    	},
-
-    	RenderFrame: function(pipeline, pipelineContext) {
-    	    this.SetupPass1(pipeline, pipelineContext);
-    	    this.Interpolation(pipeline);
-    	    this.RenderItems(pipeline, pipelineContext);
-    	    this.FinishPass1();
-    	    this.Pass2(pipeline, pipelineContext);
-    	},
-
-    	Interpolation: function(pipeline) {
-
-    	    gl.bindTexture(gl.TEXTURE_2D, this.renderTarget.textureID[0]);
-    	    if (pipeline.textureWrap == 0) {
-    		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    	    } else {
-    		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-    	    }
-
-    	    uMatrixMode(U_TEXTURE);
-    	    uLoadIdentity();
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ZERO);
-    	    
-    	    uColor4f(1.0, 1.0, 1.0, pipeline.screenDecay);
-    	    
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uEnableClientState(U_TEXTURE_COORD_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-
-    	    uVertexPointer(2, gl.FLOAT, 0, this.pbuf);
-    	    uTexCoordPointer(2, gl.FLOAT, 0, this.tbuf);
-
-    	    function round(val,n) {
-    		return Math.round(val*Math.pow(10,n)) / Math.pow(10,n);
-    	    }
-
-    	    if (pipeline.staticPerPixel) {
-    		for (var j = 0; j < this.mesh.height - 1; j++) {
-    		    for (var i = 0; i < this.mesh.width; i++) {
-    			this.t[i*4] = pipeline.x_mesh[i][j];
-    			this.t[i*4+1] = pipeline.y_mesh[i][j];
-    			this.t[i*4+2] = pipeline.x_mesh[i][j+1];
-    			this.t[i*4+3] = pipeline.y_mesh[i][j+1];
-
-    			var index = j*this.mesh.width+i;
-    			var index2 = (j+1)*this.mesh.width+i;
-
-    			this.p[i*4] = this.mesh.identity[index].x;
-    			this.p[i*4+1] = this.mesh.identity[index].y;
-    			this.p[i*4+2] = this.mesh.identity[index2].x;
-    			this.p[i*4+3] = this.mesh.identity[index2].y;
-    		    }
-    		    gl.bindBuffer(gl.ARRAY_BUFFER, this.tbuf);
-    		    gl.bufferData(gl.ARRAY_BUFFER, this.t, gl.STATIC_DRAW);
-    		    gl.bindBuffer(gl.ARRAY_BUFFER, this.pbuf);
-    		    gl.bufferData(gl.ARRAY_BUFFER, this.p, gl.STATIC_DRAW);
-    		    uDrawArrays(gl.TRIANGLE_STRIP, 0, this.mesh.width * 2);
-    		}
-    	    } else 
-    		print("not static per pixel");
-
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	},
-
-    	reset: function(w, h) {
-    	    this.aspect = h / w;
-    	    this.vw = w;
-    	    this.vh = h;
-    	    gl.cullFace(gl.BACK);
-    	    gl.clearColor(0,0,0,0);
-    	    gl.viewport(0,0,w,h);
-    	    uMatrixMode(U_TEXTURE);
-    	    uLoadIdentity();
-    	    uMatrixMode(U_PROJECTION);
-    	    uLoadIdentity();
-    	    uMatrixMode(U_MODELVIEW);
-    	    uLoadIdentity();
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    gl.clear(gl.COLOR_BUFFER_BIT);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    	},
-    	
-    	CompositeOutput: function(pipeline, pipelineContext) {
-    	    uMatrixMode(U_TEXTURE);
-    	    uLoadIdentity();
-    	    uMatrixMode(U_MODELVIEW);
-    	    uLoadIdentity();
-    	    
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.ONE, gl.ZERO);
-    	    uColor4f(1.0, 1.0, 1.0, 1.0);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.cotbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.cot, gl.STATIC_DRAW);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.copbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.cop,gl.STATIC_DRAW);
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-    	    uEnableClientState(U_TEXTURE_COORD_ARRAY);
-
-    	    uVertexPointer(2, gl.FLOAT, 0, this.copbuf);
-    	    uTexCoordPointer(2, gl.FLOAT, 0, this.cotbuf);
-
-    	    uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    for (var pos = 0; pos < pipeline.compositeDrawables; pos++)
-    		pipeline.compositeDrawables[pos].Draw(this.renderContext);
-
-    	}
-       });
-
-
-    Renderer.currentPipe = null;
-    Renderer.SetPipeline = function(pipeline) {
-        Renderer.currentPipe = pipeline;
+      if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() <= 1.0 && !this.havePresets()) {
+        this.activePreset.Render(this.music, this.pipelineContext);
+        this.evaluateSecondPreset();
+        var pipeline = new Pipeline();
+        pipeline.setStaticPerPixel(this.settings.meshX, this.settings.meshY);
+        PipelineMerger.mergePipelines(this.activePreset.pipeline(), this.activePreset2.pipeline(), pipeline, this.matcher.matchResults(), this.merger, this.timeKeeper.SmoothRatio());
+        this.renderer.RenderFrame(pipeline, this.pipelineContext);
+        pipeline.drawables.clear();
+      } else {
+        if (this.timeKeeper.IsSmoothing() && this.timeKeeper.SmoothRatio() > 1.0) {
+          this.activePreset = this.activePreset2;
+          this.timeKeeper.EndSmoothing();
+        }
+        this.activePreset.Render(this.music, this.pipelineContext);
+        this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
+      }
+
+      this.activePreset.Render(this.music, this.pipelineContext);
+      this.renderer.RenderFrame(this.activePreset.pipeline(), this.pipelineContext);
+
+
+      this.count++;
+      if (this.count % 100 == 0) {
+        this.renderer.realfps = 100.0 / ((TimeKeeper.getTicks(this.timeKeeper.startTime) - this.fpsstart) / 1000);
+        this.infoMessages["fps"] = "rendering at " + Math.round(this.renderer.realfps * 100) / 100 + " frames per second";
+        this.fpsstart = TimeKeeper.getTicks(this.timeKeeper.startTime);
+      }
+
+      if (this.count % 400 == 0) {
+        this.renderInfoBox();
+      }
+
+      var timediff = TimeKeeper.getTicks(this.timeKeeper.startTime) - this.timestart;
+      if (timediff < this.mspf) {
+        return Math.floor(this.mspf - timediff);
+      }
+      return 0;
+    },
+
+    evaluateSecondPreset: function() {
+      this.pipelineContext2.time = this.timeKeeper.GetRunningTime();
+      this.pipelineContext2.frame = this.timeKeeper.PresetFrameB();
+      this.pipelineContext2.progress = this.timeKeeper.PresetProgressB();
+      this.m_activePreset2.Render(this.music, this.pipelineContext2);
+    },
+
+    selectNext: function(hardCut) {
+      if (this.presetPos >= this.presetNames.length - 1) return;
+      if (!hardCut)
+        this.timeKeeper.StartSmoothing();
+      this.presetPos++;
+      if (!hardCut)
+        this.activePreset2 = this.switchPreset();
+      else {
+        this.activePreset = this.switchPreset();
+        this.timeKeeper.StartPreset();
+      }
+      this.presetSwitchedEvent(hardCut, this.presetPos);
+    },
+
+    switchPreset: function() {
+      var targetPreset = this.loadPreset();
+      Renderer.SetPipeline(targetPreset.pipeline());
+      return targetPreset;
+    },
+
+    loadPreset: function() {
+      return Presets[this.presetNames[this.presetPos]];
+    },
+
+    havePresets: function() {
+      return (this.presetPos < this.presetNames.length - 1);
+    },
+
+
+    createInfoBox: function() {
+      this.infoBox = document.createElement('div');
+      this.infoBox.style.position = "absolute";
+      this.infoBox.style.height = "0px";
+      this.infoBox.style.width = (canvas.width - 80) + "px";
+      this.infoBox.style.left = (canvas.offsetLeft + 30) + "px";
+      this.infoBox.style.top = (canvas.offsetTop + canvas.offsetHeight - 60) + "px";
+
+      this.infoBox.style.fontSize = "9pt";
+      this.infoBox.style.fontFamily = "Lucida Grande";
+      this.infoBox.style.fontWeight = "bold";
+      this.infoBox.style.paddingLeft = "20px";
+      this.infoBox.style.paddingTop = "5px";
+      this.infoBox.style.paddingBottom = "5px";
+      this.infoBox.style.borderRadius = "3px";
+      this.infoBox.style.textAlign = "center";
+
+      this.infoBox.style.backgroundColor = "rgba(255,255,255,0.5)";
+    },
+
+    renderInfoBox: function() {
+      if (this.infoBoxPos == -1 && Object.keys(this.infoMessages).length > 0) {
+        this.infoBoxPos = 0;
+        document.body.appendChild(this.infoBox);
+        this.infoMessages["ShamelessPlug"] = "fork me on <a href='http://github.com/gattis/milkshake'>github</a>!";
+        this.infoMessages["ChooseTracks"] = "<a href='bookmarklet.html'>Choose Audio Tracks</a>";
+      }
+      if (this.infoBoxPos > -1) {
+        this.infoBox.style.height = "15px";
+        this.infoBox.innerHTML = this.infoMessages[Object.keys(this.infoMessages)[this.infoBoxPos]];
+        this.infoBoxPos++;
+        if (this.infoBoxPos == Object.keys(this.infoMessages).length)
+          this.infoBoxPos = 0;
+      }
     }
-    Renderer.PerPixel = function(p, context) {
-        return p;
-        //return Renderer.currentPipe.PerPixel(p,context);
+  });
+
+  // req.open("GET", "/milkshake/Music.js", false); req.send(); eval(req.responseText);
+
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var Music = Class.extend({
+    init: function() {
+      this.vol_instant = 0;
+      this.vol_history = 0;
+      this.vol_buffer = new Float32Array(80);
+      this.beat_buffer_pos = 0;
+      this.beat_instant = new Float32Array(32);
+      this.beat_history = new Float32Array(32);
+      this.beat_val = new Float32Array(32);
+      this.beat_variance = new Float32Array(32);
+      this.beat_buffer = []
+      for (var i = 0; i < 32; i++)
+        this.beat_buffer.push(new Float32Array(80));
+
+      this.beat_sensitivity = 10.0;
+      this.vol = 0;
+      this.vol_old = 0;
+
+      this.numsamples = 512;
+
+      this.PCML = new Float32Array(this.numsamples);
+      this.PCMR = new Float32Array(this.numsamples);
+
+      this.pcmdataL = new Float32Array(this.numsamples);
+      this.pcmdataR = new Float32Array(this.numsamples);
+
+    },
+
+    reset: function() {
+      this.bass = 0;
+      this.mid = 0;
+      this.treb = 0;
+      this.bass_att = 0;
+      this.mid_att = 0;
+      this.treb_att = 0;
+
+    },
+
+    addPCM: function(left, right) {
+
+      if (this.numsamples == left.length && this.numsamples.right == right.length)
+        for (var i = 0; i < this.numsamples; i++) {
+          this.PCML[i] = left[i];
+          this.PCMR[i] = right[i];
+        } else { // assume 256 samples and interpolate
+          for (var i = 0; i < 255; i++) {
+            this.PCML[2 * i] = left[i];
+            this.PCML[2 * i + 1] = (left[i] + left[i + 1]) / 2;
+            this.PCMR[2 * i] = right[i];
+            this.PCMR[2 * i + 1] = (right[i] + right[i + 1]) / 2;
+          }
+          this.PCML[510] = this.PCML[511] = left[255];
+          this.PCMR[510] = this.PCMR[511] = right[255];
+        }
+
+
+      for (var i = 0; i < this.numsamples; i++) {
+        this.pcmdataL[i] = this.PCML[this.numsamples - 1 - i];
+        this.pcmdataR[i] = this.PCMR[this.numsamples - 1 - i];
+      }
+    },
+
+    detectFromSamples: function() {
+
+      this.vol_old = this.vol;
+      this.bass = 0;
+      this.mid = 0;
+      this.treb = 0;
+      var linear = 0;
+      var i, j;
+      var temp2 = 0;
+      this.vol_instant = 0;
+      for (i = 0; i < 16; i++) {
+        this.beat_instant[i] = 0;
+        for (j = linear * 2; j < (linear + 8 + i) * 2; j++) {
+          this.beat_instant[i] += ((this.pcmdataL[j] * this.pcmdataL[j]) + (this.pcmdataR[j] * this.pcmdataR[j])) / (8 + i);
+          this.vol_instant += ((this.pcmdataL[j] * this.pcmdataL[j]) + (this.pcmdataR[j] * this.pcmdataR[j])) / 512;
+        }
+        linear = j / 2;
+        this.beat_history[i] -= this.beat_buffer[i][this.beat_buffer_pos] * 0.0125;
+        this.beat_buffer[i][this.beat_buffer_pos] = this.beat_instant[i];
+        this.beat_history[i] += this.beat_instant[i] * 0.0125;
+        this.beat_val[i] = this.beat_instant[i] / this.beat_history[i];
+      }
+
+      this.vol_history -= this.vol_buffer[this.beat_buffer_pos] * 0.0125;
+      this.vol_buffer[this.beat_buffer_pos] = this.vol_instant;
+      this.vol_history += this.vol_instant * 0.0125;
+
+      this.mid = 0;
+      for (i = 1; i < 10; i++) {
+        this.mid += this.beat_instant[i];
+        temp2 += this.beat_history[i];
+      }
+      this.mid = this.mid / (1.5 * temp2);
+
+      temp2 = 0;
+      this.treb = 0;
+      for (i = 10; i < 16; i++) {
+        this.treb += this.beat_instant[i];
+        temp2 += this.beat_history[i];
+      }
+      this.treb = this.treb / (1.5 * temp2);
+      this.vol = this.vol_instant / (1.5 * this.vol_history);
+      this.bass = this.beat_instant[0] / (1.5 * this.beat_history[0]);
+
+      if (!isFinite(this.treb))
+        this.treb = 0;
+
+      if (!isFinite(this.mid))
+        this.mid = 0;
+
+      if (!isFinite(this.bass))
+        this.bass = 0;
+
+      this.treb_att = 0.6 * this.treb_att + 0.4 * this.treb;
+      this.mid_att = 0.6 * this.mid_att + 0.4 * this.mid;
+      this.bass_att = 0.6 * this.bass_att + 0.4 * this.bass;
+
+      if (this.bass_att > 100) this.bass_att = 100;
+      if (this.bass > 100) this.bass = 100;
+      if (this.mid_att > 100) this.mid_att = 100;
+      if (this.mid > 100) this.mid = 100;
+      if (this.treb_att > 100) this.treb_att = 100;
+      if (this.treb > 100) this.treb = 100;
+      if (this.vol > 100) this.vol = 100;
+
+      this.beat_buffer_pos++;
+      if (this.beat_buffer_pos > 79) this.beat_buffer_pos = 0;
+
+    },
+
+    getPCM: function(PCMdata, samples, channel, freq, smoothing) {
+      PCMd = (channel == 0) ? this.PCML : this.PCMR;
+
+      PCMdata[0] = PCMd[this.numsamples - 1];
+      for (var i = 1; i < samples; i++)
+        PCMdata[i] = (1 - smoothing) * PCMd[this.numsamples - 1 - i] + smoothing * PCMdata[i - 1];
+      if (freq)
+        throw Error("fourier transform not implemented");
+      //this.rdft(samples, PCMdata);
+    }
+  });
+
+  // req.open("GET", "/milkshake/HTML5Audio.js", false); req.send(); eval(req.responseText);
+  var HTML5Audio = Class.extend({
+    init: function() {
+      this.context = null;
+      this.source = null;
+
+      if (typeof webkitAudioContext != "undefined")
+        this.audioAPI = new WebkitHTML5Audio();
+      else
+        this.audioAPI = new MozAudioAPI();
+    }
+  });
+
+  var WebkitAudioAPI = Class.extend({
+
+    init: function() {
+
+      this.context = new webkitAudioContext();
+      this.source = context.createBufferSource();
+      this.processor = context.createJavaScriptNode(512);
+      this.processor.onaudioprocess = this.audioAvailable;
+      this.source.connect(processor);
+      this.processor.connect(context.destination);
+      this.loadSample("song.ogg");
+
+    },
+
+    loadSample: function(url) {
+
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.responseType = "arraybuffer";
+
+      request.onload = function() {
+        this.context.decodeAudioData(request.response, function(buffer) {
+          this.source.buffer = buffer;
+          this.source.looping = true;
+          this.source.noteOn(0);
+        });
+      }
+      request.send();
+    },
+
+    audioAvailable: function(event) {
+
+      var inputArrayL = event.inputBuffer.getChannelData(0);
+      var inputArrayR = event.inputBuffer.getChannelData(1);
+      var outputArrayL = event.outputBuffer.getChannelData(0);
+      var outputArrayR = event.outputBuffer.getChannelData(1);
+      var n = inputArrayL.length;
+
+      for (var i = 0; i < n; ++i) {
+        outputArrayL[i] = inputArrayL[i];
+        outputArrayR[i] = inputArrayR[i];
+      }
+
+      if (typeof shaker != "undefined")
+        shaker.music.addPCM(inputArrayL, inputArrayR);
+    }
+  });
+
+  var MozAudioAPI = Class.extend({
+
+    init: function() {
+      this.context = new Audio();
+      this.context.src = "song.ogg";
+      this.context.addEventListener('MozAudioAvailable', this.audioAvailable);
+      this.context.addEventListener('loadedmetadata', this.loadedMetadata, false);
+      this.context.play();
+    },
+
+    loadedMetadata: function() {
+      this.channels = this.context.mozChannels;
+      this.rate = this.context.mozSampleRate;
+      this.frameBufferLength = this.context.mozFrameBufferLength;
+    },
+
+    audioAvailable: function(event) {
+      var fb = event.frameBuffer;
+      var signalL = new Float32Array(fb.length / 2);
+      var signalR = new Float32Array(fb.length / 2);
+      for (var i = 0; i < this.frameBufferLength / 2; i++) {
+        signalL[i] = fb[2 * i];
+        signalR[i] = fb[2 * i + 1];
+      }
+
+      if (typeof shaker != "undefined")
+        shaker.music.addPCM(signalL, signalR);
     }
 
+  });
+  // req.open("GET", "/milkshake/SoundCloudAudio.js", false); req.send(); eval(req.responseText);
 
-    var RenderContext = Class.extend({
-    	init: function() {
-    	    this.time = 0;
-    	    this.texsize = 1024;
-    	    this.aspectRatio = 1;
-    	    this.aspectCorrect = false;
-    	}
+  var SoundCloudAudio = Class.extend({
+
+    clientId: "4d9749247dccda26471f3fa442daa07d",
+
+    init: function() {
+
+      this.tracks = [];
+      this.trackPos = 0;
+
+      this.playlistURL = "http://soundcloud.com/mattgattis/favorites";
+      var args = window.location.search.substring(1).split("&");
+      for (var i = 0; i < args.length; i++) {
+        var arg = args[i].split("=");
+        if (arg[0] == "tracks") {
+          this.playlistURL = unescape(arg[1]);
+          break;
+        }
+      }
+
+      var smjs = document.createElement("script");
+      smjs.type = "text/javascript";
+
+      milk.soundCloudJSONCallback = this.gotStreamURL;
+      smjs.onload = function() {
+        soundManager.url = "SoundManager2/";
+        soundManager.usePolicyFile = true;
+        soundManager.flashVersion = 9;
+        soundManager.useHTML5Audio = false;
+        soundManager.useFlashBlock = false;
+        soundManager.useHighPerformance = true;
+        soundManager.wmode = 'transparent';
+        soundManager.useFastPolling = true;
+        soundManager.useWaveformData = true;
+        soundManager.onready(function() {
+          var jsonp = document.createElement("script");
+          jsonp.type = "text/javascript";
+          jsonp.src = "http://api.soundcloud.com/resolve.json?url=" + escape(audio.playlistURL) +
+            "&client_id=" + audio.clientId + "&callback=milk.soundCloudJSONCallback";
+          document.body.appendChild(jsonp);
         });
-
-    var RenderTarget = Class.extend({
-    	init: function(texsize, width, height) {
-
-    	    var mindim = 0;
-    	    var origtexsize = 0;
-    	    this.texsize = texsize;
-
-    	    var fb,depth_rb,rgba_tex,other_tex;
-    	    fb = gl.createFramebuffer();
-    	    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-    	    
-    	    depth_rb = gl.createRenderbuffer();
-    	    gl.bindRenderbuffer(gl.RENDERBUFFER, depth_rb);
-    	    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.texsize, this.texsize);
-    	    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depth_rb);
-    	    this.fbuffer = [fb];
-    	    this.depthb = [depth_rb];
-    	    
-    	    other_tex = gl.createTexture();
-    	    gl.bindTexture(gl.TEXTURE_2D, other_tex);
-    	    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, this.texsize, this.texsize, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
-    	    gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-    	    rgba_tex = gl.createTexture();
-    	    gl.bindTexture(gl.TEXTURE_2D, rgba_tex);
-    	    gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    	    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, this.texsize, this.texsize, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    	    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-    	    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rgba_tex, 0);
-    	    this.textureID = [rgba_tex, other_tex];
-    	    var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-    	    if (status != gl.FRAMEBUFFER_COMPLETE)
-    		print("ERR FRAMEBUFFER STATUS: " + status);
-    	},
-
-
-    	lock: function() {
-    	    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbuffer[0]);
-    	},
-
-    	unlock: function() {
-    	    gl.bindTexture(gl.TEXTURE_2D, this.textureID[1]);
-    	    gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, this.texsize, this.textsize);
-    	    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    	},
-
-    	nearestPower2: function(value, scaleRule) {
-    	    var x = value;
-    	    var power = 0;
-    	    while ((x & 0x01) != 1)
-    		x >>= 1;
-    	    if (x == 1) return value;
-    	    x = value;
-    	    while (x != 0) {
-    		x >>= 1;
-    		power++;
-    	    }
-    	    if (scaleRule == this.SCALE_NEAREST) {
-    		if (((1<<power)-value)<=(value-(1<<(power-1))))
-    		    return 1<<power;
-    		else
-    		    return 1<<(power-1);
-    	    }
-    	    if (scaleRule == this.SCALE_MAGNIFY)
-    		return 1 << power;
-    	    if (scaleRule == this.SCALE_MINIFY)
-    		return 1 << (power - 1);
-    	    return 0;
-    	},
-    	
-    	SCALE_NEAREST: 0,
-    	SCALE_MAGNIFY: 1,
-    	SCALE_MINIFY: 2
-
-        });
-
-    // req.open("GET", "/milkshake/Renderable.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-
-    var RenderItem = Class.extend({
-    	init: function(literal) {
-    	    this.masterAlpha = 1.0;
-    	    for (var prop in literal)
-    		this[prop] = literal[prop];	    
-    	},
-
-    	Draw: function () {}
-        });
-
-    var WaveMode = {
-        Circle: 0,
-        RadialBlob: 1,
-        Blob2: 2,
-        Blob3: 3,
-        DerivativeLine: 4,
-        Blob5: 5,
-        Line: 6,
-        DoubleLine: 7
-    };
-
-
-    var MilkdropWaveform = RenderItem.extend({
-    	init: function(literal) {
-    	    this.x = 0.5;
-    	    this.y = 0.5;
-    	    this.r = 1;
-    	    this.g = 0;
-    	    this.b = 0;
-    	    this.a = 1;
-    	    this.mystery = 0;
-    	    this.mode = WaveMode.Line;
-    	    this.additive = false;
-    	    this.dots = false;
-    	    this.thick = false;
-    	    this.modulateAlphaByVolume = false;
-    	    this.maximizeColors = false;
-    	    this.scale = 10;
-    	    this.smoothing = 0;
-    	    this.rot = 0;
-    	    this.samples = 0;
-    	    this.modOpacityStart = 0;
-    	    this.modOpacityEnd = 1;
-
-    	    this._super(literal);
-
-    	    this.wavearray = new Float32Array(2048*2);
-    	    this.wavearray2 = new Float32Array(2048*2);
-    	    this.wavearraybuf = gl.createBuffer();
-    	    this.wavearray2buf = gl.createBuffer();
-
-    	},
-
-    	Draw: function(context) {
-    	    this.WaveformMath(context);
-    	    uMatrixMode( U_MODELVIEW );
-    	    uPushMatrix();
-    	    uLoadIdentity();
-
-    	    if (this.modulateAlphaByVolume) {
-    		if (context.music.vol <= this.modOpacityStart) this.temp_a = 0.0;
-    		else if (context.music.vol >= this.modOpacityEnd) this.temp_a = this.a;
-    		else this.temp_a = this.a*((context.music.vol-this.modOpacityStart)/(this.modOpacityEnd-this.modOpacityStart));
-    	    } else this.temp_a = this.a;
-    	    
-    	    this.MaximizeColors(context);
-
-    	    if (this.thick == 1)
-    		 gl.lineWidth((context.texsize < 512 ) ? 2 : 2*context.texsize/512);
-    	    else gl.lineWidth((context.texsize < 512 ) ? 1 : context.texsize/512);
-
-    	    gl.enable(gl.BLEND);
-    	    if (this.additive == 1) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-    	    else gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    uTranslatef(.5, .5, 0);
-    	    uRotatef(this.rot, 0, 0, 1);
-    	    uScalef(this.aspectScale, 1.0, 1.0);
-    	    uTranslatef(-.5, -.5, 0);
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.wavearraybuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.wavearray, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.wavearraybuf);
-
-    	    if (this.loop)
-    		uDrawArrays(gl.LINE_LOOP,0,this.samples);
-    	    else
-    		uDrawArrays(gl.LINE_STRIP,0,this.samples);
-
-
-    	    if (this.two_waves) {
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.wavearray2buf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.wavearray2, gl.STATIC_DRAW);
-    		uVertexPointer(2,gl.FLOAT,0,this.wavearray2buf);
-    		if (this.loop)
-    		    uDrawArrays(gl.LINE_LOOP,0,this.samples);
-    		else
-    		    uDrawArrays(gl.LINE_STRIP,0,this.samples);
-    	    }
-
-    	    uPopMatrix();    
-    	},
-
-    	MaximizeColors: function (context) {
-    	    var wave_r_switch = 0;
-    	    var wave_g_switch = 0;
-    	    var wave_b_switch = 0;
-    	    
-    	    if (this.mode == WaveMode.Blob2 || this.mode == WaveMode.Blob5)
-    		switch (context.texsize) {
-    		  case 256:  this.temp_a *= 0.07; break;
-    		  case 512:  this.temp_a *= 0.09; break;
-    		  case 1024: this.temp_a *= 0.11; break;
-    		  case 2048: this.temp_a *= 0.13; break;
-    		}
-    	    else if (this.mode == WaveMode.Blob3) {
-    		switch(context.texsize)	{
-    		  case 256:  this.temp_a *= 0.075; break;
-    		  case 512:  this.temp_a *= 0.15; break;
-    		  case 1024: this.temp_a *= 0.22; break;
-    		  case 2048: this.temp_a *= 0.33; break;
-    		}
-    		this.temp_a *= 1.3;
-    		this.temp_a *= Math.pow(context.music.treb, 2.0);
-    	    }
-
-    	    if (this.maximizeColors) {
-    		if (this.r >= this.g && this.r >= this.b) {
-    		    wave_b_switch = this.b / this.r;
-    		    wave_g_switch = this.g / this.r;
-    		    wave_r_switch = 1.0;
-    		} else if (this.b >= this.g && this.b >= this.r) {
-    		    wave_r_switch = this.r / this.b;
-    		    wave_g_switch = this.g / this.b;
-    		    wave_b_switch = 1.0;
-    		} else if (this.g >= this.b && this.g >= this.r) {
-    		    wave_b_switch = this.b / this.g;
-    		    wave_r_switch = this.r / this.g;
-    		    wave_g_switch = 1.0;
-    		}		
-    		uColor4f(wave_r_switch, wave_g_switch, wave_b_switch, this.temp_a * this.masterAlpha);
-    	    } else {
-    		uColor4f(this.r, this.g, this.b, this.temp_a * this.masterAlpha);
-    	    }
-    		
-    	},
-
-    	WaveformMath: function (context) {
-    	    var i,r,theta,temp_y,cos_rot,sin_rot;
-    	    var offset = this.x - 0.5;
-    	    var wave_x_temp = 0;
-    	    var wave_y_temp = 0;
-
-    	    this.two_waves = false;
-    	    this.loop = false;
-    	    if (this.mode == WaveMode.Circle) {
-
-    		this.loop = true;
-    		this.rot = 0;
-    		this.aspectScale = 1.0;
-    		temp_y = -1 * (this.y - 1.0);
-    		this.samples = context.music.numsamples;
-    		var inv_nverts_minus_one = 1.0 / this.samples;
-    		var offset = (context.music.pcmdataR[0]+context.music.pcmdataL[0]) - 
-    		    (context.music.pcmdataR[this.samples-1]+context.music.pcmdataL[this.samples-1]);
-    		for (i = 0; i < this.samples; i++) {
-    		    var value = context.music.pcmdataR[i]+context.music.pcmdataL[i];
-    		    value += offset * i / this.samples;
-    		    r = (0.5 + 0.4 * .12 * value * this.scale + this.mystery) * .5;
-    		    theta = i * inv_nverts_minus_one * 6.28 + context.time * 0.2;
-    		    this.wavearray[i*2] = r * Math.cos(theta) * (context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
-    		    this.wavearray[i*2+1] = r * Math.sin(theta) + temp_y;
-    		}
-
-    	    } else if (this.mode == WaveMode.RadialBlob) {
-
-    		this.rot = 0;
-    		this.aspectScale = context.aspectRatio;
-    		temp_y = -1 * (this.y - 1.0);
-    		this.samples = 512-32;
-    		for (i = 0; i < 512-32; i++) {
-    		    theta = context.music.pcmdataL[i+32] * 0.06 * this.scale * 1.57 + context.time * 2.3;
-    		    r = (0.53 + 0.43 * context.music.pcmdataR[i] * 0.12 * this.scale + this.mystery) * .5;
-    		    this.wavearray[i*2] = r * Math.cos(theta) * (context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
-    		    this.wavearray[i*2+1] = r * Math.sin(theta) + temp_y;
-    		}
-
-    	    } else if (this.mode == WaveMode.Blob2) {
-
-    		temp_y = -1 * (this.y - 1.0);
-    		this.rot = 0;
-    		this.aspectScale = 1.0;
-    		this.samples = 512-32;
-    		for (i = 0; i < 512-32; i++) {
-    		    this.wavearray[i*2] = context.music.pcmdataR[i] * this.scale * 0.5 + this.x;
-    		    this.wavearray[i*2+1] = context.music.pcmdataL[i+32] * this.scale * 0.5 + temp_y;
-    	        }
-
-    	    } else if (this.mode == WaveMode.DerivativeLine) {
-
-    		this.rot = -this.mystery * 90;
-    		this.aspectScale = 1.0;
-    		temp_y = -1 * (this.y - 1.0);
-    		var w1 = 0.45 + 0.5 * (this.mystery * 0.5 + 0.5);
-    		var w2 = 1.0 - w1;
-    		var xx,xxm1,xxm2,yy,yym1,yym2;
-    		this.samples = 512-32;
-    		for (i = 0; i < 512-32; i++) {
-    		    xx = -1.0 + 2.0 * i / (512-32) + this.x;
-    		    yy = 0.4 * context.music.pcmdataL[i] * 0.47 * this.scale + temp_y;
-    		    xx += 0.4 * context.music.pcmdataR[i] * 0.44 * this.scale;
-    		    if (i > 1) {
-    			xx = xx * w2 + w1 * (xxm1 * 2.0 - xxm2);
-    			yy = yy * w2 + w1 * (yym1 * 2.0 - yym2);
-    		    }
-    		    this.wavearray[i*2] = xx;
-    		    this.wavearray[i*2+1] = yy;
-    		    xxm2 = xxm1;
-    		    yym2 = yym1;
-    		    xxm1 = xx;
-    		    yym1 = yy;
-    		}
-
-    	    } else if (this.mode == WaveMode.Blob5) {
-    		
-    		this.rot = 0;
-    		this.aspectScale = 1.0;
-    		temp_y = -1 * (this.y - 1.0);
-    		cos_rot = Math.cos(context.time * 0.3);
-    		sin_rot = Math.sin(context.time * 0.3);
-    		this.samples = 512-32;
-    		for (i = 0; i < 512-32; i++) {
-    		    var x0 = context.music.pcmdataR[i]*context.music.pcmdataL[i+32] + context.music.pcmdataL[i+32]*context.music.pcmdataR[i];
-    		    var y0 = context.music.pcmdataR[i]*context.music.pcmdataR[i] - context.music.pcmdataL[i+32]*context.music.pcmdataL[i+32];
-    		    this.wavearray[i*2]=(x0*cos_rot - y0*sin_rot)*this.scale*0.5*(context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
-    		    this.wavearray[i*2+1] = (x0*sin_rot + y0*cos_rot) * this.scale * 0.5 + temp_y;
-    		}
-
-    	    } else if (this.mode == WaveMode.Line) {
-
-    		wave_x_temp = -2 * 0.4142 * (Math.abs(Math.abs(this.mystery)-.5)-.5);
-    		this.rot = -this.mystery * 90;
-    		this.aspectScale = 1.0 + wave_x_temp;
-    		wave_x_temp = -1 * (this.x - 1.0);
-    		this.samples = context.music.numsamples;
-    		for (i = 0; i < this.samples; i++) {
-    		    this.wavearray[i*2] = i / this.samples;
-    		    this.wavearray[i*2+1] = context.music.pcmdataR[i] * .04 * this.scale + wave_x_temp;
-    		}
-
-    	    } else if (this.mode == WaveMode.DoubleLine) {
-
-    		wave_x_temp = -2 * 0.4142 * (Math.abs(Math.abs(this.mystery)-.5)-.5);
-    		this.rot = -this.mystery * 90;
-    		this.aspectScale = 1.0 + wave_x_temp;
-    		this.samples = context.music.numsamples;
-    		this.two_waves = true;
-    		var y_adj = this.y * this.y * .5;
-    		wave_y_temp = -1 * (this.x - 1);
-    		for (i = 0; i < this.samples; i++) {
-    		    this.wavearray[i*2] = i / this.samples;
-    		    this.wavearray[i*2+1] = context.music.pcmdataL[i] * .04 * this.scale + (wave_y_temp + y_adj);
-    		}
-    		for (i = 0; i < this.samples; i++) {
-    		    this.wavearray2[i*2] = i / this.samples;
-    		    this.wavearray2[i*2+1] = context.music.pcmdataR[i] * .04 * this.scale + (wave_y_temp - y_adj);
-    		}
-
-    	    }
-    	},
-
-
-        });
-
-
-    var CustomWaveform = RenderItem.extend({
-    	init: function(literal, initialQs) {
-    	    this.r = 0;
-    	    this.g = 0;
-    	    this.b = 0;
-    	    this.a = 0;
-
-    	    this.spectrum = false;
-    	    this.dots = false;
-    	    this.thick = false;
-    	    this.additive = false;
-    	    this.samples = 512;
-    	    this.scaling = 1;
-    	    this.smoothing = 0;
-    	    this.sep = 0;
-
-    	    this.init_code = function(){};
-    	    this.per_frame_code = function(){};
-    	    this.per_point_code = function(){};
-
-    	    this.masterAlpha = 1.0;
-                for (var prop in literal)
-    		if (prop.toLowerCase() == "bspectrum")
-    		    this.spectrum = new Boolean(literal[prop]);
-    		else if (prop.toLowerCase() == "bdrawthick")
-    		    this.thick = new Boolean(literal[prop]);
-    		else if (prop.toLowerCase() == "busedots")
-    		    this.dots = new Boolean(literal[prop]);
-    		else if (prop.toLowerCase() == "badditive")
-    		    this.additive = new Boolean(literal[prop]);
-    		else
-    		    this[prop] = literal[prop];
-
-    	    if (this.samples > 512)
-    		this.samples = 512;
-
-    	    this.initialVals = new WaveFrameVariablePool();
-    	    this.initialVals.pushOutputs(this);
-
-    	    this.framePool = new WaveFrameVariablePool();
-    	    this.pointPool = new WavePointVariablePool();
-    	    this.varInit();
-    	    this.framePool.pushQs(initialQs);
-    	    this.init_code(this.framePool);
-    	    this.initialTs = new Float32Array(8);
-    	    this.framePool.popTs(this.initialTs);
-
-    	    this.waveDataL = new Float32Array(this.samples);
-    	    this.waveDataR = new Float32Array(this.samples);
-
-    	    this.r_mesh = new Float32Array(this.samples);
-    	    this.g_mesh = new Float32Array(this.samples);
-    	    this.b_mesh = new Float32Array(this.samples);
-    	    this.a_mesh = new Float32Array(this.samples);
-    	    this.x_mesh = new Float32Array(this.samples);
-    	    this.y_mesh = new Float32Array(this.samples);
-
-    	    this.colors = new Float32Array(this.samples*4);
-    	    this.p = new Float32Array(this.samples*2);
-    	    this.colorbuf = gl.createBuffer();
-    	    this.pbuf = gl.createBuffer();
-    	},
-
-    	varInit: function() {
-    	    var testPool = new WaveFrameVariablePool();
-    	    var winProps = {};
-    	    for (var prop in window)
-    		winProps[prop] = null;
-                for (var i = 0; i < 30; i++)
-                    try {
-                        this.init_code(testPool);
-                        this.per_frame_code(testPool);
-                        break;
-                    } catch (error) {
-                        if (error.name == "ReferenceError") {
-                            var customVar = error.message.split(" ")[0];
-                            this.framePool[customVar] = 0;
-                            testPool[customVar] = 0;
-                        } else {
-    			console.log(this.init_code);
-    			console.log(this.per_frame_code);
-    			throw error;
-    		    }
-                    }
-    	    for (var prop in window)
-    		if (!(prop in winProps)) {
-    		    this.framePool[prop] = 0;
-    		    delete window[prop];
-    		}
-    	},
-
-    	runCode: function() {
-    	    this.framePool.pushTs(this.initialTs);
-    	    this.initialVals.popOutputs(this.framePool);
-    	    this.per_frame_code(this.framePool);
-    	    this.framePool.popOutputs(this);
-    	},
-
-    	runPerPoint: function() {
-    	    this.framePool.transferQs(this.pointPool);
-    	    this.framePool.transferTs(this.pointPool);
-    	    this.pointPool.pushInputs(this.framePool);
-    	    for (var i = 0; i < this.samples; i++) {
-    		this.pointPool.sample = i/(this.samples - 1);
-    		this.pointPool.value1 = this.waveDataL[i];
-    		this.pointPool.value2 = this.waveDataR[i];
-    		this.pointPool.r = this.r;
-    		this.pointPool.g = this.g;
-    		this.pointPool.b = this.b;
-    		this.pointPool.a = this.a;
-    		this.pointPool.x = this.x;
-    		this.pointPool.y = this.y;
-    		this.per_point_code(this.pointPool);
-    		this.r_mesh[i] = this.pointPool.r;
-    		this.g_mesh[i] = this.pointPool.g;
-    		this.b_mesh[i] = this.pointPool.b;
-    		this.a_mesh[i] = this.pointPool.a;
-    		this.x_mesh[i] = this.pointPool.x;
-    		this.y_mesh[i] = this.pointPool.y;    
-    	    }
-    	},
-    	
-    	Draw: function(context) {
-
-    	    gl.enable(gl.BLEND);
-    	    if (this.additive)  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-    	    else gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    if (this.thick) {
-    		gl.lineWidth(context.texsize <= 512 ? 2 : 2*context.texsize/512);
-    		uPointSize(context.texsize <= 512 ? 2 : 2*context.texsize/512);
-    	    }
-    	    else uPointSize(context.texsize <= 512 ? 1 : context.texsize/512);
-    	    
-    	    context.music.getPCM(this.waveDataL, this.samples, 0, this.spectrum, this.smoothing);
-    	    context.music.getPCM(this.waveDataR, this.samples, 1, this.spectrum, this.smoothing);
-
-    	    var mult = this.scaling * (this.spectrum ? 0.015 : 1.0);
-    	    for (var i = 0; i < this.samples; i++) {
-    		this.waveDataL[i] *= mult;
-    		this.waveDataR[i] *= mult;
-    	    }
-
-    	    this.runPerPoint();
-
-    	    for (var i = 0; i < this.samples; i++) {
-    		this.colors[i*4] = this.r_mesh[i];
-    		this.colors[i*4+1] = this.g_mesh[i];
-    		this.colors[i*4+2] = this.b_mesh[i];
-    		this.colors[i*4+3] = this.a_mesh[i] * this.masterAlpha;
-    		this.p[i*2] = this.x_mesh[i];
-    		this.p[i*2+1] = -(this.y_mesh[i]-1);
-    	    }
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uEnableClientState(U_COLOR_ARRAY);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.p, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pbuf);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
-    	    uColorPointer(4,gl.FLOAT,0,this.colorbuf);
-
-    	    if (this.dots) uDrawArrays(gl.POINTS,0,this.samples);
-    	    else uDrawArrays(gl.LINE_STRIP,0,this.samples);
-
-    	    uPointSize(context.texsize < 512 ? 1 : context.texsize/512);
-    	    gl.lineWidth(context.texsize < 512 ? 1 : context.texsize/512);
-
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	}
-        });
-
-    var DarkenCenter = RenderItem.extend({
-    	init: function(literal) {
-    	    this._super(literal);
-    	    this.colors = new Float32Array([0,0,0,3./32 * this.masterAlpha,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
-    	    this.points = new Float32Array([0.5,0.5,0.45,0.5,0.5,0.45,0.55,0.5,0.5,0.55,0.45,0.5]);
-    	    this.colorbuf = gl.createBuffer();
-    	    this.pointsbuf = gl.createBuffer();
-    	},
-
-    	Draw: function(context) {
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    this.colors[3] = 3/32 * this.masterAlpha;
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uEnableClientState(U_COLOR_ARRAY);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    	    uColorPointer(4,gl.FLOAT,0,this.colorbuf);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,6);
-    	}
-        });
-    	
-
-    var Shape = RenderItem.extend({
-    	init: function(literal, initialQs) {
-
-    	    this.sides = 4;
-    	    this.thickOutline = false;
-    	    this.enabled = true;
-    	    this.additive = false;
-    	    this.textured = false;
-
-    	    this.tex_zoom = 1.0;
-    	    this.tex_ang = 0.0;
-
-    	    this.x = 0.5;
-    	    this.y = 0.5;
-    	    this.rad = 1.0;
-    	    this.ang = 0.0;
-
-    	    this.r = 0.0;
-    	    this.g = 0.0;
-    	    this.b = 0.0;
-    	    this.a = 0.0;
-
-    	    this.r2 = 0.0;
-    	    this.g2 = 0.0;
-    	    this.b2 = 0.0;
-    	    this.a2 = 0.0;
-
-    	    this.border_r = 0.0;
-    	    this.border_g = 0.0;
-    	    this.border_b = 0.0;
-    	    this.border_a = 0.0;
-
-    	    this.ImageUrl = "";
-
-    	    this.init_code = function(){};
-    	    this.per_frame_code = function(){};
-
-    	    this._super(literal);
-
-    	    this.initialVals = new ShapeFrameVariablePool();
-    	    this.initialVals.pushOutputs(this);
-
-    	    this.framePool = new ShapeFrameVariablePool();
-    	    this.varInit();
-    	    this.framePool.pushQs(initialQs);
-    	    this.init_code(this.framePool);
-    	    this.initialTs = new Float32Array(8);
-    	    this.framePool.popTs(this.initialTs);
-
-    	    this.colors = new Float32Array((this.sides+2)*4);
-    	    this.texcoords = new Float32Array((this.sides+2)*2);
-    	    this.points = new Float32Array((this.sides+2)*2);
-    	    this.points2 = new Float32Array((this.sides+1)*2);
-
-    	    this.colorbuf = gl.createBuffer();
-    	    this.texbuf = gl.createBuffer();
-    	    this.pointsbuf = gl.createBuffer();
-    	    this.points2buf = gl.createBuffer();
-
-    	},
-
-    	varInit: function() {
-    	    var testPool = new ShapeFrameVariablePool();
-                for (var i = 0; i < 30; i++)
-                    try {
-                        this.init_code(testPool);
-                        this.per_frame_code(testPool);
-                        break;
-                    } catch (error) {
-                        if (error.name == "ReferenceError") {
-                            var customVar;
-    			if (error.message.indexOf("Can't find variable:") == 0)
-    			    customVar = error.message.split(" ").pop();
-    			else
-    			    customVar = error.message.split(" ")[0];
-                            this.framePool[customVar] = 0;
-                            testPool[customVar] = 0;
-                        } else
-                            throw error;
-                    }
-    	},
-
-    	runCode: function() {
-    	    this.framePool.pushTs(this.initialTs);
-    	    this.initialVals.popOutputs(this.framePool);
-    	    this.per_frame_code(this.framePool);
-    	    this.framePool.popOutputs(this);
-    	},
-
-    	Draw: function(context) {
-
-    	    var xval,yval,t;
-    	    var temp_radius = this.rad*(.707*.707*.707*1.04);
-    	    gl.enable(gl.BLEND);
-    	    if (this.additive == 0)
-    		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    else
-    		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-
-    	    xval = this.x;
-    	    yval = -(this.y-1);
-
-    	    if (this.textured) {
-    		if (this.ImageUrl != "") {
-    		    var tex = textures[this.ImageUrl];
-    		    gl.bindTexture(gl.TEXTURE_2D, tex);
-    		    context.aspectRatio = 1.0;
-    		}
-    	    
-    		uMatrixMode(U_TEXTURE);
-    		uPushMatrix();
-    		uLoadIdentity();
-    		
-    		uEnableClientState(U_VERTEX_ARRAY);
-    		uEnableClientState(U_COLOR_ARRAY);
-    		uEnableClientState(U_TEXTURE_COORD_ARRAY);
-    	       
-    		uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    		uColorPointer(4,gl.FLOAT,0,this.colorbuf);
-    		uTexCoordPointer(2,gl.FLOAT,0,this.texbuf);
-
-    		this.colors[0] = this.r;
-    		this.colors[1] = this.g;
-    		this.colors[2] = this.b;
-    		this.colors[3] = this.a * this.masterAlpha;
-    		this.texcoords[0] = 0.5;
-    		this.texcoords[1] = 0.5;
-    		this.points[0] = xval;
-    		this.points[1] = yval;
-
-    		for (var i = 1; i < this.sides+2; i++) {
-
-    		    this.colors[i*4] = this.r2;
-    		    this.colors[i*4+1] = this.g2;
-    		    this.colors[i*4+2] = this.b2;
-    		    this.colors[i*4+3] = this.a2 * this.masterAlpha;
-
-    		    t = (i-1)/this.sides;
-    		    this.texcoords[i*2] = 0.5 + 0.5*Math.cos(t*3.1415927*2 + this.tex_ang + 3.1415927*0.25)*(context.aspectCorrect ? context.aspectRatio : 1.0) / this.tex_zoom;
-    		    this.texcoords[i*2+1] = 0.5 + 0.5*Math.sin(t*3.1415927*2 + this.tex_ang + 3.1415927*0.25) / this.tex_zoom;
-    		    this.points[i*2] = temp_radius*Math.cos(t*3.1415927*2 + this.ang + 3.1415927*0.25)*(context.aspectCorrect ? context.aspectRatio : 1.0)+xval;
-    		    this.points[i*2+1] = temp_radius*Math.sin(t*3.1415927*2 + this.ang + 3.1415927*0.25)+yval;
-    		    
-    		}
-
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.texbuf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.texcoords, gl.STATIC_DRAW);
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);		
-    		
-    		uDrawArrays(gl.TRIANGLE_FAN,0,this.sides+2);
-    		
-    		uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    		uPopMatrix();
-    		uMatrixMode(U_MODELVIEW);
-
-    	    } else {
-    		uEnableClientState(U_VERTEX_ARRAY);
-    		uEnableClientState(U_COLOR_ARRAY);
-    		uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    		uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    		uColorPointer(4,gl.FLOAT,0,this.colorbuf);
-
-    		this.colors[0]=this.r;
-    		this.colors[1]=this.g;
-    		this.colors[2]=this.b;
-    		this.colors[3]=this.a * this.masterAlpha;
-    		this.points[0]=xval;
-    		this.points[1]=yval;
-
-    		for (var i = 1; i < this.sides+2; i++) {
-    		    this.colors[i*4] = this.r2;
-    		    this.colors[i*4+1] = this.g2;
-    		    this.colors[i*4+2] = this.b2;
-    		    this.colors[i*4+3] = this.a2 * this.masterAlpha;
-    		    t = (i-1)/this.sides;
-    		    this.points[i*2]=temp_radius*Math.cos(t*3.1415927*2 + this.ang + 3.1415927*0.25)*(context.aspectCorrect ? context.aspectRatio : 1.0)+xval;
-    		    this.points[i*2+1]=temp_radius*Math.sin(t*3.1415927*2 + this.ang + 3.1415927*0.25)+yval;
-    		}
-
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
-
-    		gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    		gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);		
-
-    		uDrawArrays(gl.TRIANGLE_FAN,0,this.sides+2);
-
-    	    }
-    	    if (this.thickOutline)
-    		gl.lineWidth(context.texsize < 512 ? 1 : 2*context.texsize/512);
-
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-    	    uVertexPointer(2,gl.FLOAT,0,this.points2buf);
-
-    	    uColor4f(this.border_r, this.border_g, this.border_b, this.border_a * this.masterAlpha);
-
-    	    for (var i = 0; i < this.sides; i++) {
-    		t = (i-1)/this.sides;
-    		this.points2[i*2]= temp_radius*Math.cos(t*3.1415927*2 + this.ang + 3.1415927*0.25)*(context.aspectCorrect ? context.aspectRatio : 1.0)+xval;
-    		this.points2[i*2+1]= temp_radius*Math.sin(t*3.1415927*2 + this.ang + 3.1415927*0.25)+yval;
-    	    }
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.points2buf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points2, gl.STATIC_DRAW);
-
-    	    uDrawArrays(gl.LINE_LOOP,0,this.sides);
-    	    if (this.thickOutline)
-    		gl.lineWidth(context.texsize < 512 ? 1 : context.texsize/512);
-
-
-    	}
-        });
-
-
-    var MotionVectors = RenderItem.extend({
-    	init: function(literal) {
-
-    	    this.r = 0.0;
-    	    this.g = 0.0;
-    	    this.b = 0.0;
-    	    this.a = 0.0;
-    	    this.length = 0.0;
-    	    this.x_num = 0.0;
-    	    this.y_num = 0.0;
-    	    this.x_offset = 0.0;
-    	    this.y_offset = 0.0;
-
-    	    this._super(literal);
-    	    this.points = new Float32Array(Math.floor(this.x_num * this.y_num)*2);
-    	    this.pointsbuf = gl.createBuffer();
-    	},
-
-    	Draw: function() {
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-
-    	    var intervalx = 1.0 / this.x_num;
-    	    var intervaly = 1.0 / this.y_num;
-
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    uPointSize(this.length);
-    	    uColor4f(this.r, this.g, this.b, this.a * this.masterAlpha);
-
-    	    if (this.x_num + this.y_num < 600) {
-    		var size = Math.floor(this.x_num * this.y_num);
-    		if (size > 0) {
-    		    if (this.points.length < (size*2))
-    			this.points = new Float32Array(size*2);
-    		    for (var x = 0; x < Math.floor(this.x_num); x++)
-    			for (var y = 0; y < Math.floor(this.y_num); y++) {
-    			    var lx, ly;
-    			    lx = this.x_offset + x * intervalx;
-    			    ly = this.y_offset + y * intervaly;
-    			    this.points[(x * Math.floor(this.y_num)) + y][0] = lx;
-    			    this.points[(x * Math.floor(this.y_num)) + y][1] = ly;
-    			}
-    		    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    		    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    		    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    		    uDrawArrays(gl.POINTS,0,size);
-    		}
-    	    }
-    	}
-        });
-
-    var Border = RenderItem.extend({
-    	init: function(literal) {
-
-    	    this.outer_size = 0;
-    	    this.outer_r = 0;
-    	    this.outer_g = 0;
-    	    this.outer_b = 0;
-    	    this.outer_a = 0;
-
-    	    this.inner_size = 0;
-    	    this.inner_r = 0;
-    	    this.inner_g = 0;
-    	    this.inner_b = 0;
-    	    this.inner_a = 0;
-
-    	    this._super(literal);
-
-    	    this.pointsA = new Float32Array([0,0,0,1,0,0,0,1]);
-    	    this.pointsB = new Float32Array([0,0,0,0,1,0,1,0]);
-    	    this.pointsC = new Float32Array([1,0,1,1,1,0,1,1]);
-    	    this.pointsD = new Float32Array([0,1,0,1,1,1,1,1]);
-    	    this.pointsE = new Float32Array([0,0,0,1,0,0,0,1]);
-    	    this.pointsF = new Float32Array([0,0,0,0,1,0,1,0]);
-    	    this.pointsG = new Float32Array([1,0,1,0,1,0,1,1]);
-    	    this.pointsH = new Float32Array([0,1,0,1,1,1,1,1]);
-
-    	    this.pointsAbuf = gl.createBuffer();
-    	    this.pointsBbuf = gl.createBuffer();
-    	    this.pointsCbuf = gl.createBuffer();
-    	    this.pointsDbuf = gl.createBuffer();
-    	    this.pointsEbuf = gl.createBuffer();
-    	    this.pointsFbuf = gl.createBuffer();
-    	    this.pointsGbuf = gl.createBuffer();
-    	    this.pointsHbuf = gl.createBuffer();
-
-    	},
-
-    	Draw: function() {
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    
-    	    var of = this.outer_size*.5;
-    	    var iff = this.inner_size*.5;
-    	    var texof = 1.0 - of;
-
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    uColor4f(this.outer_r, this.outer_g, this.outer_b, this.outer_a * this.masterAlpha);
-
-    	    this.pointsA[4] = this.pointsA[6] = of;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsAbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsA, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsAbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsB[0] = this.pointsB[2] = this.pointsB[3] = this.pointsB[7] = of; 
-    	    this.pointsB[4] = this.pointsB[6] = texof;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsBbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsB, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsBbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsC[0] = this.pointsC[2] = texof;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsCbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsC, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsCbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsD[0] = this.pointsD[2] = of;
-    	    this.pointsD[3] = this.pointsD[4] = this.pointsD[6] = this.pointsD[7] = texof;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsDbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsD, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsDbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    uColor4f(this.inner_r, this.inner_g, this.inner_b, this.inner_a * this.masterAlpha);
-
-    	    this.pointsE[0] = this.pointsE[1] = this.pointsE[2] = this.pointsE[5] = of;
-    	    this.pointsE[3] = this.pointsE[7] = texof;
-    	    this.pointsE[4] = this.pointsE[6] = of+iff;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsEbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsE, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsEbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsF[1] = this.pointsF[5] = of;
-    	    this.pointsF[0] = this.pointsF[2] = this.pointsF[3] = this.pointsF[7] = of+iff;
-    	    this.pointsF[4] = this.pointsF[6] = texof-iff;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsFbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsF, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsFbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsG[1] = this.pointsG[5] = of;
-    	    this.pointsG[3] = this.pointsG[4] = this.pointsG[6] = this.pointsG[7] = texof;
-    	    this.pointsG[0] = this.pointsG[2] = texof-iff;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsGbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsG, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsGbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-
-    	    this.pointsH[1] = this.pointsH[5] = texof;
-    	    this.pointsH[0] = this.pointsH[2] = of+iff;
-    	    this.pointsH[3] = this.pointsH[4] = this.pointsH[6] = this.pointsH[7] = texof-iff;
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsHbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.pointsH, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsHbuf);
-    	    uDrawArrays(gl.TRIANGLE_STRIP,0,4);
-    	}
-        });
-
-    var Orientation = {
-        Normal: 0,
-        FlipX: 1,
-        FlipY: 2,
-        FlipXY: 3
-    }
-
-    var VideoEcho = RenderItem.extend({
-    	init: function(literal) {
-    	    this.a = 0;
-    	    this.zoom = 0;
-    	    this.orientation = Orientation.Normal;
-
-    	    this._super();
-
-    	    this.tex = new Float32Array([0,1,0,0,1,0,1,1]);
-    	    this.points = new Float32Array([-.5,-.5,-.5,.5,.5,.5,.5,-.5]);
-    	    this.pointsFlip = new Float32Array(8);
-    	    this.texbuf = gl.createBuffer();
-    	    this.pointsbuf = gl.createBuffer();
-    	    this.pointsFlipbuf = gl.createBuffer();
-    	},
-
-    	Draw: function(context) {
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    uDisableClientState(U_COLOR_ARRAY);
-    	    uEnableClientState(U_TEXTURE_COORD_ARRAY);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-                gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.texbuf);
-                gl.bufferData(gl.ARRAY_BUFFER, this.tex, gl.STATIC_DRAW);
-    	    uTexCoordPointer(2,gl.FLOAT,0,this.tex);
-
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	    uMatrixMode(U_TEXTURE);
-
-    	    uColor4f(1.0, 1.0, 1.0, this.a * this.masterAlpha);
-    	    uTranslatef(.5, .5, 0);
-    	    uScalef(1.0/this.zoom, 1.0/this.zoom, 1);
-    	    uTranslatef(-.5, -.5, 0);
-
-    	    var flipx=1, flipy=1;
-    	    switch (this.orientation) {
-    	        case Orientation.Normal: flipx = 1; flipy = 1; break;
-    		case Orientation.FlipX: flipx = -1; flipy = 1; break;
-    		case Orientation.FlipY: flipx = 1; flipy = -1; break;
-    		case Orientation.FlipXY: flipx = -1; flipy = -1; break;
-    		default: flipx = 1; flipy = 1; break;
-    	    }
-
-    	    this.pointsFlip[0] = this.pointsFlip[2] = -.5 * flipx;
-    	    this.pointsFlip[1] = this.pointsFlip[7] = -.5 * flipy;    
-    	    this.pointsFlip[3] = this.pointsFlip[5] = .5 * flipy;
-    	    this.pointsFlip[4] = this.pointsFlip[6] = .5 * flipx;
-
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsFlipbuf);
-                gl.bufferData(gl.ARRAY_BUFFER, this.pointsFlip, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsFlipbuf);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-
-    	    uDisableClientState(U_TEXTURE_COORD_ARRAY);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    	}
-        });
-
-
-    var Filter = RenderItem.extend({
-    	init: function(literal) {
-    	    this._super(literal);
-    	    this.points = new Float32Array([-.5,-.5,-.5,.5,.5,.5,.5,-.5]);
-    	    this.pointsbuf = gl.createBuffer();
-    	}
-        });
-
-    var Brighten = Filter.extend({
-    	Draw: function(context) {
-
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    	    uColor4f(1.0, 1.0, 1.0, 1.0);
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.ZERO, gl.DST_COLOR);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);    
-    	    uDisableClientState(U_VERTEX_ARRAY);
-    	}
-        });
-
-    var Darken = Filter.extend({
-    	Draw: function(context) {    
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    	    uColor4f(1.0, 1.0, 1.0, 1.0);
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.ZERO, gl.DST_COLOR);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    uDisableClientState(U_VERTEX_ARRAY);
-    	}
-        });
-
-    var Invert = Filter.extend({
-    	Draw: function(context) {    
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    	    uColor4f(1.0, 1.0, 1.0, 1.0);
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);   
-    	    uDisableClientState(U_VERTEX_ARRAY);
-    	}
-        });
-
-    var Solarize = Filter.extend({
-    	Draw: function(context) {
-    	    uEnableClientState(U_VERTEX_ARRAY);
-    	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
-    	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
-    	    uVertexPointer(2,gl.FLOAT,0,this.pointsbuf);
-    	    uColor4f(1.0, 1.0, 1.0, 1.0);
-    	    gl.enable(gl.BLEND);
-    	    gl.blendFunc(gl.ZERO, gl.ONE_MINUS_DST_COLOR);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.DST_COLOR, gl.ONE);
-    	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-    	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    	    uDisableClientState(U_VERTEX_ARRAY);
-    	}
-        });
-
-    // req.open("GET", "/milkshake/RenderItemMatcher.js", false); req.send(); eval(req.responseText);
-    var RenderItemMatcher = Class.extend({
-    	init: function() {
-    	    this.results = new this.MatchResults();
-    	    this.weights = [];
-    	    for (var i = 0; i < this.MAXIMUM_SET_SIZE; i++)
-    		this.weights.push(new Float32Array(this.MAXIMUM_SET_SIZE));
-    	},
-
-    	MAXIMUM_SET_SIZE: 1000,
-    	
-    	MatchResults: Class.extend({
-    		init: function() {
-    		    this.unmatchedLeft = [];
-    		    this.unmatchedRight = [];
-    		}
-    	    }),
-    	
-    	computeMatching: function(lhs, rhs) {
-    	    for (var i = 0; i < lhs.length; i++) {
-    		var j;
-    		for (j = 0; j < rhs.length; j++)
-    		    this.weights[i][j] = this.distanceFunction(lhs[i],rhs[j]);
-    		for (; j < lhs.length; j++)
-    		    this.weights[i][j] = RenderItemDistanceMetric.NOT_COMPARABLE_VALUE;
-    	    }
-    	    var error = this.hungarianMethod(this.weights, lhs.length);
-    	    return error;
-    	},
-
-    	setMatches: function(lhs_src, rhs_src) {
-    	    for (var i = 0; i < lhs_src.size(); i++) {
-    		var j = this.hungarianMethod.matching(i);
-    		this.results.unmatchedLeft.push(lhs_src[i]);
-    		this.results.unmatchedRight.push(rhs_src[i]);
-    	    }
-    	}
-        });
-
-    // req.open("GET", "/milkshake/RenderItemMergeFunction.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-    var RenderItemMergeFunction = Class.extend({
-    	init: function () {
-
-    	},
-
-    	typeIdPair: function() {
-    	    return 0;
-    	}
-        });
-
-    var RenderItemMerge = RenderItemMergeFunction.extend({
-    	init: function () {
-
-    	},
-
-    	supported: function () {
-    	    return false;
-    	},
-
-    	typeIdPair: function() {
-    	    return ["",""];
-    	},
-
-        });
-
-    var ShapeMerge = RenderItemMerge.extend({
-    	init: function() {
-
-    	}
-        });
-
-    var BorderMerge = RenderItemMerge.extend({
-    	init: function() {
-
-    	}
-        });
-
-    var MasterRenderItemMerge = RenderItemMerge.extend({
-    	init: function () {
-    	    this.mergeFunctionMap = {};
-    	},
-
-    	add: function(fun) {
-    	    this.mergeFunctionMap[fun.typeIdPair()] = fun;
-    	}
-
-        });
-
-    // req.open("GET", "/milkshake/Variables.js", false); req.send(); eval(req.responseText);
-
-    var VariablePool = Class.extend({
-    	init: function() {
-    	    this.inputs = [];
-    	    this.outputs = [];
-    	    this.addInputs(["time","fps","frame","progress","bass","mid","treb",
-    			    "bass_att","mid_att","treb_att"]);	    
-    	    for (i = 1; i <= 32; i++)
-    		this["q"+i] = 0;
-    	},
-
-    	addInputs: function(ownInputs) {
-    	    for (var i = 0; i < ownInputs.length; i++) {
-    		this.inputs.push(ownInputs[i]);
-    		this[ownInputs[i]] = 0;
-    	    }
-    	},
-
-    	addOutputs: function(ownOutputs) {
-    	    for (var i = 0; i < ownOutputs.length; i++) {
-    		this.outputs.push(ownOutputs[i]);
-    		this[ownOutputs[i]] = 0;
-    	    }
-    	},
-    	
-    	pushQs: function(array) {
-                for (var i = 1; i <= 32; i++)
-                    this["q"+i] = array[i-1];
-            },
-
-    	popQs: function(array) {
-                for (var i = 1; i <= 32; i++)
-                    array[i-1] = this["q"+i];
-    	},
-
-    	transferQs: function(pool) {
-                for (var i = 1; i <= 32; i++)
-                    pool["q"+i] = this["q"+i];
-    	},
-
-    	pushOutputs: function(pool) {
-    	    for (var i = 0; i < this.outputs.length; i++)
-    		this[this.outputs[i]] = pool[this.outputs[i]];
-    	},
-
-    	popOutputs: function(pool) {
-    	    for (var i = 0; i < this.outputs.length; i++)
-    		pool[this.outputs[i]] = this[this.outputs[i]];
-    	},
-
-    	pushInputs: function(pool) {
-    	    for (var i = 0; i < this.inputs.length; i++)
-    		this[this.inputs[i]] = pool[this.inputs[i]];
-    	},
-
-    	cos: Math.cos, sin: Math.sin, tan: Math.tan, asin: Math.asin, acos: Math.acos, atan: Math.atan,
-    	abs: Math.abs, pow: Math.pow, min: Math.min, max: Math.max, sqrt: Math.sqrt, log: Math.log, 
-    	above: function(arg1, arg2) { return arg1 > arg2; },
-    	below: function(arg1, arg2) { return arg1 < arg2; },
-    	equal: function(arg1, arg2) { return arg1 == arg2; },
-    	ifcond: function(arg1, arg2, arg3) { return arg1 ? arg2 : arg3; },
-    	sign: function(arg1) { return (arg1 > 0) - (arg1 < 0); },
-    	int: function(arg1) { return Math.floor(arg1); },
-    	sqr: function(arg1) { return Math.pow(arg1, 2); },
-    	sigmoid: function(arg1, arg2) { return 65534 / (1 + Math.exp(arg1 * arg2 / -32767) - 32767); },
-    	rand: function(arg1) { return Math.floor(Math.random()*arg1); },
-    	bor: function(arg1,arg2) { return (arg1 != 0) || (arg2 != 0); },
-    	band: function(arg1,arg2) { return (arg1 != 0) && (arg2 != 0); },
-    	bnot: function(arg1) { return arg1 == 0 ? 1 : 0},
-    	exp: Math.exp, atan2: Math.atan2,
-    	log10: function(arg1) { return Math.log(arg1,10); },
-
-
-        });
-
-    var PresetVariablePool = VariablePool.extend({
-    	init: function() {
-    	    this._super();
-    	    this.addOutputs(['zoom','zoomexp','rot','warp','cx','cy','dx','dy','sx','sy']);
-    	    this.addInputs(['meshx','meshy','aspectx','aspecty']);
-    	}});
-
-    var PresetFrameVariablePool = PresetVariablePool.extend({
-    	init: function () {
-    	    this._super();
-    	    this.addOutputs(['wave_x','wave_y','wave_r','wave_g','wave_b','wave_a','wave_mode',
-    			     'wave_mystery','wave_usedots','wave_thick','wave_additive','wave_brighten',
-    			     'ob_size','ob_r','ob_g','ob_b','ob_a','ib_size','ib_r','ib_g','ib_b',
-    			     'ib_a','mv_r','mv_g','mv_b','mv_a','mv_x','mv_y','mv_l','mv_dx','mv_dy',
-    			     'decay','gamma','echo_zoom','echo_alpha','echo_orient','darken_center',
-    			     'wrap','invert','brighten','darken','solarize']);
-    	}});
-
-    var PresetPixelVariablePool = PresetVariablePool.extend({
-    	init: function () {
-    	    this._super();
-    	    this.addOutputs(['x','y','rad','ang']);
-    	}});
-
-    var CustomVariablePool = VariablePool.extend({
-    	init: function() {
-    	    this._super();
-    	    this.addOutputs(['r','g','b','a']);
-    	    for (var i = 1; i <= 8; i++)
-    		this["t"+i] = 0;
-    	},
-
-    	pushTs: function(array) {
-    	    for (var i = 1; i <= 8; i++)
-    		this["t"+i] = array[i-1];
-    	},
-    	
-    	popTs: function(array) {
-    	    for (var i = 1; i <= 8; i++)
-    		array[i-1] = this["t"+i];
-    	},
-
-    	transferTs: function(pool) {
-                for (var i = 1; i <= 8; i++)
-                    pool["t"+i] = this["t"+i];
-    	},
-    	
-        });
-
-    var WaveFrameVariablePool = CustomVariablePool.extend({
-    	init: function () {
-    	    this._super();
-    	}});
-
-    var WavePointVariablePool = CustomVariablePool.extend({
-    	init: function() {
-    	    this._super();
-    	    this.addOutputs(['x','y','sample','value1','value2']);
-    	}});
-
-    var ShapeFrameVariablePool = CustomVariablePool.extend({
-    	init: function() {
-    	    this._super();
-    	    this.addOutputs(['sides','thick','additive','textured','tex_zoom','tex_ang','x','y','rad',
-    			     'ang','r2','g2','b2','a2','border_r','border_g','border_b','border_a']);
-    	}});
-
-
-    // req.open("GET", "/milkshake/MilkDropPreset.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-
-    var MilkdropPreset = Class.extend({
-
-    	init: function(name,preset,gx,gy) {
-    	    this.name = name;
-    	    this.inputs = {};
-    	    this.outputs = {
-    		dx: 0,
-    		dy: 0,
-    		wave: {},
-    		mv: {},
-    		brighten: {},
-    		darken: {},
-    		invert: {},
-    		solarize: {},
-    		videoEcho: {},
-    		border: {},
-    		darkenCenter: {}
-    	    };
-
-    	    this.init_code = function(){}
-    	    this.per_frame_code = function(){};
-    	    this.per_pixel_code = function(){};
-
-    	    this.initialVals = new PresetFrameVariablePool();
-    	    for (var prop in preset)
-    		this.loadParam(prop, preset[prop]);
-
-    	    this.framePool = new PresetFrameVariablePool();
-    	    this.pixelPool = new PresetPixelVariablePool();
-    	    
-    	    this.varInit();
-    	    this.init_code(this.framePool);
-    	    this.initialQs = new Float32Array(32);
-    	    this.framePool.popQs(this.initialQs);
-    	    
-    	    this.customShapes = this.customShapes || [];
-    	    this.customWaves = this.customWaves || [];
-
-    	    for (var i = 0; i < this.customShapes.length; i++)
-    		this.customShapes[i] = new Shape(this.customShapes[i], this.initialQs);
-    	    for (var i = 0; i < this.customWaves.length; i++)
-    		this.customWaves[i] = new CustomWaveform(this.customWaves[i], this.initialQs);
-
-
-    	    this.outputs.darkenCenter = new DarkenCenter(this.outputs.darkenCenter);
-    	    this.outputs.mv = new MotionVectors(this.outputs.mv);
-    	    this.outputs.border = new Border(this.outputs.border);
-    	    this.outputs.wave = new MilkdropWaveform(this.outputs.wave);
-    	    this.outputs.videoEcho = new RenderItem(this.outputs.videoEcho);
-
-    	    this.outputs.brighten = new Brighten(this.outputs.brighten);
-    	    this.outputs.darken = new Darken(this.outputs.darken);
-    	    this.outputs.invert = new Invert(this.outputs.invert);
-    	    this.outputs.solarize = new Solarize(this.outputs.solarize);
-
-    	    this.inputs.gx = gx;
-    	    this.inputs.gy = gy;
-    	    this.outputs.gx = gx;
-    	    this.outputs.gy = gy;
-
-    	    this.createMeshes(this.inputs,["x_mesh","y_mesh","rad_mesh","theta_mesh",
-    					   "origtheta","origrad","origx","origy"]);
-
-    	    for (var x = 0; x < gx; x++)
-    		for (var y = 0; y < gy; y++) {
-    		    var origx = x / (gx - 1);
-    		    var origy = -((y/(gy-1))-1);
-    		    this.inputs.origx[x][y] = origx
-    		    this.inputs.origy[x][y] = origy
-    		    this.inputs.origrad[x][y] = .7071067*Math.sqrt(Math.pow((origx-0.5)*2,2) + Math.pow((origy-0.5)*2,2));
-    		    this.inputs.origtheta[x][y] = Math.atan2((origy-0.5)*2, (origx-0.5)*2);
-    		}
-    	    
-    	    this.outputs.staticPerPixel = true;
-    	    
-
-    	    this.createMeshes(this.outputs,["x_mesh","y_mesh","sx_mesh","sy_mesh","dx_mesh","dy_mesh",
-    					    "cx_mesh","cy_mesh","zoom_mesh","zoomexp_mesh","rot_mesh",
-    					    "warp_mesh","rad_mesh","orig_x","orig_y"]);
-    	    
-    	    for (var x = 0; x < gx; x++)
-    		for (var y = 0; y < gy; y++) {
-    		    var origx = x/(gx-1);
-    		    var origy = -((y/(gy-1))-1);
-    		    this.outputs.rad_mesh[x][y] = .7071067 * Math.sqrt(Math.pow((origx-0.5)*2,2) + Math.pow((origy-0.5)*2,2));
-    		    this.outputs.orig_x[x][y] = (origx - 0.5) * 2;
-    		    this.outputs.orig_y[x][y] = (origy - 0.5) * 2;
-    		}
-
-    	},
-
-    	loadParam: function (param, value) {
-    	    if (param.toLowerCase() in OutputParamMap) {
-    		var internal = OutputParamMap[param.toLowerCase()];
-    		var container = this.outputs;
-    		var paramParts = internal[0].split(".");
-    		var i;
-    		for (i = 0; i < paramParts.length - 1; i++)
-    		    container = container[paramParts[i]];
-    		var internalParam = paramParts[i];
-    		var paramType = internal[2];
-    		if (paramType == Number || paramType == Boolean) {
-    		    container[internalParam] = paramType(value);
-    		    canonical = param;
-    		    if (internal.length > 3)
-    			canonical = internal[3];
-    		    if (canonical in this.initialVals)
-    			this.initialVals[canonical] = paramType(value);
-    		} else
-    		    this[internalParam] = paramType(value);
-    	    }
-    	},
-
-    	varInit: function() {
-    	    var testPool = new PresetFrameVariablePool();
-    	    var testPixPool = new PresetPixelVariablePool();
-    	    var winProps = {};
-    	    for (var prop in window)
-    		winProps[prop] = null;
-    	    
-    	    for (var i = 0; i < 30; i++)
-    		try {
-    		    this.init_code(testPool);
-    		    this.per_frame_code(testPool);
-    		    break;
-    		} catch (error) {
-    		    if (error.name == "ReferenceError") {
-    			var customVar;
-    			if (error.message.indexOf("Can't find variable:") == 0)
-    			    customVar = error.message.split(" ").pop();
-    			else
-    			    customVar = error.message.split(" ")[0];
-    			this.framePool[customVar] = 0;
-    			testPool[customVar] = 0;
-    		    } else {
-    			console.log(this.name);
-    			throw error;
-    		    }
-    		}
-    	    for (var i = 0; i < 30; i++)
-    		try {
-    		    this.per_pixel_code(testPixPool);
-    		    break;
-    		} catch (error) {
-    		    if (error.name == "ReferenceError") {
-    			var customVar;
-    			if (error.message.indexOf("Can't find variable:") == 0)
-    			    customVar = error.message.split(" ").pop();
-    			else
-    			    customVar = error.message.split(" ")[0];
-    			this.pixelPool[customVar] = 0;
-    			testPixPool[customVar] = 0;
-    		    } else {
-    			console.log(this.name);
-    			throw error;
-    		    }
-    		}
-
-    	    for (var prop in window)
-    		if (!(prop in winProps)) {
-    		    this.framePool[prop] = 0;
-    		    delete window[prop];
-    		}
-    	},
-
-    	createMeshes: function(io, names) {
-    	    for (var m = 0; m < names.length; m++)
-    		for (io[names[m]] = []; io[names[m]].length < io.gx; 
-    		     io[names[m]].push(new Float32Array(io.gy)));
-    	},
-
-    	pipeline: function() {
-    	    return this.outputs;
-    	},
-
-    	pushVars: function() {
-    	    this.framePool.pushOutputs(this.initialVals);
-    	    this.framePool.pushInputs(this.inputs);
-    	    this.framePool.pushQs(this.initialQs);
-    	},
-    	    
-    	popVars: function() {
-    	    var i;
-    	    for (var p = 0; p < this.framePool.outputs.length; p++) {
-    		var param = this.framePool.outputs[p];
-    		var internal = OutputParamMap[param];
-    		var container = this.outputs;
-    		var paramParts = internal[0].split(".");
-    		for (i = 0; i < paramParts.length - 1; i++)
-    		    container = container[paramParts[i]];
-    		container[paramParts[i]] = internal[2](this.framePool[param]);
-    	    }
-    	},
-
-    	runPerPixelCode: function() {
-    	    this.framePool.transferQs(this.pixelPool);
-    	    this.pixelPool.pushInputs(this.inputs)
-    	    for (var x = 0; x < this.inputs.gx; x++)
-    		for (var y = 0; y < this.inputs.gy; y++) {
-    		    this.pixelPool.x = this.inputs.origx[x][y];
-    		    this.pixelPool.y = this.inputs.origy[x][y];
-    		    this.pixelPool.rad = this.inputs.origrad[x][y];
-    		    this.pixelPool.ang = this.inputs.origtheta[x][y];
-    		    this.per_pixel_code(this.pixelPool);
-    		    this.outputs.zoom_mesh[x][y] = this.pixelPool.zoom;
-    		    this.outputs.zoomexp_mesh[x][y] = this.pixelPool.zoomexp;
-    		    this.outputs.rot_mesh[x][y] = this.pixelPool.rot;
-    		    this.outputs.warp_mesh[x][y] = this.pixelPool.warp;
-    		    this.outputs.cx_mesh[x][y] = this.pixelPool.cx;
-    		    this.outputs.cy_mesh[x][y] = this.pixelPool.cy;
-    		    this.outputs.dx_mesh[x][y] = this.pixelPool.dx;
-    		    this.outputs.dy_mesh[x][y] = this.pixelPool.dy;
-    		    this.outputs.sx_mesh[x][y] = this.pixelPool.sx;
-    		    this.outputs.sy_mesh[x][y] = this.pixelPool.sy;
-    		}
-    	},
-    	
-    	runCustomWaveCode: function() {
-    	    for (var w = 0; w < this.customWaves.length; w++) {
-    		var wave = this.customWaves[w];
-    		this.framePool.transferQs(wave.framePool);
-    		wave.framePool.pushInputs(this.inputs);
-    		wave.runCode();
-    	    }
-    	},
-
-    	runCustomShapeCode: function() {
-    	    for (var s = 0; s < this.customShapes.length; s++) {
-    		var shape = this.customShapes[s];
-    		this.framePool.transferQs(shape.framePool);
-    		shape.framePool.pushInputs(this.inputs);
-    		shape.runCode();
-    	    }
-    	},
-
-    	initMesh: function(mesh) { // should we init from framepool or initialvals?
-    	    var key = mesh + "_mesh";
-    	    var val = this.framePool[mesh];
-    	    for (var x = 0; x < this.inputs.gx; x++)
-    		for (var y = 0; y < this.inputs.gy; y++)
-    		    this.outputs[key][x][y] = val;
-    	    this.pixelPool[mesh] = this.framePool[mesh];
-    	},
-
-    	initPerPixelMeshes: function() {
-    	    this.initMesh("cx");
-    	    this.initMesh("cy");
-    	    this.initMesh("sx");
-    	    this.initMesh("sy");
-    	    this.initMesh("dx");
-    	    this.initMesh("dy");
-    	    this.initMesh("zoom");
-    	    this.initMesh("zoomexp");
-    	    this.initMesh("rot");
-    	    this.initMesh("warp");
-    	},
-    	
-    	Render: function(music, context) {
-
-    	    this.inputs.bass = music.bass;
-    	    this.inputs.mid = music.mid;
-    	    this.inputs.treb = music.treb;
-    	    this.inputs.bass_att = music.bass_att;
-    	    this.inputs.mid_att = music.mid_att;
-    	    this.inputs.treb_att = music.treb_att;
-    	    this.inputs.fps = context.fps;
-    	    this.inputs.time = context.time;
-    	    this.inputs.frame = context.frame;
-    	    this.inputs.progress = context.progress;
-    	    this.inputs.meshx = this.inputs.gx;
-    	    this.inputs.meshy = this.inputs.gy;
-    	    this.inputs.aspectx = 1;
-    	    this.inputs.aspecty = 1;
-
-    	    this.pushVars();
-    	    this.per_frame_code(this.framePool);
-    	    this.initPerPixelMeshes();
-    	    this.runPerPixelCode();
-    	    this.runCustomWaveCode();
-    	    this.runCustomShapeCode();
-    	    this.popVars();
-
-    	    this.PerPixelMath(context);
-    	    this.outputs.drawables = [];
-    	    this.outputs.drawables.push(this.outputs.mv);
-    	    for (i = 0; i < this.customShapes.length; i++)
-    		if (this.customShapes[i].enabled)
-    		    this.outputs.drawables.push(this.customShapes[i]);
-    	    for (i = 0; i < this.customWaves.length; i++)
-    		if (this.customWaves[i].enabled)
-    		    this.outputs.drawables.push(this.customWaves[i]);
-    	    this.outputs.drawables.push(this.outputs.wave);
-    	    if (this.outputs.bDarkenCenter)
-    		this.outputs.drawables.push(this.outputs.darkenCenter);
-    	    this.outputs.drawables.push(this.outputs.border);
-    	    
-    	    this.outputs.compositeDrawables = [];
-    	    this.outputs.compositeDrawables.push(this.outputs.videoEcho);
-    	    if (this.outputs.bBrighten)
-    		this.outputs.compositeDrawables.push(this.outputs.brighten);
-    	    if (this.outputs.bDarken)
-    		this.outputs.compositeDrawables.push(this.outputs.darken);
-    	    if (this.outputs.bSolarize)
-    		this.outputs.compositeDrawables.push(this.outputs.solarize);
-    	    if (this.outputs.bInvert)
-    		this.outputs.compositeDrawables.push(this.outputs.invert);
-    	},
-
-    	PerPixelMath: function (context) {
-    	    
-    	    var x, y, fZoom2, fZoom2Inv;
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++) {
-    		    fZoom2 = Math.pow(this.outputs.zoom_mesh[x][y], 
-    				      Math.pow(this.outputs.zoomexp_mesh[x][y],
-    					       this.outputs.rad_mesh[x][y] * 2.0 - 1.0));
-    		    fZoom2Inv = 1.0 / fZoom2;
-    		    this.outputs.x_mesh[x][y] = this.outputs.orig_x[x][y] * 0.5 * fZoom2Inv + 0.5;
-    		    this.outputs.y_mesh[x][y] = this.outputs.orig_y[x][y] * 0.5 * fZoom2Inv + 0.5;
-    		}
-    	
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++)
-    		    this.outputs.x_mesh[x][y] = (this.outputs.x_mesh[x][y] - this.outputs.cx_mesh[x][y]) / this.outputs.sx_mesh[x][y] + this.outputs.cx_mesh[x][y];
-    		
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++)
-    		    this.outputs.y_mesh[x][y] = (this.outputs.y_mesh[x][y] - this.outputs.cy_mesh[x][y]) / this.outputs.sy_mesh[x][y] + this.outputs.cy_mesh[x][y];
-
-
-    	    var fWarpTime = context.time * this.outputs.fWarpAnimSpeed;
-    	    var fWarpScaleInv = 1.0 / this.outputs.fWarpScale;
-    	    var f = [11.68 + 4.0 * Math.cos(fWarpTime * 1.413 + 10),
-    		     8.77 + 3.0 * Math.cos(fWarpTime * 1.113 + 7),
-    		     10.54 + 3.0 * Math.cos(fWarpTime * 1.233 + 3),
-    		     11.49 + 4.0 * Math.cos(fWarpTime * 0.933 + 5)];
-    	    
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++) {
-    		    this.outputs.x_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.sin(fWarpTime * 0.333 + fWarpScaleInv * (this.outputs.orig_x[x][y] * f[0] - this.outputs.orig_y[x][y] * f[3]));
-    		    this.outputs.y_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.cos(fWarpTime * 0.375 - fWarpScaleInv * (this.outputs.orig_x[x][y] * f[2] + this.outputs.orig_y[x][y] * f[1]));
-    		    this.outputs.x_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.cos(fWarpTime * 0.753 - fWarpScaleInv * (this.outputs.orig_x[x][y] * f[1] - this.outputs.orig_y[x][y] * f[2]));
-    		    this.outputs.y_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.sin(fWarpTime * 0.825 + fWarpScaleInv * (this.outputs.orig_x[x][y] * f[0] + this.outputs.orig_y[x][y] * f[3]));
-    		}
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++) {
-    		    var u2 = this.outputs.x_mesh[x][y] - this.outputs.cx_mesh[x][y];
-    		    var v2 = this.outputs.y_mesh[x][y] - this.outputs.cy_mesh[x][y];
-
-    		    var cos_rot = Math.cos(this.outputs.rot_mesh[x][y]);
-    		    var sin_rot = Math.sin(this.outputs.rot_mesh[x][y]);
-
-    		    this.outputs.x_mesh[x][y] = u2 * cos_rot - v2 * sin_rot + this.outputs.cx_mesh[x][y];
-    		    this.outputs.y_mesh[x][y] = u2 * sin_rot + v2 * cos_rot + this.outputs.cy_mesh[x][y];
-    		}
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++)
-    		    this.outputs.x_mesh[x][y] -= this.outputs.dx_mesh[x][y];
-
-    	    for (x = 0; x < this.outputs.gx; x++)
-    		for (y = 0; y < this.outputs.gy; y++)
-    		    this.outputs.y_mesh[x][y] -= this.outputs.dy_mesh[x][y];
-
-    	}
-
-
-        });
-
-
-    var wFunction = function(f) { 
-        if (typeof f == "function")
-    	return f;
-        return function () {};
-    }
-
-    var wArray = function(a) {
-        return a;
-    }
-    	
-    var OutputParamMap = {
-        frating: ["fRating", null, Number],
-        gamma: ["fGammaAdj", null, Number],
-        fgammaadj: ["fGammaAdj", null, Number, "gamma"],
-        echo_zoom: ["videoEcho.zoom", null, Number],
-        fvideoechozoom: ["videoEcho.zoom", null, Number, "echo_zoom"],
-        echo_alpha: ["videoEcho.a", null, Number],
-        fvideoechoalpha: ["videoEcho.a", null, Number, "echo_alpha"],
-        wave_r: ["wave.r", null, Number],
-        wave_g: ["wave.g", null, Number],
-        wave_b: ["wave.b", null, Number],
-        wave_a: ["wave.a", null, Number],
-        wave_x: ["wave.x", null, Number],
-        wave_y: ["wave.y", null, Number],
-        fwavealpha: ["wave.a", null, Number,"wave_a"],
-        fwavescale: ["wave.scale", null, Number],
-        fwavesmoothing: ["wave.smoothing", null, Number],
-        fmodwavealphastart: ["wave.modOpacityStart", null, Number],
-        fmodwavealphaend: ["wave.modOpacityEnd", null, Number],
-        wave_mode: ["wave.mode", null, Number],
-        nwavemode: ["wave.mode", null, Number, "wave_mode"],
-        wave_additive: ["wave.additive", null, Boolean],
-        badditivewaves: ["wave.additive", null, Boolean, "wave_additive"],
-        bmodwavealphabyvolume: ["wave.modulateAlphaByVolume", null, Boolean],
-        wave_brighten: ["wave.maximizeColors", null, Boolean],
-        bmaximizewavecolor: ["wave.maximizeColors", null, Boolean],
-        wave_dots: ["wave.dots", null, Boolean, "wave_usedots"],
-        wave_usedots: ["wave.dots", null, Boolean],
-        bwavedots: ["wave.dots", null, Boolean, "wave_usedots"],
-        wave_thick: ["wave.thick", null, Boolean],
-        bwavethick: ["wave.thick", null, Boolean, "wave_thick"],
-        wave_mystery: ["wave.mystery", null, Number],
-        fWaveParam: ["wave.mystery", null, Number, "wave_mystery"],
-        fwarpanimspeed: ["fWarpAnimSpeed", null, Number],
-        fwarpscale: ["fWarpScale", null, Number],
-        fshader: ["fShader", null, Number],
-        decay: ["screenDecay", null, Number],
-        fdecay: ["screenDecay", null, Number, "decay"],
-        echo_orient: ["videoEcho.orientation", null, Number],
-        nvideoechoorientation: ["videoEcho.orientation", null, Number, "echo_orient"],
-        wrap: ["textureWrap", null, Boolean],
-        btexwrap: ["textureWrap", null, Boolean, "wrap"],
-        darken_center: ["bDarkenCenter", null, Boolean],
-        bdarkencenter: ["bDarkenCenter", null, Boolean, "darken_center"],
-        bredbluestereo: ["bRedBlueStereo", null, Boolean],
-        brighten: ["bBrighten", null, Boolean],
-        bbrighten: ["bBrighten", null, Boolean, "brighten"],
-        darken: ["bDarken", null, Boolean],
-        bdarken: ["bDarken", null, Boolean, "darken"],
-        solarize: ["bSolarize", null, Boolean],
-        bsolarize: ["bSolarize", null, Boolean, "solarize"],
-        invert: ["bInvert", null, Boolean],
-        binvert: ["bInvert", null, Boolean, "invert"],
-        bmotionvectorson: ["bMotionVectorsOn", null, Boolean],
-        warp: ["warp", "warp_mesh", Number],
-        zoom: ["zoom", "zoom_mesh", Number],
-        rot: ["rot", "rot_mesh", Number],
-        zoomexp: ["zoomexp", "zoomexp_mesh", Number],
-        fzoomexponent: ["zoomexp", "zoomexp_mesh", Number,"zoomexp"],
-        cx: ["cx", "cx_mesh", Number],
-        cy: ["cy", "cy_mesh", Number],
-        dx: ["dx", "dx_mesh", Number],
-        dy: ["dy", "dy_mesh", Number],
-        sx: ["sx", "sx_mesh", Number],
-        sy: ["sy", "sy_mesh", Number],
-        ob_size: ["border.outer_size", null, Number],
-        ob_r: ["border.outer_r", null, Number],
-        ob_g: ["border.outer_g", null, Number],
-        ob_b: ["border.outer_b", null, Number],
-        ob_a: ["border.outer_a", null, Number],
-        ib_size: ["border.inner_size",  null, Number],
-        ib_r: ["border.inner_r",  null, Number],
-        ib_g: ["border.inner_g",  null, Number],
-        ib_b: ["border.inner_b",  null, Number],
-        ib_a: ["border.inner_a",  null, Number],
-        mv_r: ["mv.r",  null, Number],
-        mv_g: ["mv.g",  null, Number],
-        mv_b: ["mv.b",  null, Number],
-        mv_a: ["mv.a",  null, Number],
-        mv_x: ["mv.x_num",  null, Number],
-        nmotionvectorsx: ["mv.x_num",  null, Number, "mv_x"],
-        mv_y: ["mv.y_num",  null, Number],
-        nmotionvectorsy: ["mv.y_num",  null, Number, "mv_y"],
-        mv_l: ["mv.length",  null, Number],
-        mv_dy: ["mv.x_offset", null, Number],
-        mv_dx: ["mv.y_offset",  null, Number],
-        init_code: ["init_code", null, wFunction],
-        per_frame_code: ["per_frame_code", null, wFunction],
-        per_pixel_code: ["per_pixel_code", null, wFunction],
-        shapes: ["customShapes", null, wArray],
-        waves: ["customWaves", null, wArray],
-        tmpvars: ["tmpvars", null, wArray]
-        
-    }
-
-    var InputParamMap = {
-      time: ["time",  null, Number],
-      bass: ["bass",  null, Number],
-      mid: ["mid",  null, Number],
-      treb: ["treb",  null, Number],
-      bass_att: ["bass_att",  null, Number],
-      mid_att: ["mid_att",  null, Number],
-      treb_att: ["treb_att",  null, Number],
-      frame: ["frame", null, Number],
-      progress: ["progress",  null, Number],
-      fps: ["fps", null, Number],
-      x: ["x_per_pixel", "origx", Number],
-      y: ["y_per_pixel", "origy", Number],  
-      ang: ["ang_per_pixel", "origtheta", Number],
-      rad: ["rad_per_pixel", "origrad", Number],
-      meshx: ["gx", null, Number],
-      meshy: ["gy", null, Number]
-    }
-
-         
-    		
-
-    // req.open("GET", "/milkshake/PerPixelMesh.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-    var MPoint = Class.extend({
-    	init: function(x,y) {
-    	    this.x = x;
-    	    this.y = y;
-    	}
-        });
-
-    var PerPixelContext = Class.extend({
-    	init: function(x, y, rad, theta, i, j) {
-    	    this.x = x;
-    	    this.y = y;
-    	    this.rad = rad;
-    	    this.theta = theta;
-    	    this.i = i;
-    	    this.j = j;
-    	}
-        });
-
-    var PerPixelMesh = Class.extend({
-    	init: function(width, height) {
-    	    this.width = width;
-    	    this.height = height;
-    	    this.size = width * height;
-    	    this.p = new Array(this.size);
-    	    this.p_original = new Array(this.size);
-    	    this.identity = new Array(this.size);
-    	    for (var i = 0; i < this.size; i++) {
-    		this.p[i] = new MPoint(0,0);
-    		this.p_original[i] = new MPoint(0,0);
-    		this.identity[i] = new PerPixelContext(0,0,0,0,0);
-    	    }
-    	    for (var j = 0; j < this.height; j++)
-    		for (var i = 0; i < this.width; i++) {
-    		    var index = j*this.width + i;
-    		    var xval = i/(this.width-1.);
-    		    var yval = -((j/(this.height-1.))-1.);
-    		    this.p[index].x = xval;
-    		    this.p[index].y = yval;
-    		    this.p_original[index].x = xval;
-    		    this.p_original[index].y = yval;
-    		    this.identity[index].x = xval;
-    		    this.identity[index].y = yval;
-    		    this.identity[index].i = i;
-    		    this.identity[index].j = j;
-    		    this.identity[index].rad = Math.sqrt(Math.pow((xval-.5)*2,2) + Math.pow((yval-.5)*2,2));
-    		    this.identity[index].theta = Math.atan2((yval-.5)*2, (xval-.5)*2);
-    		}
-    	},
-
-    	Reset: function() {
-    	    for (var i = 0; i < this.size; i++) {
-    		this.p[i].x = this.p_original[i].x;
-    		this.p[i].y = this.p_original[i].y;
-    	    }
-    	}
-    		
-
-        });
-
-    // req.open("GET", "/milkshake/PipelineContext.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-    var PipelineContext = Class.extend({
-    	init: function () {
-    	    this.fps = 25;
-    	    this.time = 0;
-    	    this.frame = 0;
-    	    this.progress = 0;
-    	}
-        });
-
-    // req.open("GET", "/milkshake/TimeKeeper.js", false); req.send(); eval(req.responseText);
-    /**
-     * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
-     * Copyright (C)2011 Matt Gattis and contributors
-     *
-     * This library is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU Lesser General Public
-     * License as published by the Free Software Foundation; either
-     * version 2.1 of the License, or (at your option) any later version.
-     *
-     * This library is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     * Lesser General Public License for more details.
-     *
-     * You should have received a copy of the GNU Lesser General Public
-     * License along with this library; if not, write to the Free Software
-     * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-     * See 'LICENSE.txt' included within this release
-     *
-     */
-
-    var TimeKeeper = Class.extend({
-    	init: function(presetDuration, smoothDuration) {
-    	    this.smoothDuration = smoothDuration;
-    	    this.presetDuration = presetDuration;
-    	    this.startTime = new Date();
-    	    this.UpdateTimers();
-    	},
-
-    	UpdateTimers: function() {
-    	    this.currentTime = TimeKeeper.getTicks(this.startTime) * 0.001;
-    	    this.presetFrameA++;
-    	    this.presetFrameB++;
-    	},
-
-    	StartPreset: function() {
-    	    this.isSmoothing = false;
-    	    this.presetTimeA = this.currentTime;
-    	    this.presetFrameA = 1;
-    	    this.presetDurationA = this.sampledPresetDuration();
-    	},
-
-    	StartSmoothing: function() {
-    	    this.isSmoothing = true;
-    	    this.presetTimeB = this.currentTime;
-    	    this.presetFrameB = 1;
-    	    this.presetDurationB = this.sampledPresetDuration();
-    	},
-    	
-    	EndSmoothing: function() {
-    	    this.isSmoothing = false;
-    	    this.presetTimeA = this.presetTimeB;
-    	    this.presetFrameA = this.presetFrameB;
-    	    this.presetDurationA = this.presetDurationB;
-    	},
-
-    	CanHardCut: function() {
-    	    return ((this.currentTime - this.presetTimeA) > 3)
-    	},
-
-    	SmoothRatio: function() {
-    	    return (this.currentTime - this.presetTime) / this.smoothDuration;
-    	},
-
-    	IsSmoothing: function() {
-    	    return this.isSmoothing;
-    	},
-
-    	GetRunningTime: function() {
-    	    return this.currentTime;
-    	},
-
-    	PresetProgressA: function() {
-    	    if (this.isSmoothing) return 1.0;
-    	    else return (this.currentTime - this.presetTimeA) / this.presetDurationA;
-    	},
-
-    	PresetProgressB: function() {
-    	    return (this.currentTime - this.presetTimeB) / this.presetDurationB;
-    	},
-
-    	PresetFrameB: function() {
-    	    return this.presetFrameB;
-    	},
-
-    	PresetFrameA: function() {
-    	    return this.presetFrameA;
-    	},
-
-    	sampledPresetDuration: function() {
-    	    return 40;
-    	    return Math.max(1,Math.min(60, RandomNumberGenerators.gaussian(this.presetDuration)));
-    	}
-        });
-
-    TimeKeeper.getTicks = function(start) {
-        return (new Date()) - start;
-    }
-
-    // req.open("GET", "/milkshake/Presets.js", false); req.send(); eval(req.responseText);
-    var Presets = {};
-
-    Presets["Aderrasi - Blender.milk"] = {
-        fRating: 3.0,
-        fGammaAdj: 1.0,
-        fDecay: 0.98,
-        fVideoEchoZoom: 0.999997,
-        fVideoEchoAlpha: 0.4,
-        nVideoEchoOrientation: 0,
-        nWaveMode: 0,
-        bAdditiveWaves: 0,
-        bWaveDots: 0,
-        bWaveThick: 1,
-        bModWaveAlphaByVolume: 0,
-        bMaximizeWaveColor: 0,
-        bTexWrap: 1,
-        bDarkenCenter: 1,
-        bRedBlueStereo: 0,
-        bBrighten: 0,
-        bDarken: 0,
-        bSolarize: 0,
-        bInvert: 0,
-        fWaveAlpha: 100.0,
-        fWaveScale: 3.91582,
-        fWaveSmoothing: 0.5,
-        fWaveParam: -0.4,
-        fModWaveAlphaStart: 0.5,
-        fModWaveAlphaEnd: 1.0,
-        fWarpAnimSpeed: 1.0,
-        fWarpScale: 1.0,
-        fZoomExponent: 1.0,
-        fShader: 0.0,
-        zoom: 1.0,
-        rot: 0.0,
-        cx: 0.5,
-        cy: 0.5,
-        dx: 1e-05,
-        dy: 1e-05,
-        warp: 0.01,
-        sx: 1.0,
-        sy: 1.0,
-        wave_r: 1.0,
-        wave_g: 1.0,
-        wave_b: 1.0,
-        wave_x: 0.5,
-        wave_y: 0.5,
-        ob_size: 0.005,
-        ob_r: 1.0,
-        ob_g: 0.0,
-        ob_b: 0.0,
-        ob_a: 1.0,
-        ib_size: 0.005,
-        ib_r: 1.0,
-        ib_g: 1.0,
-        ib_b: 1.0,
-        ib_a: 1.0,
-        nMotionVectorsX: 0.0,
-        nMotionVectorsY: 0.0,
-        mv_dx: 0.0,
-        mv_dy: 0.0,
-        mv_l: 1.0,
-        mv_r: 1.0,
-        mv_g: 1.0,
-        mv_b: 1.0,
-        mv_a: 0.0,
-        per_pixel_code: function(_){
-          rot = rot - 0.1*_.min((2-rad)*bass_att,(2-rad)*treb_att);
-          grad = sqrt(x*x + y*y)*2;
-          dx = dx - 0.02*(1-rad);
-          dy = dy + 0.02*(1-rad);
-          zoom = zoom - _.max(grad*(bass/8 - treb/8), 0);
-        },
-        per_frame_code: function(_){
-          wave_r = wave_r + 0.9;
-          wave_g = 0.9 - 0.5*bass;
-          wave_b = 0.9 - 0.5*bass;
-          q1 = 0.05*_.sin(time*1.14);
-          q2 = 0.03*_.sin(time*0.93+2);
-          wave_x = wave_x + q1;
-          wave_y = wave_y + q2;
-        },
-        shapes: [
-    {enabled: 1,
-     sides: 4,
-     thickOutline: 0,
-     textured: 1,
-     ImageUrl: "title.png",
-     x: 0.5,
-     y: 0.5,
-     rad: 1.0,
-     ang: 0,
-     tex_ang: 0,
-     tex_zoom: 0.5,
-     r: 1,
-     g: 1,
-     b: 1,
-     a: 1,
-     r2: 1,
-     g2: 1,
-     b2: 1,
-     a2: 1,
-     border_r: 0,
-     border_g: 0,
-     border_b: 0,
-     border_a: 0,
-     per_frame_code: function(_){
-       x = x + q1;
-       y = y + q2;
-       r = r + 0.9;
-       g = 0.9 - 0.5*bass;
-       b = 0.9 - 0.5*bass;
-       rad = rad + 0.1 * bass_att;
-    	}}
-        ],
-        waves: [
-        ],
       };
-/*
+      smjs.src = "SoundManager2/soundmanager2.js";
+      document.body.appendChild(smjs);
+    },
+
+    gotStreamURL: function(response) {
+      var songs;
+      if ("tracks" in response)
+        songs = response.tracks;
+      else if (0 in response)
+        songs = response;
+      else
+        songs = [response];
+      audio.songs = songs;
+
+      for (var i = 0; i < songs.length; i++) {
+        var song = songs[i];
+        var url = song.stream_url + ((song.stream_url.indexOf("?") == -1) ? "?" : "&") + "client_id=" + audio.clientId;
+        var trackId = "track_" + song.id;
+        audio.tracks.push(trackId);
+
+        soundManager.createSound({
+          id: trackId,
+          url: url,
+          autoPlay: (i == 0),
+          useWaveformData: true,
+          whileplaying: function() {
+            if (typeof shaker != "undefined") {
+              var left = this.waveformData.left;
+              var right = this.waveformData.right;
+              for (i = 0; i < 256; i++) {
+                left[i] = parseFloat(left[i]);
+                right[i] = parseFloat(right[i]);
+              }
+              shaker.music.addPCM(left, right);
+            }
+          },
+          onplay: function() {
+            var s = audio.songs[audio.trackPos];
+            shaker.infoMessages["SoundCloud"] = "music courtesy of <a href='" +
+              s.user.permalink_url + "'>" + s.user.username + "</a>" +
+              " - <a href='" + s.permalink_url + "'>" + s.title + "</a> - " +
+              "powered by <a href='http://soundcloud.com/'>soundcloud</a>";
+          },
+          onfinish: function() {
+            soundManager.stopAll();
+            if (audio.trackPos < audio.tracks.length - 1)
+              audio.trackPos++;
+            soundManager.play(audio.tracks[audio.trackPos]);
+          }
+        });
+      }
+
+    },
+
+    updateInfoBox: function(info) {
+      this.infoBox.innerHTML = info;
+    }
+
+});
+  // req.open("GET", "/milkshake/Renderer.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var Renderer = Class.extend({
+    init: function(width, height, gx, gy, texsize, music) {
+      this.presetName = "None";
+      this.vw = width;
+      this.vh = height;
+      this.texsize = texsize;
+      this.mesh = new PerPixelMesh(gx, gy);
+      this.totalframes = 1;
+      this.noSwitch = false;
+      this.realfps = 0;
+      this.correction = true;
+      this.aspect = height / width;
+      this.renderTarget = new RenderTarget(texsize, width, height);
+      this.music = music;
+      this.renderContext = {};
+
+      this.p = new Float32Array(this.mesh.width * 2 * 2);
+      this.pbuf = gl.createBuffer();
+
+      this.t = new Float32Array(this.mesh.width * 2 * 2);
+      this.tbuf = gl.createBuffer();
+
+      this.cot = new Float32Array([0, 1, 0, 0, 1, 0, 1, 1])
+      this.cotbuf = gl.createBuffer();
+
+      this.cop = new Float32Array([-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5])
+      this.copbuf = gl.createBuffer();
+
+    },
+
+    ResetTextures: function() {
+      delete this.renderTarget;
+      this.reset(this.vw, this.vh);
+    },
+
+    SetupPass1: function() {
+      this.totalframes++;
+      this.renderTarget.lock();
+      gl.viewport(0, 0, this.renderTarget.texsize, this.renderTarget.texsize);
+
+      uEnableClientState(U_TEXTURE_COORD_ARRAY);
+
+      uMatrixMode(U_TEXTURE);
+      uLoadIdentity();
+      uMatrixMode(U_PROJECTION);
+      uLoadIdentity();
+      uOrthof(0.0, 1, 0.0, 1, -40, 40);
+      uMatrixMode(U_MODELVIEW);
+      uLoadIdentity();
+    },
+
+    RenderItems: function(pipeline, pipelineContext) {
+      this.renderContext.time = pipelineContext.time;
+      this.renderContext.texsize = this.texsize;
+      this.renderContext.aspectCorrect = this.correction;
+      this.renderContext.aspectRatio = this.aspect;
+      this.renderContext.music = this.music;
+
+      for (var pos = 0; pos < pipeline.drawables.length; pos++)
+        if (pipeline.drawables[pos] != null)
+          pipeline.drawables[pos].Draw(this.renderContext);
+    },
+
+    FinishPass1: function() {
+      this.renderTarget.unlock();
+    },
+
+    Pass2: function(pipeline, pipelineContext) {
+      gl.viewport(0, 0, this.vw, this.vh);
+      gl.bindTexture(gl.TEXTURE_2D, this.renderTarget.textureID[0]);
+      uMatrixMode(U_PROJECTION);
+      uLoadIdentity();
+      uOrthof(-0.5, 0.5, -0.5, 0.5, -40, 40);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.lineWidth(this.renderTarget.texsize < 512 ? 1 : this.renderTarget.texsize / 512.0);
+      this.CompositeOutput(pipeline, pipelineContext);
+
+      uMatrixMode(U_MODELVIEW);
+      uLoadIdentity();
+      uTranslatef(-0.5, -0.5, 0);
+      uTranslatef(0.5, 0.5, 0);
+
+    },
+
+    RenderFrame: function(pipeline, pipelineContext) {
+      this.SetupPass1(pipeline, pipelineContext);
+      this.Interpolation(pipeline);
+      this.RenderItems(pipeline, pipelineContext);
+      this.FinishPass1();
+      this.Pass2(pipeline, pipelineContext);
+    },
+
+    Interpolation: function(pipeline) {
+
+      gl.bindTexture(gl.TEXTURE_2D, this.renderTarget.textureID[0]);
+      if (pipeline.textureWrap == 0) {
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      } else {
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+      }
+
+      uMatrixMode(U_TEXTURE);
+      uLoadIdentity();
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ZERO);
+
+      uColor4f(1.0, 1.0, 1.0, pipeline.screenDecay);
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uEnableClientState(U_TEXTURE_COORD_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+
+      uVertexPointer(2, gl.FLOAT, 0, this.pbuf);
+      uTexCoordPointer(2, gl.FLOAT, 0, this.tbuf);
+
+      function round(val, n) {
+        return Math.round(val * Math.pow(10, n)) / Math.pow(10, n);
+      }
+
+      if (pipeline.staticPerPixel) {
+        for (var j = 0; j < this.mesh.height - 1; j++) {
+          for (var i = 0; i < this.mesh.width; i++) {
+            this.t[i * 4] = pipeline.x_mesh[i][j];
+            this.t[i * 4 + 1] = pipeline.y_mesh[i][j];
+            this.t[i * 4 + 2] = pipeline.x_mesh[i][j + 1];
+            this.t[i * 4 + 3] = pipeline.y_mesh[i][j + 1];
+
+            var index = j * this.mesh.width + i;
+            var index2 = (j + 1) * this.mesh.width + i;
+
+            this.p[i * 4] = this.mesh.identity[index].x;
+            this.p[i * 4 + 1] = this.mesh.identity[index].y;
+            this.p[i * 4 + 2] = this.mesh.identity[index2].x;
+            this.p[i * 4 + 3] = this.mesh.identity[index2].y;
+          }
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.tbuf);
+          gl.bufferData(gl.ARRAY_BUFFER, this.t, gl.STATIC_DRAW);
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.pbuf);
+          gl.bufferData(gl.ARRAY_BUFFER, this.p, gl.STATIC_DRAW);
+          uDrawArrays(gl.TRIANGLE_STRIP, 0, this.mesh.width * 2);
+        }
+      } else
+        print("not static per pixel");
+
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    },
+
+    reset: function(w, h) {
+      this.aspect = h / w;
+      this.vw = w;
+      this.vh = h;
+      gl.cullFace(gl.BACK);
+      gl.clearColor(0, 0, 0, 0);
+      gl.viewport(0, 0, w, h);
+      uMatrixMode(U_TEXTURE);
+      uLoadIdentity();
+      uMatrixMode(U_PROJECTION);
+      uLoadIdentity();
+      uMatrixMode(U_MODELVIEW);
+      uLoadIdentity();
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    },
+
+    CompositeOutput: function(pipeline, pipelineContext) {
+      uMatrixMode(U_TEXTURE);
+      uLoadIdentity();
+      uMatrixMode(U_MODELVIEW);
+      uLoadIdentity();
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ZERO);
+      uColor4f(1.0, 1.0, 1.0, 1.0);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.cotbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.cot, gl.STATIC_DRAW);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.copbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.cop, gl.STATIC_DRAW);
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+      uEnableClientState(U_TEXTURE_COORD_ARRAY);
+
+      uVertexPointer(2, gl.FLOAT, 0, this.copbuf);
+      uTexCoordPointer(2, gl.FLOAT, 0, this.cotbuf);
+
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      for (var pos = 0; pos < pipeline.compositeDrawables; pos++)
+        pipeline.compositeDrawables[pos].Draw(this.renderContext);
+
+    }
+  });
+
+
+  Renderer.currentPipe = null;
+  Renderer.SetPipeline = function(pipeline) {
+    Renderer.currentPipe = pipeline;
+  }
+  Renderer.PerPixel = function(p, context) {
+    return p;
+    //return Renderer.currentPipe.PerPixel(p,context);
+  }
+
+
+  var RenderContext = Class.extend({
+    init: function() {
+      this.time = 0;
+      this.texsize = 1024;
+      this.aspectRatio = 1;
+      this.aspectCorrect = false;
+    }
+  });
+
+  var RenderTarget = Class.extend({
+    init: function(texsize, width, height) {
+
+      var mindim = 0;
+      var origtexsize = 0;
+      this.texsize = texsize;
+
+      var fb, depth_rb, rgba_tex, other_tex;
+      fb = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+
+      depth_rb = gl.createRenderbuffer();
+      gl.bindRenderbuffer(gl.RENDERBUFFER, depth_rb);
+      gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.texsize, this.texsize);
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depth_rb);
+      this.fbuffer = [fb];
+      this.depthb = [depth_rb];
+
+      other_tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, other_tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, this.texsize, this.texsize, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
+      gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+      rgba_tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, rgba_tex);
+      gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, this.texsize, this.texsize, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rgba_tex, 0);
+      this.textureID = [rgba_tex, other_tex];
+      var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+      if (status != gl.FRAMEBUFFER_COMPLETE)
+        print("ERR FRAMEBUFFER STATUS: " + status);
+    },
+
+
+    lock: function() {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbuffer[0]);
+    },
+
+    unlock: function() {
+      gl.bindTexture(gl.TEXTURE_2D, this.textureID[1]);
+      gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, this.texsize, this.textsize);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    },
+
+    nearestPower2: function(value, scaleRule) {
+      var x = value;
+      var power = 0;
+      while ((x & 0x01) != 1)
+        x >>= 1;
+      if (x == 1) return value;
+      x = value;
+      while (x != 0) {
+        x >>= 1;
+        power++;
+      }
+      if (scaleRule == this.SCALE_NEAREST) {
+        if (((1 << power) - value) <= (value - (1 << (power - 1))))
+          return 1 << power;
+        else
+          return 1 << (power - 1);
+      }
+      if (scaleRule == this.SCALE_MAGNIFY)
+        return 1 << power;
+      if (scaleRule == this.SCALE_MINIFY)
+        return 1 << (power - 1);
+      return 0;
+    },
+
+    SCALE_NEAREST: 0,
+    SCALE_MAGNIFY: 1,
+    SCALE_MINIFY: 2
+
+  });
+
+  // req.open("GET", "/milkshake/Renderable.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+
+  var RenderItem = Class.extend({
+    init: function(literal) {
+      this.masterAlpha = 1.0;
+      for (var prop in literal)
+        this[prop] = literal[prop];
+    },
+
+    Draw: function() {}
+  });
+
+  var WaveMode = {
+    Circle: 0,
+    RadialBlob: 1,
+    Blob2: 2,
+    Blob3: 3,
+    DerivativeLine: 4,
+    Blob5: 5,
+    Line: 6,
+    DoubleLine: 7
+  };
+
+
+  var MilkdropWaveform = RenderItem.extend({
+    init: function(literal) {
+      this.x = 0.5;
+      this.y = 0.5;
+      this.r = 1;
+      this.g = 0;
+      this.b = 0;
+      this.a = 1;
+      this.mystery = 0;
+      this.mode = WaveMode.Line;
+      this.additive = false;
+      this.dots = false;
+      this.thick = false;
+      this.modulateAlphaByVolume = false;
+      this.maximizeColors = false;
+      this.scale = 10;
+      this.smoothing = 0;
+      this.rot = 0;
+      this.samples = 0;
+      this.modOpacityStart = 0;
+      this.modOpacityEnd = 1;
+
+      this._super(literal);
+
+      this.wavearray = new Float32Array(2048 * 2);
+      this.wavearray2 = new Float32Array(2048 * 2);
+      this.wavearraybuf = gl.createBuffer();
+      this.wavearray2buf = gl.createBuffer();
+
+    },
+
+    Draw: function(context) {
+      this.WaveformMath(context);
+      uMatrixMode(U_MODELVIEW);
+      uPushMatrix();
+      uLoadIdentity();
+
+      if (this.modulateAlphaByVolume) {
+        if (context.music.vol <= this.modOpacityStart) this.temp_a = 0.0;
+        else if (context.music.vol >= this.modOpacityEnd) this.temp_a = this.a;
+        else this.temp_a = this.a * ((context.music.vol - this.modOpacityStart) / (this.modOpacityEnd - this.modOpacityStart));
+      } else this.temp_a = this.a;
+
+      this.MaximizeColors(context);
+
+      if (this.thick == 1)
+        gl.lineWidth((context.texsize < 512) ? 2 : 2 * context.texsize / 512);
+      else gl.lineWidth((context.texsize < 512) ? 1 : context.texsize / 512);
+
+      gl.enable(gl.BLEND);
+      if (this.additive == 1) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+      else gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      uTranslatef(.5, .5, 0);
+      uRotatef(this.rot, 0, 0, 1);
+      uScalef(this.aspectScale, 1.0, 1.0);
+      uTranslatef(-.5, -.5, 0);
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.wavearraybuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.wavearray, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.wavearraybuf);
+
+      if (this.loop)
+        uDrawArrays(gl.LINE_LOOP, 0, this.samples);
+      else
+        uDrawArrays(gl.LINE_STRIP, 0, this.samples);
+
+
+      if (this.two_waves) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.wavearray2buf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.wavearray2, gl.STATIC_DRAW);
+        uVertexPointer(2, gl.FLOAT, 0, this.wavearray2buf);
+        if (this.loop)
+          uDrawArrays(gl.LINE_LOOP, 0, this.samples);
+        else
+          uDrawArrays(gl.LINE_STRIP, 0, this.samples);
+      }
+
+      uPopMatrix();
+    },
+
+    MaximizeColors: function(context) {
+      var wave_r_switch = 0;
+      var wave_g_switch = 0;
+      var wave_b_switch = 0;
+
+      if (this.mode == WaveMode.Blob2 || this.mode == WaveMode.Blob5)
+        switch (context.texsize) {
+          case 256:
+            this.temp_a *= 0.07;
+            break;
+          case 512:
+            this.temp_a *= 0.09;
+            break;
+          case 1024:
+            this.temp_a *= 0.11;
+            break;
+          case 2048:
+            this.temp_a *= 0.13;
+            break;
+        } else if (this.mode == WaveMode.Blob3) {
+          switch (context.texsize) {
+            case 256:
+              this.temp_a *= 0.075;
+              break;
+            case 512:
+              this.temp_a *= 0.15;
+              break;
+            case 1024:
+              this.temp_a *= 0.22;
+              break;
+            case 2048:
+              this.temp_a *= 0.33;
+              break;
+          }
+          this.temp_a *= 1.3;
+          this.temp_a *= Math.pow(context.music.treb, 2.0);
+        }
+
+      if (this.maximizeColors) {
+        if (this.r >= this.g && this.r >= this.b) {
+          wave_b_switch = this.b / this.r;
+          wave_g_switch = this.g / this.r;
+          wave_r_switch = 1.0;
+        } else if (this.b >= this.g && this.b >= this.r) {
+          wave_r_switch = this.r / this.b;
+          wave_g_switch = this.g / this.b;
+          wave_b_switch = 1.0;
+        } else if (this.g >= this.b && this.g >= this.r) {
+          wave_b_switch = this.b / this.g;
+          wave_r_switch = this.r / this.g;
+          wave_g_switch = 1.0;
+        }
+        uColor4f(wave_r_switch, wave_g_switch, wave_b_switch, this.temp_a * this.masterAlpha);
+      } else {
+        uColor4f(this.r, this.g, this.b, this.temp_a * this.masterAlpha);
+      }
+
+    },
+
+    WaveformMath: function(context) {
+      var i, r, theta, temp_y, cos_rot, sin_rot;
+      var offset = this.x - 0.5;
+      var wave_x_temp = 0;
+      var wave_y_temp = 0;
+
+      this.two_waves = false;
+      this.loop = false;
+      if (this.mode == WaveMode.Circle) {
+
+        this.loop = true;
+        this.rot = 0;
+        this.aspectScale = 1.0;
+        temp_y = -1 * (this.y - 1.0);
+        this.samples = context.music.numsamples;
+        var inv_nverts_minus_one = 1.0 / this.samples;
+        var offset = (context.music.pcmdataR[0] + context.music.pcmdataL[0]) -
+          (context.music.pcmdataR[this.samples - 1] + context.music.pcmdataL[this.samples - 1]);
+        for (i = 0; i < this.samples; i++) {
+          var value = context.music.pcmdataR[i] + context.music.pcmdataL[i];
+          value += offset * i / this.samples;
+          r = (0.5 + 0.4 * .12 * value * this.scale + this.mystery) * .5;
+          theta = i * inv_nverts_minus_one * 6.28 + context.time * 0.2;
+          this.wavearray[i * 2] = r * Math.cos(theta) * (context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
+          this.wavearray[i * 2 + 1] = r * Math.sin(theta) + temp_y;
+        }
+
+      } else if (this.mode == WaveMode.RadialBlob) {
+
+        this.rot = 0;
+        this.aspectScale = context.aspectRatio;
+        temp_y = -1 * (this.y - 1.0);
+        this.samples = 512 - 32;
+        for (i = 0; i < 512 - 32; i++) {
+          theta = context.music.pcmdataL[i + 32] * 0.06 * this.scale * 1.57 + context.time * 2.3;
+          r = (0.53 + 0.43 * context.music.pcmdataR[i] * 0.12 * this.scale + this.mystery) * .5;
+          this.wavearray[i * 2] = r * Math.cos(theta) * (context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
+          this.wavearray[i * 2 + 1] = r * Math.sin(theta) + temp_y;
+        }
+
+      } else if (this.mode == WaveMode.Blob2) {
+
+        temp_y = -1 * (this.y - 1.0);
+        this.rot = 0;
+        this.aspectScale = 1.0;
+        this.samples = 512 - 32;
+        for (i = 0; i < 512 - 32; i++) {
+          this.wavearray[i * 2] = context.music.pcmdataR[i] * this.scale * 0.5 + this.x;
+          this.wavearray[i * 2 + 1] = context.music.pcmdataL[i + 32] * this.scale * 0.5 + temp_y;
+        }
+
+      } else if (this.mode == WaveMode.DerivativeLine) {
+
+        this.rot = -this.mystery * 90;
+        this.aspectScale = 1.0;
+        temp_y = -1 * (this.y - 1.0);
+        var w1 = 0.45 + 0.5 * (this.mystery * 0.5 + 0.5);
+        var w2 = 1.0 - w1;
+        var xx, xxm1, xxm2, yy, yym1, yym2;
+        this.samples = 512 - 32;
+        for (i = 0; i < 512 - 32; i++) {
+          xx = -1.0 + 2.0 * i / (512 - 32) + this.x;
+          yy = 0.4 * context.music.pcmdataL[i] * 0.47 * this.scale + temp_y;
+          xx += 0.4 * context.music.pcmdataR[i] * 0.44 * this.scale;
+          if (i > 1) {
+            xx = xx * w2 + w1 * (xxm1 * 2.0 - xxm2);
+            yy = yy * w2 + w1 * (yym1 * 2.0 - yym2);
+          }
+          this.wavearray[i * 2] = xx;
+          this.wavearray[i * 2 + 1] = yy;
+          xxm2 = xxm1;
+          yym2 = yym1;
+          xxm1 = xx;
+          yym1 = yy;
+        }
+
+      } else if (this.mode == WaveMode.Blob5) {
+
+        this.rot = 0;
+        this.aspectScale = 1.0;
+        temp_y = -1 * (this.y - 1.0);
+        cos_rot = Math.cos(context.time * 0.3);
+        sin_rot = Math.sin(context.time * 0.3);
+        this.samples = 512 - 32;
+        for (i = 0; i < 512 - 32; i++) {
+          var x0 = context.music.pcmdataR[i] * context.music.pcmdataL[i + 32] + context.music.pcmdataL[i + 32] * context.music.pcmdataR[i];
+          var y0 = context.music.pcmdataR[i] * context.music.pcmdataR[i] - context.music.pcmdataL[i + 32] * context.music.pcmdataL[i + 32];
+          this.wavearray[i * 2] = (x0 * cos_rot - y0 * sin_rot) * this.scale * 0.5 * (context.aspectCorrect ? context.aspectRatio : 1.0) + this.x;
+          this.wavearray[i * 2 + 1] = (x0 * sin_rot + y0 * cos_rot) * this.scale * 0.5 + temp_y;
+        }
+
+      } else if (this.mode == WaveMode.Line) {
+
+        wave_x_temp = -2 * 0.4142 * (Math.abs(Math.abs(this.mystery) - .5) - .5);
+        this.rot = -this.mystery * 90;
+        this.aspectScale = 1.0 + wave_x_temp;
+        wave_x_temp = -1 * (this.x - 1.0);
+        this.samples = context.music.numsamples;
+        for (i = 0; i < this.samples; i++) {
+          this.wavearray[i * 2] = i / this.samples;
+          this.wavearray[i * 2 + 1] = context.music.pcmdataR[i] * .04 * this.scale + wave_x_temp;
+        }
+
+      } else if (this.mode == WaveMode.DoubleLine) {
+
+        wave_x_temp = -2 * 0.4142 * (Math.abs(Math.abs(this.mystery) - .5) - .5);
+        this.rot = -this.mystery * 90;
+        this.aspectScale = 1.0 + wave_x_temp;
+        this.samples = context.music.numsamples;
+        this.two_waves = true;
+        var y_adj = this.y * this.y * .5;
+        wave_y_temp = -1 * (this.x - 1);
+        for (i = 0; i < this.samples; i++) {
+          this.wavearray[i * 2] = i / this.samples;
+          this.wavearray[i * 2 + 1] = context.music.pcmdataL[i] * .04 * this.scale + (wave_y_temp + y_adj);
+        }
+        for (i = 0; i < this.samples; i++) {
+          this.wavearray2[i * 2] = i / this.samples;
+          this.wavearray2[i * 2 + 1] = context.music.pcmdataR[i] * .04 * this.scale + (wave_y_temp - y_adj);
+        }
+
+      }
+    },
+
+
+  });
+
+
+  var CustomWaveform = RenderItem.extend({
+    init: function(literal, initialQs) {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 0;
+
+      this.spectrum = false;
+      this.dots = false;
+      this.thick = false;
+      this.additive = false;
+      this.samples = 512;
+      this.scaling = 1;
+      this.smoothing = 0;
+      this.sep = 0;
+
+      this.init_code = function() {};
+      this.per_frame_code = function() {};
+      this.per_point_code = function() {};
+
+      this.masterAlpha = 1.0;
+      for (var prop in literal)
+        if (prop.toLowerCase() == "bspectrum")
+          this.spectrum = new Boolean(literal[prop]);
+        else if (prop.toLowerCase() == "bdrawthick")
+        this.thick = new Boolean(literal[prop]);
+      else if (prop.toLowerCase() == "busedots")
+        this.dots = new Boolean(literal[prop]);
+      else if (prop.toLowerCase() == "badditive")
+        this.additive = new Boolean(literal[prop]);
+      else
+        this[prop] = literal[prop];
+
+      if (this.samples > 512)
+        this.samples = 512;
+
+      this.initialVals = new WaveFrameVariablePool();
+      this.initialVals.pushOutputs(this);
+
+      this.framePool = new WaveFrameVariablePool();
+      this.pointPool = new WavePointVariablePool();
+      this.varInit();
+      this.framePool.pushQs(initialQs);
+      this.init_code(this.framePool);
+      this.initialTs = new Float32Array(8);
+      this.framePool.popTs(this.initialTs);
+
+      this.waveDataL = new Float32Array(this.samples);
+      this.waveDataR = new Float32Array(this.samples);
+
+      this.r_mesh = new Float32Array(this.samples);
+      this.g_mesh = new Float32Array(this.samples);
+      this.b_mesh = new Float32Array(this.samples);
+      this.a_mesh = new Float32Array(this.samples);
+      this.x_mesh = new Float32Array(this.samples);
+      this.y_mesh = new Float32Array(this.samples);
+
+      this.colors = new Float32Array(this.samples * 4);
+      this.p = new Float32Array(this.samples * 2);
+      this.colorbuf = gl.createBuffer();
+      this.pbuf = gl.createBuffer();
+    },
+
+    varInit: function() {
+      var testPool = new WaveFrameVariablePool();
+      var winProps = {};
+      for (var prop in window)
+        winProps[prop] = null;
+      for (var i = 0; i < 30; i++)
+        try {
+          this.init_code(testPool);
+          this.per_frame_code(testPool);
+          break;
+        } catch (error) {
+          if (error.name == "ReferenceError") {
+            var customVar = error.message.split(" ")[0];
+            this.framePool[customVar] = 0;
+            testPool[customVar] = 0;
+          } else {
+            console.log(this.init_code);
+            console.log(this.per_frame_code);
+            throw error;
+          }
+        }
+      for (var prop in window)
+        if (!(prop in winProps)) {
+          this.framePool[prop] = 0;
+          delete window[prop];
+        }
+    },
+
+    runCode: function() {
+      this.framePool.pushTs(this.initialTs);
+      this.initialVals.popOutputs(this.framePool);
+      this.per_frame_code(this.framePool);
+      this.framePool.popOutputs(this);
+    },
+
+    runPerPoint: function() {
+      this.framePool.transferQs(this.pointPool);
+      this.framePool.transferTs(this.pointPool);
+      this.pointPool.pushInputs(this.framePool);
+      for (var i = 0; i < this.samples; i++) {
+        this.pointPool.sample = i / (this.samples - 1);
+        this.pointPool.value1 = this.waveDataL[i];
+        this.pointPool.value2 = this.waveDataR[i];
+        this.pointPool.r = this.r;
+        this.pointPool.g = this.g;
+        this.pointPool.b = this.b;
+        this.pointPool.a = this.a;
+        this.pointPool.x = this.x;
+        this.pointPool.y = this.y;
+        this.per_point_code(this.pointPool);
+        this.r_mesh[i] = this.pointPool.r;
+        this.g_mesh[i] = this.pointPool.g;
+        this.b_mesh[i] = this.pointPool.b;
+        this.a_mesh[i] = this.pointPool.a;
+        this.x_mesh[i] = this.pointPool.x;
+        this.y_mesh[i] = this.pointPool.y;
+      }
+    },
+
+    Draw: function(context) {
+
+      gl.enable(gl.BLEND);
+      if (this.additive) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+      else gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      if (this.thick) {
+        gl.lineWidth(context.texsize <= 512 ? 2 : 2 * context.texsize / 512);
+        uPointSize(context.texsize <= 512 ? 2 : 2 * context.texsize / 512);
+      } else uPointSize(context.texsize <= 512 ? 1 : context.texsize / 512);
+
+      context.music.getPCM(this.waveDataL, this.samples, 0, this.spectrum, this.smoothing);
+      context.music.getPCM(this.waveDataR, this.samples, 1, this.spectrum, this.smoothing);
+
+      var mult = this.scaling * (this.spectrum ? 0.015 : 1.0);
+      for (var i = 0; i < this.samples; i++) {
+        this.waveDataL[i] *= mult;
+        this.waveDataR[i] *= mult;
+      }
+
+      this.runPerPoint();
+
+      for (var i = 0; i < this.samples; i++) {
+        this.colors[i * 4] = this.r_mesh[i];
+        this.colors[i * 4 + 1] = this.g_mesh[i];
+        this.colors[i * 4 + 2] = this.b_mesh[i];
+        this.colors[i * 4 + 3] = this.a_mesh[i] * this.masterAlpha;
+        this.p[i * 2] = this.x_mesh[i];
+        this.p[i * 2 + 1] = -(this.y_mesh[i] - 1);
+      }
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uEnableClientState(U_COLOR_ARRAY);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.p, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pbuf);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
+      uColorPointer(4, gl.FLOAT, 0, this.colorbuf);
+
+      if (this.dots) uDrawArrays(gl.POINTS, 0, this.samples);
+      else uDrawArrays(gl.LINE_STRIP, 0, this.samples);
+
+      uPointSize(context.texsize < 512 ? 1 : context.texsize / 512);
+      gl.lineWidth(context.texsize < 512 ? 1 : context.texsize / 512);
+
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    }
+  });
+
+  var DarkenCenter = RenderItem.extend({
+    init: function(literal) {
+      this._super(literal);
+      this.colors = new Float32Array([0, 0, 0, 3. / 32 * this.masterAlpha, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      this.points = new Float32Array([0.5, 0.5, 0.45, 0.5, 0.5, 0.45, 0.55, 0.5, 0.5, 0.55, 0.45, 0.5]);
+      this.colorbuf = gl.createBuffer();
+      this.pointsbuf = gl.createBuffer();
+    },
+
+    Draw: function(context) {
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      this.colors[3] = 3 / 32 * this.masterAlpha;
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uEnableClientState(U_COLOR_ARRAY);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+      uColorPointer(4, gl.FLOAT, 0, this.colorbuf);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 6);
+    }
+  });
+
+
+  var Shape = RenderItem.extend({
+    init: function(literal, initialQs) {
+
+      this.sides = 4;
+      this.thickOutline = false;
+      this.enabled = true;
+      this.additive = false;
+      this.textured = false;
+
+      this.tex_zoom = 1.0;
+      this.tex_ang = 0.0;
+
+      this.x = 0.5;
+      this.y = 0.5;
+      this.rad = 1.0;
+      this.ang = 0.0;
+
+      this.r = 0.0;
+      this.g = 0.0;
+      this.b = 0.0;
+      this.a = 0.0;
+
+      this.r2 = 0.0;
+      this.g2 = 0.0;
+      this.b2 = 0.0;
+      this.a2 = 0.0;
+
+      this.border_r = 0.0;
+      this.border_g = 0.0;
+      this.border_b = 0.0;
+      this.border_a = 0.0;
+
+      this.ImageUrl = "";
+
+      this.init_code = function() {};
+      this.per_frame_code = function() {};
+
+      this._super(literal);
+
+      this.initialVals = new ShapeFrameVariablePool();
+      this.initialVals.pushOutputs(this);
+
+      this.framePool = new ShapeFrameVariablePool();
+      this.varInit();
+      this.framePool.pushQs(initialQs);
+      this.init_code(this.framePool);
+      this.initialTs = new Float32Array(8);
+      this.framePool.popTs(this.initialTs);
+
+      this.colors = new Float32Array((this.sides + 2) * 4);
+      this.texcoords = new Float32Array((this.sides + 2) * 2);
+      this.points = new Float32Array((this.sides + 2) * 2);
+      this.points2 = new Float32Array((this.sides + 1) * 2);
+
+      this.colorbuf = gl.createBuffer();
+      this.texbuf = gl.createBuffer();
+      this.pointsbuf = gl.createBuffer();
+      this.points2buf = gl.createBuffer();
+
+    },
+
+    varInit: function() {
+      var testPool = new ShapeFrameVariablePool();
+      for (var i = 0; i < 30; i++)
+        try {
+          this.init_code(testPool);
+          this.per_frame_code(testPool);
+          break;
+        } catch (error) {
+          if (error.name == "ReferenceError") {
+            var customVar;
+            if (error.message.indexOf("Can't find variable:") == 0)
+              customVar = error.message.split(" ").pop();
+            else
+              customVar = error.message.split(" ")[0];
+            this.framePool[customVar] = 0;
+            testPool[customVar] = 0;
+          } else
+            throw error;
+        }
+    },
+
+    runCode: function() {
+      this.framePool.pushTs(this.initialTs);
+      this.initialVals.popOutputs(this.framePool);
+      this.per_frame_code(this.framePool);
+      this.framePool.popOutputs(this);
+    },
+
+    Draw: function(context) {
+
+      var xval, yval, t;
+      var temp_radius = this.rad * (.707 * .707 * .707 * 1.04);
+      gl.enable(gl.BLEND);
+      if (this.additive == 0)
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      else
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+
+      xval = this.x;
+      yval = -(this.y - 1);
+
+      if (this.textured) {
+        if (this.ImageUrl != "") {
+          var tex = textures[this.ImageUrl];
+          gl.bindTexture(gl.TEXTURE_2D, tex);
+          context.aspectRatio = 1.0;
+        }
+
+        uMatrixMode(U_TEXTURE);
+        uPushMatrix();
+        uLoadIdentity();
+
+        uEnableClientState(U_VERTEX_ARRAY);
+        uEnableClientState(U_COLOR_ARRAY);
+        uEnableClientState(U_TEXTURE_COORD_ARRAY);
+
+        uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+        uColorPointer(4, gl.FLOAT, 0, this.colorbuf);
+        uTexCoordPointer(2, gl.FLOAT, 0, this.texbuf);
+
+        this.colors[0] = this.r;
+        this.colors[1] = this.g;
+        this.colors[2] = this.b;
+        this.colors[3] = this.a * this.masterAlpha;
+        this.texcoords[0] = 0.5;
+        this.texcoords[1] = 0.5;
+        this.points[0] = xval;
+        this.points[1] = yval;
+
+        for (var i = 1; i < this.sides + 2; i++) {
+
+          this.colors[i * 4] = this.r2;
+          this.colors[i * 4 + 1] = this.g2;
+          this.colors[i * 4 + 2] = this.b2;
+          this.colors[i * 4 + 3] = this.a2 * this.masterAlpha;
+
+          t = (i - 1) / this.sides;
+          this.texcoords[i * 2] = 0.5 + 0.5 * Math.cos(t * 3.1415927 * 2 + this.tex_ang + 3.1415927 * 0.25) * (context.aspectCorrect ? context.aspectRatio : 1.0) / this.tex_zoom;
+          this.texcoords[i * 2 + 1] = 0.5 + 0.5 * Math.sin(t * 3.1415927 * 2 + this.tex_ang + 3.1415927 * 0.25) / this.tex_zoom;
+          this.points[i * 2] = temp_radius * Math.cos(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) * (context.aspectCorrect ? context.aspectRatio : 1.0) + xval;
+          this.points[i * 2 + 1] = temp_radius * Math.sin(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) + yval;
+
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.texbuf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.texcoords, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+
+        uDrawArrays(gl.TRIANGLE_FAN, 0, this.sides + 2);
+
+        uDisableClientState(U_TEXTURE_COORD_ARRAY);
+        uPopMatrix();
+        uMatrixMode(U_MODELVIEW);
+
+      } else {
+        uEnableClientState(U_VERTEX_ARRAY);
+        uEnableClientState(U_COLOR_ARRAY);
+        uDisableClientState(U_TEXTURE_COORD_ARRAY);
+        uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+        uColorPointer(4, gl.FLOAT, 0, this.colorbuf);
+
+        this.colors[0] = this.r;
+        this.colors[1] = this.g;
+        this.colors[2] = this.b;
+        this.colors[3] = this.a * this.masterAlpha;
+        this.points[0] = xval;
+        this.points[1] = yval;
+
+        for (var i = 1; i < this.sides + 2; i++) {
+          this.colors[i * 4] = this.r2;
+          this.colors[i * 4 + 1] = this.g2;
+          this.colors[i * 4 + 2] = this.b2;
+          this.colors[i * 4 + 3] = this.a2 * this.masterAlpha;
+          t = (i - 1) / this.sides;
+          this.points[i * 2] = temp_radius * Math.cos(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) * (context.aspectCorrect ? context.aspectRatio : 1.0) + xval;
+          this.points[i * 2 + 1] = temp_radius * Math.sin(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) + yval;
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorbuf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+        gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+
+        uDrawArrays(gl.TRIANGLE_FAN, 0, this.sides + 2);
+
+      }
+      if (this.thickOutline)
+        gl.lineWidth(context.texsize < 512 ? 1 : 2 * context.texsize / 512);
+
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+      uVertexPointer(2, gl.FLOAT, 0, this.points2buf);
+
+      uColor4f(this.border_r, this.border_g, this.border_b, this.border_a * this.masterAlpha);
+
+      for (var i = 0; i < this.sides; i++) {
+        t = (i - 1) / this.sides;
+        this.points2[i * 2] = temp_radius * Math.cos(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) * (context.aspectCorrect ? context.aspectRatio : 1.0) + xval;
+        this.points2[i * 2 + 1] = temp_radius * Math.sin(t * 3.1415927 * 2 + this.ang + 3.1415927 * 0.25) + yval;
+      }
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.points2buf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points2, gl.STATIC_DRAW);
+
+      uDrawArrays(gl.LINE_LOOP, 0, this.sides);
+      if (this.thickOutline)
+        gl.lineWidth(context.texsize < 512 ? 1 : context.texsize / 512);
+
+
+    }
+  });
+
+
+  var MotionVectors = RenderItem.extend({
+    init: function(literal) {
+
+      this.r = 0.0;
+      this.g = 0.0;
+      this.b = 0.0;
+      this.a = 0.0;
+      this.length = 0.0;
+      this.x_num = 0.0;
+      this.y_num = 0.0;
+      this.x_offset = 0.0;
+      this.y_offset = 0.0;
+
+      this._super(literal);
+      this.points = new Float32Array(Math.floor(this.x_num * this.y_num) * 2);
+      this.pointsbuf = gl.createBuffer();
+    },
+
+    Draw: function() {
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+
+      var intervalx = 1.0 / this.x_num;
+      var intervaly = 1.0 / this.y_num;
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      uPointSize(this.length);
+      uColor4f(this.r, this.g, this.b, this.a * this.masterAlpha);
+
+      if (this.x_num + this.y_num < 600) {
+        var size = Math.floor(this.x_num * this.y_num);
+        if (size > 0) {
+          if (this.points.length < (size * 2))
+            this.points = new Float32Array(size * 2);
+          for (var x = 0; x < Math.floor(this.x_num); x++)
+            for (var y = 0; y < Math.floor(this.y_num); y++) {
+              var lx, ly;
+              lx = this.x_offset + x * intervalx;
+              ly = this.y_offset + y * intervaly;
+              this.points[(x * Math.floor(this.y_num)) + y][0] = lx;
+              this.points[(x * Math.floor(this.y_num)) + y][1] = ly;
+            }
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+          gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+          uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+          uDrawArrays(gl.POINTS, 0, size);
+        }
+      }
+    }
+  });
+
+  var Border = RenderItem.extend({
+    init: function(literal) {
+
+      this.outer_size = 0;
+      this.outer_r = 0;
+      this.outer_g = 0;
+      this.outer_b = 0;
+      this.outer_a = 0;
+
+      this.inner_size = 0;
+      this.inner_r = 0;
+      this.inner_g = 0;
+      this.inner_b = 0;
+      this.inner_a = 0;
+
+      this._super(literal);
+
+      this.pointsA = new Float32Array([0, 0, 0, 1, 0, 0, 0, 1]);
+      this.pointsB = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0]);
+      this.pointsC = new Float32Array([1, 0, 1, 1, 1, 0, 1, 1]);
+      this.pointsD = new Float32Array([0, 1, 0, 1, 1, 1, 1, 1]);
+      this.pointsE = new Float32Array([0, 0, 0, 1, 0, 0, 0, 1]);
+      this.pointsF = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0]);
+      this.pointsG = new Float32Array([1, 0, 1, 0, 1, 0, 1, 1]);
+      this.pointsH = new Float32Array([0, 1, 0, 1, 1, 1, 1, 1]);
+
+      this.pointsAbuf = gl.createBuffer();
+      this.pointsBbuf = gl.createBuffer();
+      this.pointsCbuf = gl.createBuffer();
+      this.pointsDbuf = gl.createBuffer();
+      this.pointsEbuf = gl.createBuffer();
+      this.pointsFbuf = gl.createBuffer();
+      this.pointsGbuf = gl.createBuffer();
+      this.pointsHbuf = gl.createBuffer();
+
+    },
+
+    Draw: function() {
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+
+      var of = this.outer_size * .5;
+      var iff = this.inner_size * .5;
+      var texof = 1.0 - of;
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      uColor4f(this.outer_r, this.outer_g, this.outer_b, this.outer_a * this.masterAlpha);
+
+      this.pointsA[4] = this.pointsA[6] = of;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsAbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsA, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsAbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsB[0] = this.pointsB[2] = this.pointsB[3] = this.pointsB[7] = of;
+      this.pointsB[4] = this.pointsB[6] = texof;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsBbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsB, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsBbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsC[0] = this.pointsC[2] = texof;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsCbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsC, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsCbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsD[0] = this.pointsD[2] = of;
+      this.pointsD[3] = this.pointsD[4] = this.pointsD[6] = this.pointsD[7] = texof;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsDbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsD, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsDbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      uColor4f(this.inner_r, this.inner_g, this.inner_b, this.inner_a * this.masterAlpha);
+
+      this.pointsE[0] = this.pointsE[1] = this.pointsE[2] = this.pointsE[5] = of;
+      this.pointsE[3] = this.pointsE[7] = texof;
+      this.pointsE[4] = this.pointsE[6] = of + iff;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsEbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsE, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsEbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsF[1] = this.pointsF[5] = of;
+      this.pointsF[0] = this.pointsF[2] = this.pointsF[3] = this.pointsF[7] = of + iff;
+      this.pointsF[4] = this.pointsF[6] = texof - iff;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsFbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsF, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsFbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsG[1] = this.pointsG[5] = of;
+      this.pointsG[3] = this.pointsG[4] = this.pointsG[6] = this.pointsG[7] = texof;
+      this.pointsG[0] = this.pointsG[2] = texof - iff;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsGbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsG, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsGbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      this.pointsH[1] = this.pointsH[5] = texof;
+      this.pointsH[0] = this.pointsH[2] = of + iff;
+      this.pointsH[3] = this.pointsH[4] = this.pointsH[6] = this.pointsH[7] = texof - iff;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsHbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsH, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsHbuf);
+      uDrawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+  });
+
+  var Orientation = {
+    Normal: 0,
+    FlipX: 1,
+    FlipY: 2,
+    FlipXY: 3
+  }
+
+  var VideoEcho = RenderItem.extend({
+    init: function(literal) {
+      this.a = 0;
+      this.zoom = 0;
+      this.orientation = Orientation.Normal;
+
+      this._super();
+
+      this.tex = new Float32Array([0, 1, 0, 0, 1, 0, 1, 1]);
+      this.points = new Float32Array([-.5, -.5, -.5, .5, .5, .5, .5, -.5]);
+      this.pointsFlip = new Float32Array(8);
+      this.texbuf = gl.createBuffer();
+      this.pointsbuf = gl.createBuffer();
+      this.pointsFlipbuf = gl.createBuffer();
+    },
+
+    Draw: function(context) {
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      uDisableClientState(U_COLOR_ARRAY);
+      uEnableClientState(U_TEXTURE_COORD_ARRAY);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.texbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.tex, gl.STATIC_DRAW);
+      uTexCoordPointer(2, gl.FLOAT, 0, this.tex);
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      uMatrixMode(U_TEXTURE);
+
+      uColor4f(1.0, 1.0, 1.0, this.a * this.masterAlpha);
+      uTranslatef(.5, .5, 0);
+      uScalef(1.0 / this.zoom, 1.0 / this.zoom, 1);
+      uTranslatef(-.5, -.5, 0);
+
+      var flipx = 1,
+        flipy = 1;
+      switch (this.orientation) {
+        case Orientation.Normal:
+          flipx = 1;
+          flipy = 1;
+          break;
+        case Orientation.FlipX:
+          flipx = -1;
+          flipy = 1;
+          break;
+        case Orientation.FlipY:
+          flipx = 1;
+          flipy = -1;
+          break;
+        case Orientation.FlipXY:
+          flipx = -1;
+          flipy = -1;
+          break;
+        default:
+          flipx = 1;
+          flipy = 1;
+          break;
+      }
+
+      this.pointsFlip[0] = this.pointsFlip[2] = -.5 * flipx;
+      this.pointsFlip[1] = this.pointsFlip[7] = -.5 * flipy;
+      this.pointsFlip[3] = this.pointsFlip[5] = .5 * flipy;
+      this.pointsFlip[4] = this.pointsFlip[6] = .5 * flipx;
+
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsFlipbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.pointsFlip, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsFlipbuf);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+
+      uDisableClientState(U_TEXTURE_COORD_ARRAY);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    }
+  });
+
+
+  var Filter = RenderItem.extend({
+    init: function(literal) {
+      this._super(literal);
+      this.points = new Float32Array([-.5, -.5, -.5, .5, .5, .5, .5, -.5]);
+      this.pointsbuf = gl.createBuffer();
+    }
+  });
+
+  var Brighten = Filter.extend({
+    Draw: function(context) {
+
+      uEnableClientState(U_VERTEX_ARRAY);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+      uColor4f(1.0, 1.0, 1.0, 1.0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.ZERO, gl.DST_COLOR);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      uDisableClientState(U_VERTEX_ARRAY);
+    }
+  });
+
+  var Darken = Filter.extend({
+    Draw: function(context) {
+      uEnableClientState(U_VERTEX_ARRAY);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+      uColor4f(1.0, 1.0, 1.0, 1.0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ZERO, gl.DST_COLOR);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      uDisableClientState(U_VERTEX_ARRAY);
+    }
+  });
+
+  var Invert = Filter.extend({
+    Draw: function(context) {
+      uEnableClientState(U_VERTEX_ARRAY);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+      uColor4f(1.0, 1.0, 1.0, 1.0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      uDisableClientState(U_VERTEX_ARRAY);
+    }
+  });
+
+  var Solarize = Filter.extend({
+    Draw: function(context) {
+      uEnableClientState(U_VERTEX_ARRAY);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
+      gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
+      uVertexPointer(2, gl.FLOAT, 0, this.pointsbuf);
+      uColor4f(1.0, 1.0, 1.0, 1.0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ZERO, gl.ONE_MINUS_DST_COLOR);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.DST_COLOR, gl.ONE);
+      uDrawArrays(gl.TRIANGLE_FAN, 0, 4);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      uDisableClientState(U_VERTEX_ARRAY);
+    }
+  });
+
+  // req.open("GET", "/milkshake/RenderItemMatcher.js", false); req.send(); eval(req.responseText);
+  var RenderItemMatcher = Class.extend({
+    init: function() {
+      this.results = new this.MatchResults();
+      this.weights = [];
+      for (var i = 0; i < this.MAXIMUM_SET_SIZE; i++)
+        this.weights.push(new Float32Array(this.MAXIMUM_SET_SIZE));
+    },
+
+    MAXIMUM_SET_SIZE: 1000,
+
+    MatchResults: Class.extend({
+      init: function() {
+        this.unmatchedLeft = [];
+        this.unmatchedRight = [];
+      }
+    }),
+
+    computeMatching: function(lhs, rhs) {
+      for (var i = 0; i < lhs.length; i++) {
+        var j;
+        for (j = 0; j < rhs.length; j++)
+          this.weights[i][j] = this.distanceFunction(lhs[i], rhs[j]);
+        for (; j < lhs.length; j++)
+          this.weights[i][j] = RenderItemDistanceMetric.NOT_COMPARABLE_VALUE;
+      }
+      var error = this.hungarianMethod(this.weights, lhs.length);
+      return error;
+    },
+
+    setMatches: function(lhs_src, rhs_src) {
+      for (var i = 0; i < lhs_src.size(); i++) {
+        var j = this.hungarianMethod.matching(i);
+        this.results.unmatchedLeft.push(lhs_src[i]);
+        this.results.unmatchedRight.push(rhs_src[i]);
+      }
+    }
+  });
+
+  // req.open("GET", "/milkshake/RenderItemMergeFunction.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var RenderItemMergeFunction = Class.extend({
+    init: function() {
+
+    },
+
+    typeIdPair: function() {
+      return 0;
+    }
+  });
+
+  var RenderItemMerge = RenderItemMergeFunction.extend({
+    init: function() {
+
+    },
+
+    supported: function() {
+      return false;
+    },
+
+    typeIdPair: function() {
+      return ["", ""];
+    },
+
+  });
+
+  var ShapeMerge = RenderItemMerge.extend({
+    init: function() {
+
+    }
+  });
+
+  var BorderMerge = RenderItemMerge.extend({
+    init: function() {
+
+    }
+  });
+
+  var MasterRenderItemMerge = RenderItemMerge.extend({
+    init: function() {
+      this.mergeFunctionMap = {};
+    },
+
+    add: function(fun) {
+      this.mergeFunctionMap[fun.typeIdPair()] = fun;
+    }
+
+  });
+
+  // req.open("GET", "/milkshake/Variables.js", false); req.send(); eval(req.responseText);
+
+  var VariablePool = Class.extend({
+    init: function() {
+      this.inputs = [];
+      this.outputs = [];
+      this.addInputs(["time", "fps", "frame", "progress", "bass", "mid", "treb",
+        "bass_att", "mid_att", "treb_att"
+      ]);
+      for (i = 1; i <= 32; i++)
+        this["q" + i] = 0;
+    },
+
+    addInputs: function(ownInputs) {
+      for (var i = 0; i < ownInputs.length; i++) {
+        this.inputs.push(ownInputs[i]);
+        this[ownInputs[i]] = 0;
+      }
+    },
+
+    addOutputs: function(ownOutputs) {
+      for (var i = 0; i < ownOutputs.length; i++) {
+        this.outputs.push(ownOutputs[i]);
+        this[ownOutputs[i]] = 0;
+      }
+    },
+
+    pushQs: function(array) {
+      for (var i = 1; i <= 32; i++)
+        this["q" + i] = array[i - 1];
+    },
+
+    popQs: function(array) {
+      for (var i = 1; i <= 32; i++)
+        array[i - 1] = this["q" + i];
+    },
+
+    transferQs: function(pool) {
+      for (var i = 1; i <= 32; i++)
+        pool["q" + i] = this["q" + i];
+    },
+
+    pushOutputs: function(pool) {
+      for (var i = 0; i < this.outputs.length; i++)
+        this[this.outputs[i]] = pool[this.outputs[i]];
+    },
+
+    popOutputs: function(pool) {
+      for (var i = 0; i < this.outputs.length; i++)
+        pool[this.outputs[i]] = this[this.outputs[i]];
+    },
+
+    pushInputs: function(pool) {
+      for (var i = 0; i < this.inputs.length; i++)
+        this[this.inputs[i]] = pool[this.inputs[i]];
+    },
+
+    cos: Math.cos,
+    sin: Math.sin,
+    tan: Math.tan,
+    asin: Math.asin,
+    acos: Math.acos,
+    atan: Math.atan,
+    abs: Math.abs,
+    pow: Math.pow,
+    min: Math.min,
+    max: Math.max,
+    sqrt: Math.sqrt,
+    log: Math.log,
+    above: function(arg1, arg2) {
+      return arg1 > arg2;
+    },
+    below: function(arg1, arg2) {
+      return arg1 < arg2;
+    },
+    equal: function(arg1, arg2) {
+      return arg1 == arg2;
+    },
+    ifcond: function(arg1, arg2, arg3) {
+      return arg1 ? arg2 : arg3;
+    },
+    sign: function(arg1) {
+      return (arg1 > 0) - (arg1 < 0);
+    },
+    int: function(arg1) {
+      return Math.floor(arg1);
+    },
+    sqr: function(arg1) {
+      return Math.pow(arg1, 2);
+    },
+    sigmoid: function(arg1, arg2) {
+      return 65534 / (1 + Math.exp(arg1 * arg2 / -32767) - 32767);
+    },
+    rand: function(arg1) {
+      return Math.floor(Math.random() * arg1);
+    },
+    bor: function(arg1, arg2) {
+      return (arg1 != 0) || (arg2 != 0);
+    },
+    band: function(arg1, arg2) {
+      return (arg1 != 0) && (arg2 != 0);
+    },
+    bnot: function(arg1) {
+      return arg1 == 0 ? 1 : 0
+    },
+    exp: Math.exp,
+    atan2: Math.atan2,
+    log10: function(arg1) {
+      return Math.log(arg1, 10);
+    },
+
+
+  });
+
+  var PresetVariablePool = VariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['zoom', 'zoomexp', 'rot', 'warp', 'cx', 'cy', 'dx', 'dy', 'sx', 'sy']);
+      this.addInputs(['meshx', 'meshy', 'aspectx', 'aspecty']);
+    }
+  });
+
+  var PresetFrameVariablePool = PresetVariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['wave_x', 'wave_y', 'wave_r', 'wave_g', 'wave_b', 'wave_a', 'wave_mode',
+        'wave_mystery', 'wave_usedots', 'wave_thick', 'wave_additive', 'wave_brighten',
+        'ob_size', 'ob_r', 'ob_g', 'ob_b', 'ob_a', 'ib_size', 'ib_r', 'ib_g', 'ib_b',
+        'ib_a', 'mv_r', 'mv_g', 'mv_b', 'mv_a', 'mv_x', 'mv_y', 'mv_l', 'mv_dx', 'mv_dy',
+        'decay', 'gamma', 'echo_zoom', 'echo_alpha', 'echo_orient', 'darken_center',
+        'wrap', 'invert', 'brighten', 'darken', 'solarize'
+      ]);
+    }
+  });
+
+  var PresetPixelVariablePool = PresetVariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['x', 'y', 'rad', 'ang']);
+    }
+  });
+
+  var CustomVariablePool = VariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['r', 'g', 'b', 'a']);
+      for (var i = 1; i <= 8; i++)
+        this["t" + i] = 0;
+    },
+
+    pushTs: function(array) {
+      for (var i = 1; i <= 8; i++)
+        this["t" + i] = array[i - 1];
+    },
+
+    popTs: function(array) {
+      for (var i = 1; i <= 8; i++)
+        array[i - 1] = this["t" + i];
+    },
+
+    transferTs: function(pool) {
+      for (var i = 1; i <= 8; i++)
+        pool["t" + i] = this["t" + i];
+    },
+
+  });
+
+  var WaveFrameVariablePool = CustomVariablePool.extend({
+    init: function() {
+      this._super();
+    }
+  });
+
+  var WavePointVariablePool = CustomVariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['x', 'y', 'sample', 'value1', 'value2']);
+    }
+  });
+
+  var ShapeFrameVariablePool = CustomVariablePool.extend({
+    init: function() {
+      this._super();
+      this.addOutputs(['sides', 'thick', 'additive', 'textured', 'tex_zoom', 'tex_ang', 'x', 'y', 'rad',
+        'ang', 'r2', 'g2', 'b2', 'a2', 'border_r', 'border_g', 'border_b', 'border_a'
+      ]);
+    }
+  });
+
+
+  // req.open("GET", "/milkshake/MilkDropPreset.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+
+  var MilkdropPreset = Class.extend({
+
+    init: function(name, preset, gx, gy) {
+      this.name = name;
+      this.inputs = {};
+      this.outputs = {
+        dx: 0,
+        dy: 0,
+        wave: {},
+        mv: {},
+        brighten: {},
+        darken: {},
+        invert: {},
+        solarize: {},
+        videoEcho: {},
+        border: {},
+        darkenCenter: {}
+      };
+
+      this.init_code = function() {}
+      this.per_frame_code = function() {};
+      this.per_pixel_code = function() {};
+
+      this.initialVals = new PresetFrameVariablePool();
+      for (var prop in preset)
+        this.loadParam(prop, preset[prop]);
+
+      this.framePool = new PresetFrameVariablePool();
+      this.pixelPool = new PresetPixelVariablePool();
+
+      this.varInit();
+      this.init_code(this.framePool);
+      this.initialQs = new Float32Array(32);
+      this.framePool.popQs(this.initialQs);
+
+      this.customShapes = this.customShapes || [];
+      this.customWaves = this.customWaves || [];
+
+      for (var i = 0; i < this.customShapes.length; i++)
+        this.customShapes[i] = new Shape(this.customShapes[i], this.initialQs);
+      for (var i = 0; i < this.customWaves.length; i++)
+        this.customWaves[i] = new CustomWaveform(this.customWaves[i], this.initialQs);
+
+
+      this.outputs.darkenCenter = new DarkenCenter(this.outputs.darkenCenter);
+      this.outputs.mv = new MotionVectors(this.outputs.mv);
+      this.outputs.border = new Border(this.outputs.border);
+      this.outputs.wave = new MilkdropWaveform(this.outputs.wave);
+      this.outputs.videoEcho = new RenderItem(this.outputs.videoEcho);
+
+      this.outputs.brighten = new Brighten(this.outputs.brighten);
+      this.outputs.darken = new Darken(this.outputs.darken);
+      this.outputs.invert = new Invert(this.outputs.invert);
+      this.outputs.solarize = new Solarize(this.outputs.solarize);
+
+      this.inputs.gx = gx;
+      this.inputs.gy = gy;
+      this.outputs.gx = gx;
+      this.outputs.gy = gy;
+
+      this.createMeshes(this.inputs, ["x_mesh", "y_mesh", "rad_mesh", "theta_mesh",
+        "origtheta", "origrad", "origx", "origy"
+      ]);
+
+      for (var x = 0; x < gx; x++)
+        for (var y = 0; y < gy; y++) {
+          var origx = x / (gx - 1);
+          var origy = -((y / (gy - 1)) - 1);
+          this.inputs.origx[x][y] = origx
+          this.inputs.origy[x][y] = origy
+          this.inputs.origrad[x][y] = .7071067 * Math.sqrt(Math.pow((origx - 0.5) * 2, 2) + Math.pow((origy - 0.5) * 2, 2));
+          this.inputs.origtheta[x][y] = Math.atan2((origy - 0.5) * 2, (origx - 0.5) * 2);
+        }
+
+      this.outputs.staticPerPixel = true;
+
+
+      this.createMeshes(this.outputs, ["x_mesh", "y_mesh", "sx_mesh", "sy_mesh", "dx_mesh", "dy_mesh",
+        "cx_mesh", "cy_mesh", "zoom_mesh", "zoomexp_mesh", "rot_mesh",
+        "warp_mesh", "rad_mesh", "orig_x", "orig_y"
+      ]);
+
+      for (var x = 0; x < gx; x++)
+        for (var y = 0; y < gy; y++) {
+          var origx = x / (gx - 1);
+          var origy = -((y / (gy - 1)) - 1);
+          this.outputs.rad_mesh[x][y] = .7071067 * Math.sqrt(Math.pow((origx - 0.5) * 2, 2) + Math.pow((origy - 0.5) * 2, 2));
+          this.outputs.orig_x[x][y] = (origx - 0.5) * 2;
+          this.outputs.orig_y[x][y] = (origy - 0.5) * 2;
+        }
+
+    },
+
+    loadParam: function(param, value) {
+      if (param.toLowerCase() in OutputParamMap) {
+        var internal = OutputParamMap[param.toLowerCase()];
+        var container = this.outputs;
+        var paramParts = internal[0].split(".");
+        var i;
+        for (i = 0; i < paramParts.length - 1; i++)
+          container = container[paramParts[i]];
+        var internalParam = paramParts[i];
+        var paramType = internal[2];
+        if (paramType == Number || paramType == Boolean) {
+          container[internalParam] = paramType(value);
+          canonical = param;
+          if (internal.length > 3)
+            canonical = internal[3];
+          if (canonical in this.initialVals)
+            this.initialVals[canonical] = paramType(value);
+        } else
+          this[internalParam] = paramType(value);
+      }
+    },
+
+    varInit: function() {
+      var testPool = new PresetFrameVariablePool();
+      var testPixPool = new PresetPixelVariablePool();
+      var winProps = {};
+      for (var prop in window)
+        winProps[prop] = null;
+
+      for (var i = 0; i < 30; i++)
+        try {
+          this.init_code(testPool);
+          this.per_frame_code(testPool);
+          break;
+        } catch (error) {
+          if (error.name == "ReferenceError") {
+            var customVar;
+            if (error.message.indexOf("Can't find variable:") == 0)
+              customVar = error.message.split(" ").pop();
+            else
+              customVar = error.message.split(" ")[0];
+            this.framePool[customVar] = 0;
+            testPool[customVar] = 0;
+          } else {
+            console.log(this.name);
+            throw error;
+          }
+        }
+      for (var i = 0; i < 30; i++)
+        try {
+          this.per_pixel_code(testPixPool);
+          break;
+        } catch (error) {
+          if (error.name == "ReferenceError") {
+            var customVar;
+            if (error.message.indexOf("Can't find variable:") == 0)
+              customVar = error.message.split(" ").pop();
+            else
+              customVar = error.message.split(" ")[0];
+            this.pixelPool[customVar] = 0;
+            testPixPool[customVar] = 0;
+          } else {
+            console.log(this.name);
+            throw error;
+          }
+        }
+
+      for (var prop in window)
+        if (!(prop in winProps)) {
+          this.framePool[prop] = 0;
+          delete window[prop];
+        }
+    },
+
+    createMeshes: function(io, names) {
+      for (var m = 0; m < names.length; m++)
+        for (io[names[m]] = []; io[names[m]].length < io.gx; io[names[m]].push(new Float32Array(io.gy)));
+    },
+
+    pipeline: function() {
+      return this.outputs;
+    },
+
+    pushVars: function() {
+      this.framePool.pushOutputs(this.initialVals);
+      this.framePool.pushInputs(this.inputs);
+      this.framePool.pushQs(this.initialQs);
+    },
+
+    popVars: function() {
+      var i;
+      for (var p = 0; p < this.framePool.outputs.length; p++) {
+        var param = this.framePool.outputs[p];
+        var internal = OutputParamMap[param];
+        var container = this.outputs;
+        var paramParts = internal[0].split(".");
+        for (i = 0; i < paramParts.length - 1; i++)
+          container = container[paramParts[i]];
+        container[paramParts[i]] = internal[2](this.framePool[param]);
+      }
+    },
+
+    runPerPixelCode: function() {
+      this.framePool.transferQs(this.pixelPool);
+      this.pixelPool.pushInputs(this.inputs)
+      for (var x = 0; x < this.inputs.gx; x++)
+        for (var y = 0; y < this.inputs.gy; y++) {
+          this.pixelPool.x = this.inputs.origx[x][y];
+          this.pixelPool.y = this.inputs.origy[x][y];
+          this.pixelPool.rad = this.inputs.origrad[x][y];
+          this.pixelPool.ang = this.inputs.origtheta[x][y];
+          this.per_pixel_code(this.pixelPool);
+          this.outputs.zoom_mesh[x][y] = this.pixelPool.zoom;
+          this.outputs.zoomexp_mesh[x][y] = this.pixelPool.zoomexp;
+          this.outputs.rot_mesh[x][y] = this.pixelPool.rot;
+          this.outputs.warp_mesh[x][y] = this.pixelPool.warp;
+          this.outputs.cx_mesh[x][y] = this.pixelPool.cx;
+          this.outputs.cy_mesh[x][y] = this.pixelPool.cy;
+          this.outputs.dx_mesh[x][y] = this.pixelPool.dx;
+          this.outputs.dy_mesh[x][y] = this.pixelPool.dy;
+          this.outputs.sx_mesh[x][y] = this.pixelPool.sx;
+          this.outputs.sy_mesh[x][y] = this.pixelPool.sy;
+        }
+    },
+
+    runCustomWaveCode: function() {
+      for (var w = 0; w < this.customWaves.length; w++) {
+        var wave = this.customWaves[w];
+        this.framePool.transferQs(wave.framePool);
+        wave.framePool.pushInputs(this.inputs);
+        wave.runCode();
+      }
+    },
+
+    runCustomShapeCode: function() {
+      for (var s = 0; s < this.customShapes.length; s++) {
+        var shape = this.customShapes[s];
+        this.framePool.transferQs(shape.framePool);
+        shape.framePool.pushInputs(this.inputs);
+        shape.runCode();
+      }
+    },
+
+    initMesh: function(mesh) { // should we init from framepool or initialvals?
+      var key = mesh + "_mesh";
+      var val = this.framePool[mesh];
+      for (var x = 0; x < this.inputs.gx; x++)
+        for (var y = 0; y < this.inputs.gy; y++)
+          this.outputs[key][x][y] = val;
+      this.pixelPool[mesh] = this.framePool[mesh];
+    },
+
+    initPerPixelMeshes: function() {
+      this.initMesh("cx");
+      this.initMesh("cy");
+      this.initMesh("sx");
+      this.initMesh("sy");
+      this.initMesh("dx");
+      this.initMesh("dy");
+      this.initMesh("zoom");
+      this.initMesh("zoomexp");
+      this.initMesh("rot");
+      this.initMesh("warp");
+    },
+
+    Render: function(music, context) {
+
+      this.inputs.bass = music.bass;
+      this.inputs.mid = music.mid;
+      this.inputs.treb = music.treb;
+      this.inputs.bass_att = music.bass_att;
+      this.inputs.mid_att = music.mid_att;
+      this.inputs.treb_att = music.treb_att;
+      this.inputs.fps = context.fps;
+      this.inputs.time = context.time;
+      this.inputs.frame = context.frame;
+      this.inputs.progress = context.progress;
+      this.inputs.meshx = this.inputs.gx;
+      this.inputs.meshy = this.inputs.gy;
+      this.inputs.aspectx = 1;
+      this.inputs.aspecty = 1;
+
+      this.pushVars();
+      this.per_frame_code(this.framePool);
+      this.initPerPixelMeshes();
+      this.runPerPixelCode();
+      this.runCustomWaveCode();
+      this.runCustomShapeCode();
+      this.popVars();
+
+      this.PerPixelMath(context);
+      this.outputs.drawables = [];
+      this.outputs.drawables.push(this.outputs.mv);
+      for (i = 0; i < this.customShapes.length; i++)
+        if (this.customShapes[i].enabled)
+          this.outputs.drawables.push(this.customShapes[i]);
+      for (i = 0; i < this.customWaves.length; i++)
+        if (this.customWaves[i].enabled)
+          this.outputs.drawables.push(this.customWaves[i]);
+      this.outputs.drawables.push(this.outputs.wave);
+      if (this.outputs.bDarkenCenter)
+        this.outputs.drawables.push(this.outputs.darkenCenter);
+      this.outputs.drawables.push(this.outputs.border);
+
+      this.outputs.compositeDrawables = [];
+      this.outputs.compositeDrawables.push(this.outputs.videoEcho);
+      if (this.outputs.bBrighten)
+        this.outputs.compositeDrawables.push(this.outputs.brighten);
+      if (this.outputs.bDarken)
+        this.outputs.compositeDrawables.push(this.outputs.darken);
+      if (this.outputs.bSolarize)
+        this.outputs.compositeDrawables.push(this.outputs.solarize);
+      if (this.outputs.bInvert)
+        this.outputs.compositeDrawables.push(this.outputs.invert);
+    },
+
+    PerPixelMath: function(context) {
+
+      var x, y, fZoom2, fZoom2Inv;
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++) {
+          fZoom2 = Math.pow(this.outputs.zoom_mesh[x][y],
+            Math.pow(this.outputs.zoomexp_mesh[x][y],
+              this.outputs.rad_mesh[x][y] * 2.0 - 1.0));
+          fZoom2Inv = 1.0 / fZoom2;
+          this.outputs.x_mesh[x][y] = this.outputs.orig_x[x][y] * 0.5 * fZoom2Inv + 0.5;
+          this.outputs.y_mesh[x][y] = this.outputs.orig_y[x][y] * 0.5 * fZoom2Inv + 0.5;
+        }
+
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++)
+          this.outputs.x_mesh[x][y] = (this.outputs.x_mesh[x][y] - this.outputs.cx_mesh[x][y]) / this.outputs.sx_mesh[x][y] + this.outputs.cx_mesh[x][y];
+
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++)
+          this.outputs.y_mesh[x][y] = (this.outputs.y_mesh[x][y] - this.outputs.cy_mesh[x][y]) / this.outputs.sy_mesh[x][y] + this.outputs.cy_mesh[x][y];
+
+
+      var fWarpTime = context.time * this.outputs.fWarpAnimSpeed;
+      var fWarpScaleInv = 1.0 / this.outputs.fWarpScale;
+      var f = [11.68 + 4.0 * Math.cos(fWarpTime * 1.413 + 10),
+        8.77 + 3.0 * Math.cos(fWarpTime * 1.113 + 7),
+        10.54 + 3.0 * Math.cos(fWarpTime * 1.233 + 3),
+        11.49 + 4.0 * Math.cos(fWarpTime * 0.933 + 5)
+      ];
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++) {
+          this.outputs.x_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.sin(fWarpTime * 0.333 + fWarpScaleInv * (this.outputs.orig_x[x][y] * f[0] - this.outputs.orig_y[x][y] * f[3]));
+          this.outputs.y_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.cos(fWarpTime * 0.375 - fWarpScaleInv * (this.outputs.orig_x[x][y] * f[2] + this.outputs.orig_y[x][y] * f[1]));
+          this.outputs.x_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.cos(fWarpTime * 0.753 - fWarpScaleInv * (this.outputs.orig_x[x][y] * f[1] - this.outputs.orig_y[x][y] * f[2]));
+          this.outputs.y_mesh[x][y] += this.outputs.warp_mesh[x][y] * 0.0035 * Math.sin(fWarpTime * 0.825 + fWarpScaleInv * (this.outputs.orig_x[x][y] * f[0] + this.outputs.orig_y[x][y] * f[3]));
+        }
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++) {
+          var u2 = this.outputs.x_mesh[x][y] - this.outputs.cx_mesh[x][y];
+          var v2 = this.outputs.y_mesh[x][y] - this.outputs.cy_mesh[x][y];
+
+          var cos_rot = Math.cos(this.outputs.rot_mesh[x][y]);
+          var sin_rot = Math.sin(this.outputs.rot_mesh[x][y]);
+
+          this.outputs.x_mesh[x][y] = u2 * cos_rot - v2 * sin_rot + this.outputs.cx_mesh[x][y];
+          this.outputs.y_mesh[x][y] = u2 * sin_rot + v2 * cos_rot + this.outputs.cy_mesh[x][y];
+        }
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++)
+          this.outputs.x_mesh[x][y] -= this.outputs.dx_mesh[x][y];
+
+      for (x = 0; x < this.outputs.gx; x++)
+        for (y = 0; y < this.outputs.gy; y++)
+          this.outputs.y_mesh[x][y] -= this.outputs.dy_mesh[x][y];
+
+    }
+
+
+  });
+
+
+  var wFunction = function(f) {
+    if (typeof f == "function")
+      return f;
+    return function() {};
+  }
+
+  var wArray = function(a) {
+    return a;
+  }
+
+  var OutputParamMap = {
+    frating: ["fRating", null, Number],
+    gamma: ["fGammaAdj", null, Number],
+    fgammaadj: ["fGammaAdj", null, Number, "gamma"],
+    echo_zoom: ["videoEcho.zoom", null, Number],
+    fvideoechozoom: ["videoEcho.zoom", null, Number, "echo_zoom"],
+    echo_alpha: ["videoEcho.a", null, Number],
+    fvideoechoalpha: ["videoEcho.a", null, Number, "echo_alpha"],
+    wave_r: ["wave.r", null, Number],
+    wave_g: ["wave.g", null, Number],
+    wave_b: ["wave.b", null, Number],
+    wave_a: ["wave.a", null, Number],
+    wave_x: ["wave.x", null, Number],
+    wave_y: ["wave.y", null, Number],
+    fwavealpha: ["wave.a", null, Number, "wave_a"],
+    fwavescale: ["wave.scale", null, Number],
+    fwavesmoothing: ["wave.smoothing", null, Number],
+    fmodwavealphastart: ["wave.modOpacityStart", null, Number],
+    fmodwavealphaend: ["wave.modOpacityEnd", null, Number],
+    wave_mode: ["wave.mode", null, Number],
+    nwavemode: ["wave.mode", null, Number, "wave_mode"],
+    wave_additive: ["wave.additive", null, Boolean],
+    badditivewaves: ["wave.additive", null, Boolean, "wave_additive"],
+    bmodwavealphabyvolume: ["wave.modulateAlphaByVolume", null, Boolean],
+    wave_brighten: ["wave.maximizeColors", null, Boolean],
+    bmaximizewavecolor: ["wave.maximizeColors", null, Boolean],
+    wave_dots: ["wave.dots", null, Boolean, "wave_usedots"],
+    wave_usedots: ["wave.dots", null, Boolean],
+    bwavedots: ["wave.dots", null, Boolean, "wave_usedots"],
+    wave_thick: ["wave.thick", null, Boolean],
+    bwavethick: ["wave.thick", null, Boolean, "wave_thick"],
+    wave_mystery: ["wave.mystery", null, Number],
+    fWaveParam: ["wave.mystery", null, Number, "wave_mystery"],
+    fwarpanimspeed: ["fWarpAnimSpeed", null, Number],
+    fwarpscale: ["fWarpScale", null, Number],
+    fshader: ["fShader", null, Number],
+    decay: ["screenDecay", null, Number],
+    fdecay: ["screenDecay", null, Number, "decay"],
+    echo_orient: ["videoEcho.orientation", null, Number],
+    nvideoechoorientation: ["videoEcho.orientation", null, Number, "echo_orient"],
+    wrap: ["textureWrap", null, Boolean],
+    btexwrap: ["textureWrap", null, Boolean, "wrap"],
+    darken_center: ["bDarkenCenter", null, Boolean],
+    bdarkencenter: ["bDarkenCenter", null, Boolean, "darken_center"],
+    bredbluestereo: ["bRedBlueStereo", null, Boolean],
+    brighten: ["bBrighten", null, Boolean],
+    bbrighten: ["bBrighten", null, Boolean, "brighten"],
+    darken: ["bDarken", null, Boolean],
+    bdarken: ["bDarken", null, Boolean, "darken"],
+    solarize: ["bSolarize", null, Boolean],
+    bsolarize: ["bSolarize", null, Boolean, "solarize"],
+    invert: ["bInvert", null, Boolean],
+    binvert: ["bInvert", null, Boolean, "invert"],
+    bmotionvectorson: ["bMotionVectorsOn", null, Boolean],
+    warp: ["warp", "warp_mesh", Number],
+    zoom: ["zoom", "zoom_mesh", Number],
+    rot: ["rot", "rot_mesh", Number],
+    zoomexp: ["zoomexp", "zoomexp_mesh", Number],
+    fzoomexponent: ["zoomexp", "zoomexp_mesh", Number, "zoomexp"],
+    cx: ["cx", "cx_mesh", Number],
+    cy: ["cy", "cy_mesh", Number],
+    dx: ["dx", "dx_mesh", Number],
+    dy: ["dy", "dy_mesh", Number],
+    sx: ["sx", "sx_mesh", Number],
+    sy: ["sy", "sy_mesh", Number],
+    ob_size: ["border.outer_size", null, Number],
+    ob_r: ["border.outer_r", null, Number],
+    ob_g: ["border.outer_g", null, Number],
+    ob_b: ["border.outer_b", null, Number],
+    ob_a: ["border.outer_a", null, Number],
+    ib_size: ["border.inner_size", null, Number],
+    ib_r: ["border.inner_r", null, Number],
+    ib_g: ["border.inner_g", null, Number],
+    ib_b: ["border.inner_b", null, Number],
+    ib_a: ["border.inner_a", null, Number],
+    mv_r: ["mv.r", null, Number],
+    mv_g: ["mv.g", null, Number],
+    mv_b: ["mv.b", null, Number],
+    mv_a: ["mv.a", null, Number],
+    mv_x: ["mv.x_num", null, Number],
+    nmotionvectorsx: ["mv.x_num", null, Number, "mv_x"],
+    mv_y: ["mv.y_num", null, Number],
+    nmotionvectorsy: ["mv.y_num", null, Number, "mv_y"],
+    mv_l: ["mv.length", null, Number],
+    mv_dy: ["mv.x_offset", null, Number],
+    mv_dx: ["mv.y_offset", null, Number],
+    init_code: ["init_code", null, wFunction],
+    per_frame_code: ["per_frame_code", null, wFunction],
+    per_pixel_code: ["per_pixel_code", null, wFunction],
+    shapes: ["customShapes", null, wArray],
+    waves: ["customWaves", null, wArray],
+    tmpvars: ["tmpvars", null, wArray]
+
+  }
+
+  var InputParamMap = {
+    time: ["time", null, Number],
+    bass: ["bass", null, Number],
+    mid: ["mid", null, Number],
+    treb: ["treb", null, Number],
+    bass_att: ["bass_att", null, Number],
+    mid_att: ["mid_att", null, Number],
+    treb_att: ["treb_att", null, Number],
+    frame: ["frame", null, Number],
+    progress: ["progress", null, Number],
+    fps: ["fps", null, Number],
+    x: ["x_per_pixel", "origx", Number],
+    y: ["y_per_pixel", "origy", Number],
+    ang: ["ang_per_pixel", "origtheta", Number],
+    rad: ["rad_per_pixel", "origrad", Number],
+    meshx: ["gx", null, Number],
+    meshy: ["gy", null, Number]
+  }
+
+
+
+
+  // req.open("GET", "/milkshake/PerPixelMesh.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var MPoint = Class.extend({
+    init: function(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  });
+
+  var PerPixelContext = Class.extend({
+    init: function(x, y, rad, theta, i, j) {
+      this.x = x;
+      this.y = y;
+      this.rad = rad;
+      this.theta = theta;
+      this.i = i;
+      this.j = j;
+    }
+  });
+
+  var PerPixelMesh = Class.extend({
+    init: function(width, height) {
+      this.width = width;
+      this.height = height;
+      this.size = width * height;
+      this.p = new Array(this.size);
+      this.p_original = new Array(this.size);
+      this.identity = new Array(this.size);
+      for (var i = 0; i < this.size; i++) {
+        this.p[i] = new MPoint(0, 0);
+        this.p_original[i] = new MPoint(0, 0);
+        this.identity[i] = new PerPixelContext(0, 0, 0, 0, 0);
+      }
+      for (var j = 0; j < this.height; j++)
+        for (var i = 0; i < this.width; i++) {
+          var index = j * this.width + i;
+          var xval = i / (this.width - 1.);
+          var yval = -((j / (this.height - 1.)) - 1.);
+          this.p[index].x = xval;
+          this.p[index].y = yval;
+          this.p_original[index].x = xval;
+          this.p_original[index].y = yval;
+          this.identity[index].x = xval;
+          this.identity[index].y = yval;
+          this.identity[index].i = i;
+          this.identity[index].j = j;
+          this.identity[index].rad = Math.sqrt(Math.pow((xval - .5) * 2, 2) + Math.pow((yval - .5) * 2, 2));
+          this.identity[index].theta = Math.atan2((yval - .5) * 2, (xval - .5) * 2);
+        }
+    },
+
+    Reset: function() {
+      for (var i = 0; i < this.size; i++) {
+        this.p[i].x = this.p_original[i].x;
+        this.p[i].y = this.p_original[i].y;
+      }
+    }
+
+
+  });
+
+  // req.open("GET", "/milkshake/PipelineContext.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var PipelineContext = Class.extend({
+    init: function() {
+      this.fps = 25;
+      this.time = 0;
+      this.frame = 0;
+      this.progress = 0;
+    }
+  });
+
+  // req.open("GET", "/milkshake/TimeKeeper.js", false); req.send(); eval(req.responseText);
+  /**
+   * milkshake -- WebGL Milkdrop-esque visualisation (port of projectM)
+   * Copyright (C)2011 Matt Gattis and contributors
+   *
+   * This library is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU Lesser General Public
+   * License as published by the Free Software Foundation; either
+   * version 2.1 of the License, or (at your option) any later version.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * Lesser General Public License for more details.
+   *
+   * You should have received a copy of the GNU Lesser General Public
+   * License along with this library; if not, write to the Free Software
+   * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   * See 'LICENSE.txt' included within this release
+   *
+   */
+
+  var TimeKeeper = Class.extend({
+    init: function(presetDuration, smoothDuration) {
+      this.smoothDuration = smoothDuration;
+      this.presetDuration = presetDuration;
+      this.startTime = new Date();
+      this.UpdateTimers();
+    },
+
+    UpdateTimers: function() {
+      this.currentTime = TimeKeeper.getTicks(this.startTime) * 0.001;
+      this.presetFrameA++;
+      this.presetFrameB++;
+    },
+
+    StartPreset: function() {
+      this.isSmoothing = false;
+      this.presetTimeA = this.currentTime;
+      this.presetFrameA = 1;
+      this.presetDurationA = this.sampledPresetDuration();
+    },
+
+    StartSmoothing: function() {
+      this.isSmoothing = true;
+      this.presetTimeB = this.currentTime;
+      this.presetFrameB = 1;
+      this.presetDurationB = this.sampledPresetDuration();
+    },
+
+    EndSmoothing: function() {
+      this.isSmoothing = false;
+      this.presetTimeA = this.presetTimeB;
+      this.presetFrameA = this.presetFrameB;
+      this.presetDurationA = this.presetDurationB;
+    },
+
+    CanHardCut: function() {
+      return ((this.currentTime - this.presetTimeA) > 3)
+    },
+
+    SmoothRatio: function() {
+      return (this.currentTime - this.presetTime) / this.smoothDuration;
+    },
+
+    IsSmoothing: function() {
+      return this.isSmoothing;
+    },
+
+    GetRunningTime: function() {
+      return this.currentTime;
+    },
+
+    PresetProgressA: function() {
+      if (this.isSmoothing) return 1.0;
+      else return (this.currentTime - this.presetTimeA) / this.presetDurationA;
+    },
+
+    PresetProgressB: function() {
+      return (this.currentTime - this.presetTimeB) / this.presetDurationB;
+    },
+
+    PresetFrameB: function() {
+      return this.presetFrameB;
+    },
+
+    PresetFrameA: function() {
+      return this.presetFrameA;
+    },
+
+    sampledPresetDuration: function() {
+      return 40;
+      return Math.max(1, Math.min(60, RandomNumberGenerators.gaussian(this.presetDuration)));
+    }
+  });
+
+  TimeKeeper.getTicks = function(start) {
+    return (new Date()) - start;
+  }
+
+  // req.open("GET", "/milkshake/Presets.js", false); req.send(); eval(req.responseText);
+  var Presets = {};
+
+  Presets["Aderrasi - Blender.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.98,
+    fVideoEchoZoom: 0.999997,
+    fVideoEchoAlpha: 0.4,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 0,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 1,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 1,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 100.0,
+    fWaveScale: 3.91582,
+    fWaveSmoothing: 0.5,
+    fWaveParam: -0.4,
+    fModWaveAlphaStart: 0.5,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 1.0,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 1e-05,
+    dy: 1e-05,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 1.0,
+    wave_g: 1.0,
+    wave_b: 1.0,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.005,
+    ob_r: 1.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 1.0,
+    ib_size: 0.005,
+    ib_r: 1.0,
+    ib_g: 1.0,
+    ib_b: 1.0,
+    ib_a: 1.0,
+    nMotionVectorsX: 0.0,
+    nMotionVectorsY: 0.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 1.0,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_) {
+      rot = rot - 0.1 * _.min((2 - rad) * bass_att, (2 - rad) * treb_att);
+      grad = sqrt(x * x + y * y) * 2;
+      dx = dx - 0.02 * (1 - rad);
+      dy = dy + 0.02 * (1 - rad);
+      zoom = zoom - _.max(grad * (bass / 8 - treb / 8), 0);
+    },
+    per_frame_code: function(_) {
+      wave_r = wave_r + 0.9;
+      wave_g = 0.9 - 0.5 * bass;
+      wave_b = 0.9 - 0.5 * bass;
+      q1 = 0.05 * _.sin(time * 1.14);
+      q2 = 0.03 * _.sin(time * 0.93 + 2);
+      wave_x = wave_x + q1;
+      wave_y = wave_y + q2;
+    },
+    shapes: [{
+      enabled: 1,
+      sides: 4,
+      thickOutline: 0,
+      textured: 1,
+      ImageUrl: "title.png",
+      x: 0.5,
+      y: 0.5,
+      rad: 1.0,
+      ang: 0,
+      tex_ang: 0,
+      tex_zoom: 0.5,
+      r: 1,
+      g: 1,
+      b: 1,
+      a: 1,
+      r2: 1,
+      g2: 1,
+      b2: 1,
+      a2: 1,
+      border_r: 0,
+      border_g: 0,
+      border_b: 0,
+      border_a: 0,
+      per_frame_code: function(_) {
+        x = x + q1;
+        y = y + q2;
+        r = r + 0.9;
+        g = 0.9 - 0.5 * bass;
+        b = 0.9 - 0.5 * bass;
+        rad = rad + 0.1 * bass_att;
+      }
+    }],
+    waves: [],
+  };
+  /*
     Presets["bmelgren - Godhead.milk"] = {
         fRating: 3.0,
         fGammaAdj: 2.0,
@@ -4152,8 +4225,8 @@ var Music = Class.extend({
              advflux=(bs*fluxs) + (-bs * (1-fluxs));
              adv=adv+advflux;
              advs=adv/256;
-             
-             
+
+
              ang=advs;
              rad=1.471 + sin(advs*16)*0.4;
              a2=1-(sin(time)*0.4);
@@ -4187,16 +4260,16 @@ var Music = Class.extend({
              y=0.1 + q2*0.4;
              rad=q2/2;
              ang=-q2*2;
-             
+
              r=0.90 + (sin(time/2))*0.50;
              g=0.90 + (sin(time/2 + 2)) * 0.50;
              b=0.90 + (sin(time/2 + 4)) * 0.50;
-             
-             
+
+
              r2=0.70 + (sin(time/2))*0.50;
              g2=0.70 + (sin(time/2 + 2)) * 0.50;
              b2=0.70 + (sin(time/2 + 4)) * 0.50
-             
+
            }},
           },
           {
@@ -4231,7 +4304,7 @@ var Music = Class.extend({
              advflux=(bs*fluxs) + (-bs * (1-fluxs));
              adv=adv+advflux;
              advs=adv/178;
-             
+
              //ang=sin(time/6)*6.4;
              ang=advs;
              rad=1.671 + sin(advs*16)*0.4;
@@ -4266,7 +4339,7 @@ var Music = Class.extend({
              y=sin(time)*0.4+0.5;
              rad=(q2*q2)/2;;
              ang=q2*2;
-             
+
              r=0.70 + (sin(time/2))*0.50;
              g=0.70 + (sin(time/2 + 2)) * 0.50;
              b=0.70 + (sin(time/2 + 4)) * 0.50
@@ -6703,7 +6776,7 @@ var Music = Class.extend({
           wave_a = 0;
           
           
-          
+
           //Thanks to Zylot for rainbow generator
           counter1 = ifcond(equal(counter2,1),ifcond(equal(counter1,1),0,counter1+.2),1);
           counter2 = ifcond(equal(counter1,1),ifcond(equal(counter2,1),0,counter2+.2),1);
@@ -6713,7 +6786,7 @@ var Music = Class.extend({
           ib_r = .5*ifcond(equal(colorcounter,1),1, ifcond(equal(colorcounter,2),1, ifcond(equal(colorcounter,3),1, ifcond(equal(colorcounter,4),sin(counter2+2.1), ifcond(equal(colorcounter,5),0, ifcond(equal(colorcounter,6),0,sin(counter1)))))));
           ib_g = .5*ifcond(equal(colorcounter,1),0, ifcond(equal(colorcounter,2),sin(counter2*.5), ifcond(equal(colorcounter,3),sin((counter1+1.75)*.4), ifcond(equal(colorcounter,4),1, ifcond(equal(colorcounter,5),1, ifcond(equal(colorcounter,6),sin(counter2+2),0))))));
           ib_b = ifcond(equal(colorcounter,1),sin(counter1+2.1), ifcond(equal(colorcounter,2),0, ifcond(equal(colorcounter,3),0, ifcond(equal(colorcounter,4),0, ifcond(equal(colorcounter,5),sin(counter1), ifcond(equal(colorcounter,6),1,1))))));
-          
+
           ib_r=tan(time*1);
           ib_r=min(ib_r,1);
           ib_r=max(ib_r,0);
@@ -6723,32 +6796,32 @@ var Music = Class.extend({
           ib_b=tan(time*1+4.2);
           ib_b=min(ib_b,1);
           ib_b=max(ib_b,0);
-          
+
           ob_r=ib_r-0.5;
           ob_g=ib_g-0.5;
           ob_b=ib_b-0.5;
           q1=ib_r;
           q2=ib_g;
           q3=ib_b;
-          
-          
-          
+
+
+
           decay = 0.9999;
-          
-          
+
+
           //echo_orient=((bass_att+mid_att+treb_att)/3)*3;
           //solarize=above(0.5,bass);
           //darken=above(0.4,treb);
-          
+
           musictime=musictime+(mid*mid*mid)*0.02;
-          
+
           xpos=sin(musictime*0.6)*0.6;
           ypos=sin(musictime*0.4)*0.6;
           q4=xpos;
           q5=ypos;
-          
+
           zoom=.98 + min(bass,1)*0.04
-          
+
         }},
         shapes: [
           {
@@ -6837,7 +6910,7 @@ var Music = Class.extend({
            per_frame_code: function(_){with(_){
              x = sin(time*5) * .4 + .5;
              y=treb_att*0.5;
-             
+
              pow( (bass*.15),2);
            }},
           },
@@ -6891,51 +6964,51 @@ var Music = Class.extend({
              xp=sin(smp )*0.05;
              yp=cos(smp )*0.05;
              zp=0;
-             
-             
+
+
              //alter shape;
              angy=sin(sample*6.28*4 +t1 )*6.28;
              xq=xp*cos(angy) - zp*sin(angy);
              zq=xp*sin(angy) + zp*cos(angy);
              xp=xq;
              zp=zq;
-             
-             
+
+
              //rotate on y axis;
              angy=t1*0.1;
              xq=xp*cos(angy) - zp*sin(angy);
              zq=xp*sin(angy) + zp*cos(angy);
              xp=xq;
              zp=zq;
-             
+
              //rotate on x axis
              axs1 = sin(t1*0.15) + 1.6;
              yq= yp*cos(axs1) - zp*sin(axs1);
              zq= yp*sin(axs1) + zp*cos(axs1);
              yp=yq;
              zp=zq;
-             
+
              //rotate on y axis again
              axs2 = sin(t1*0.1)*3.3;
              xq=xp*cos(axs2) - zp*sin(axs2);
              zq=xp*sin(axs2) + zp*cos(axs2);
              xp=xq;
              zp=zq;
-             
+
              //stretch y axis to compensate for aspect ratio
              yp=yp*1.2;
-             
+
              //push forward into viewpace
              zp=zp+2.1;
-             
+
              //project x,y,z into screenspace
              xs=xp/zp;
              ys=yp/zp;
-             
+
              //center 0,0 in middle of screen
              x=xs+0.5+q4;
              y=ys+0.5+q5;
-             
+
              r=1-q1;
              g=1-q2;
              b=1-q3;
@@ -6943,7 +7016,7 @@ var Music = Class.extend({
            per_frame_code: function(_){with(_){
              basstime=basstime+(bass*bass);
              t1=basstime*0.003;
-             
+
            }},
           },
           {
@@ -26639,107 +26712,109 @@ var Music = Class.extend({
 
 
 
-    /*
-     * Core Animation Interface
-     */
+  /*
+   * Core Animation Interface
+   */
 
-    var shaker;
-    var canvas;
-    var audio;
+  var shaker;
+  var canvas;
+  var audio;
 
-    function shake() {
-	// canvas = document.getElementById(elementId);
-	// canvas.width = window.innerWidth;
-	// canvas.height = window.innerHeight;
-	try {
-	    initGL(function () {
-		    shaker = new Shaker();
-		    audio = new SoundCloudAudio();
-		    animationLoop();
-		    setInterval(function() {
-			    shaker.selectNext(true);
-			}, 10000);
-		});
-	} catch (e) {
-		console.log("Couldn't initiate webgl:");
-    console.log(e.message);
-	    // canvas.outerHTML = "<div style='padding:20px;'>" + canvas.innerHTML + "</div>";
-	}
-
-    }
-
-    var requestAnimFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
-                           function(callback, element){window.setTimeout(callback, 1000 / 60);};
-
-    function animationLoop() {
-	shaker.renderFrame.call(shaker);
-	requestAnimFrame(animationLoop, canvas);
-    }
-
-
-    /*
-     * Global WebGL, Programmable Shader, and Linear Algebra Routines
-     */
-
-    var gl;
-
-    var U_PROJECTION = 0;
-    var U_MODELVIEW = 1;
-    var U_TEXTURE = 2;
-
-    var U_VERTEX_ARRAY = 0;
-    var U_TEXTURE_COORD_ARRAY = 1;
-    var U_COLOR_ARRAY = 2;
-
-    var mvMatrix  = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
-    var prMatrix  = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
-    var mvpMatrix = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
-    var txMatrix  = new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
-    var activeMatrix = prMatrix;
-
-    var mvStack = [];
-    var prStack = [];
-    var txStack = [];
-    var activeStack = prStack;
-    var enablestex = false;
-    var enablevco = false;
-    var upointsize = 1.0;
-    var ucolr = 1.0;
-    var ucolg = 1.0;
-    var ucolb = 1.0;
-    var ucola = 1.0;
-
-    var vertexPos;
-    var colorPos;
-    var texCoordPos;
-
-    var ucolorloc;
-    var stextureloc;
-    var upointsizeloc;
-    var mvpmatrixloc;
-    var txmatrixloc;
-    var enablestexloc;
-    var enablevcoloc;
-
-    var textures = {};
-    var texture_list = ["title.png"];
-    var texloads = 0;
-
-    function initGL(callback) {
-
-      gl = vz.canvas.getContext("experimental-webgl", {
-        alpha: false,
-        depth: false,
-        stencil: false,
-        antialias: false,
-        premultipliedAlpha: true,
-        preserveDrawingBuffer: false,
+  function shake() {
+    // canvas = document.getElementById(elementId);
+    // canvas.width = window.innerWidth;
+    // canvas.height = window.innerHeight;
+    try {
+      initGL(function() {
+        shaker = new Shaker();
+        audio = new SoundCloudAudio();
+        animationLoop();
+        setInterval(function() {
+          shaker.selectNext(true);
+        }, 10000);
       });
-      console.log(gl);
+    } catch (e) {
+      console.log(e.message);
+      // canvas.outerHTML = "<div style='padding:20px;'>" + canvas.innerHTML + "</div>";
+    }
 
-  // app currently breaks here because g1 is null
-	var vertexShader = loadShader(gl.VERTEX_SHADER,
-         "precision mediump float; \
+  }
+
+  var requestAnimFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+      function(callback, element) {
+        window.setTimeout(callback, 1000 / 60);
+    };
+
+  function animationLoop() {
+    shaker.renderFrame.call(shaker);
+    requestAnimFrame(animationLoop, canvas);
+  }
+
+
+  /*
+   * Global WebGL, Programmable Shader, and Linear Algebra Routines
+   */
+
+  var gl;
+
+  var U_PROJECTION = 0;
+  var U_MODELVIEW = 1;
+  var U_TEXTURE = 2;
+
+  var U_VERTEX_ARRAY = 0;
+  var U_TEXTURE_COORD_ARRAY = 1;
+  var U_COLOR_ARRAY = 2;
+
+  var mvMatrix = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  var prMatrix = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  var mvpMatrix = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  var txMatrix = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  var activeMatrix = prMatrix;
+
+  var mvStack = [];
+  var prStack = [];
+  var txStack = [];
+  var activeStack = prStack;
+  var enablestex = false;
+  var enablevco = false;
+  var upointsize = 1.0;
+  var ucolr = 1.0;
+  var ucolg = 1.0;
+  var ucolb = 1.0;
+  var ucola = 1.0;
+
+  var vertexPos;
+  var colorPos;
+  var texCoordPos;
+
+  var ucolorloc;
+  var stextureloc;
+  var upointsizeloc;
+  var mvpmatrixloc;
+  var txmatrixloc;
+  var enablestexloc;
+  var enablevcoloc;
+
+  var textures = {};
+  var texture_list = ["title.png"];
+  var texloads = 0;
+
+  function initGL(callback) {
+    var options = {
+      alpha: false,
+      depth: false,
+      stencil: false,
+      antialias: false,
+      premultipliedAlpha: true,
+      preserveDrawingBuffer: false,
+    };
+    gl = vz.canvas.getContext('webgl', options) || vz.canvas.getContext('experimental-webgl', options);
+    console.log(vz.canvas);
+    console.log(gl);
+
+    // app currently breaks here because g1 is null
+    var vertexShader = loadShader(gl.VERTEX_SHADER,
+      "precision mediump float; \
           attribute vec4 a_position; \
           attribute vec4 a_texCoord; \
           varying vec4 v_texCoord; \
@@ -26751,306 +26826,310 @@ var Music = Class.extend({
           uniform mat4 mvp_matrix; \
           uniform mat4 tx_matrix; \
           void main() { \
-            gl_Position = mvp_matrix * a_position; \
-            v_texCoord = tx_matrix * a_texCoord; \
-            if (enable_v_color) \
-              v_color = a_color; \
-            else \
-              v_color = u_color; \
-            gl_PointSize = u_pointsize; \
+          gl_Position = mvp_matrix * a_position; \
+          v_texCoord = tx_matrix * a_texCoord; \
+          if (enable_v_color) \
+          v_color = a_color; \
+          else \
+          v_color = u_color; \
+          gl_PointSize = u_pointsize; \
           }");
 
-	var fragmentShader = loadShader(gl.FRAGMENT_SHADER,
-	 "precision mediump float; \
+    var fragmentShader = loadShader(gl.FRAGMENT_SHADER,
+      "precision mediump float; \
           varying vec4 v_texCoord; \
-     	  uniform sampler2D s_texture; \
-	  varying vec4 v_color; \
-	  uniform bool enable_s_texture; \
-	  void main() { \
-	    if (enable_s_texture) \
-	      gl_FragColor = v_color * texture2D(s_texture, v_texCoord.st); \
-	    else \
-	      gl_FragColor = v_color; \
-	  }");
+          uniform sampler2D s_texture; \
+          varying vec4 v_color; \
+          uniform bool enable_s_texture; \
+          void main() { \
+          if (enable_s_texture) \
+          gl_FragColor = v_color * texture2D(s_texture, v_texCoord.st); \
+          else \
+          gl_FragColor = v_color; \
+          }");
 
-	var shaderProgram = gl.createProgram();
-	gl.attachShader(shaderProgram, vertexShader);
-	gl.attachShader(shaderProgram, fragmentShader);
-	gl.linkProgram(shaderProgram);
-	if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
-	    throw Error("Unable to initialize the shader program.");
-	gl.useProgram(shaderProgram);
+    var shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+      throw Error("Unable to initialize the shader program.");
+    gl.useProgram(shaderProgram);
 
-	vertexPos = gl.getAttribLocation(shaderProgram,"a_position");
-	colorPos = gl.getAttribLocation(shaderProgram,"a_color");
-	texCoordPos = gl.getAttribLocation(shaderProgram,"a_texCoord");
-	ucolorloc = gl.getUniformLocation(shaderProgram,"u_color");
-	stextureloc = gl.getUniformLocation(shaderProgram,"s_texture");
-	upointsizeloc = gl.getUniformLocation(shaderProgram,"u_pointsize");
-	mvpmatrixloc = gl.getUniformLocation(shaderProgram,"mvp_matrix");
-	txmatrixloc = gl.getUniformLocation(shaderProgram,"tx_matrix");
-	enablestexloc = gl.getUniformLocation(shaderProgram,"enable_s_texture");
-	enablevcoloc = gl.getUniformLocation(shaderProgram,"enable_v_color");
+    vertexPos = gl.getAttribLocation(shaderProgram, "a_position");
+    colorPos = gl.getAttribLocation(shaderProgram, "a_color");
+    texCoordPos = gl.getAttribLocation(shaderProgram, "a_texCoord");
+    ucolorloc = gl.getUniformLocation(shaderProgram, "u_color");
+    stextureloc = gl.getUniformLocation(shaderProgram, "s_texture");
+    upointsizeloc = gl.getUniformLocation(shaderProgram, "u_pointsize");
+    mvpmatrixloc = gl.getUniformLocation(shaderProgram, "mvp_matrix");
+    txmatrixloc = gl.getUniformLocation(shaderProgram, "tx_matrix");
+    enablestexloc = gl.getUniformLocation(shaderProgram, "enable_s_texture");
+    enablevcoloc = gl.getUniformLocation(shaderProgram, "enable_v_color");
 
-	for (var i = 0; i < texture_list.length; i++) {
-	    var img = new Image();
-	    img.tex = gl.createTexture();
-	    img.onload = function() {
-		gl.bindTexture(gl.TEXTURE_2D, this.tex);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.bindTexture(gl.TEXTURE_2D, null);
-		textures[this.src.split("/").pop()] = this.tex;
-		texloads += 1;
-		if (texloads == texture_list.length)
-		    callback();
-	    };
-	    img.src = texture_list[i];
-	}
-
+    for (var i = 0; i < texture_list.length; i++) {
+      var img = new Image();
+      img.tex = gl.createTexture();
+      img.onload = function() {
+        gl.bindTexture(gl.TEXTURE_2D, this.tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        textures[this.src.split("/").pop()] = this.tex;
+        texloads += 1;
+        if (texloads == texture_list.length)
+          callback();
+      };
+      img.src = texture_list[i];
     }
 
-    function loadShader(type,source) {
-      var shader;
-      shader = gl.createShader(type);
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-        throw Error("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
-      return shader;
+  }
+
+  function loadShader(type, source) {
+    var shader;
+    shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+      throw Error("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+    return shader;
+  }
+
+  function uMatrixMode(mode) {
+    if (mode == U_PROJECTION) {
+      activeMatrix = prMatrix;
+      activeStack = prStack;
+    } else if (mode == U_MODELVIEW) {
+      activeMatrix = mvMatrix;
+      activeStack = mvStack;
+    } else if (mode == U_TEXTURE) {
+      activeMatrix = txMatrix;
+      activeStack = txStack;
+    }
+  }
+
+  function uLoadIdentity() {
+    activeMatrix[0] = 1;
+    activeMatrix[1] = 0;
+    activeMatrix[2] = 0;
+    activeMatrix[3] = 0;
+    activeMatrix[4] = 0;
+    activeMatrix[5] = 1;
+    activeMatrix[6] = 0;
+    activeMatrix[7] = 0;
+    activeMatrix[8] = 0;
+    activeMatrix[9] = 0;
+    activeMatrix[10] = 1;
+    activeMatrix[11] = 0;
+    activeMatrix[12] = 0;
+    activeMatrix[13] = 0;
+    activeMatrix[14] = 0;
+    activeMatrix[15] = 1;
+  }
+
+  function multiply(result, srcA, srcB) {
+
+    var tmp = new Float32Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+    for (var i = 0; i < 4; i++) {
+      var a = 4 * i;
+      var b = a + 1;
+      var c = a + 2;
+      var d = a + 3;
+      tmp[a] = srcA[a] * srcB[0] +
+        srcA[b] * srcB[4] +
+        srcA[c] * srcB[8] +
+        srcA[d] * srcB[12];
+      tmp[b] = srcA[a] * srcB[1] +
+        srcA[b] * srcB[5] +
+        srcA[c] * srcB[9] +
+        srcA[d] * srcB[13];
+      tmp[c] = srcA[a] * srcB[2] +
+        srcA[b] * srcB[6] +
+        srcA[c] * srcB[10] +
+        srcA[d] * srcB[14];
+      tmp[d] = srcA[a] * srcB[3] +
+        srcA[b] * srcB[7] +
+        srcA[c] * srcB[11] +
+        srcA[d] * srcB[15];
+    }
+    for (var i = 0; i < 16; i++)
+      result[i] = tmp[i];
+  }
+
+  function uMultMatrix(mat) {
+    multiply(activeMatrix, mat, activeMatrix);
+  }
+
+  function uTranslatef(x, y, z) {
+    var m = activeMatrix;
+    m[12] += m[0] * x + m[4] * y + m[8] * z;
+    m[13] += m[1] * x + m[5] * y + m[9] * z;
+    m[14] += m[2] * x + m[6] * y + m[10] * z;
+    m[15] += m[3] * x + m[7] * y + m[11] * z;
+  }
+
+  function uRotatef(angle, x, y, z) {
+    angle = -angle;
+    var c = Math.cos(angle * Math.PI / 180.0);
+    var s = Math.sin(angle * Math.PI / 180.0);
+    var omc = 1.0 - c;
+    var mag = Math.sqrt(x * x + y * y + z * z);
+    if (mag != 0.0 && mag != 1.0) {
+      x = x / mag;
+      y = y / mag;
+      z = z / mag;
     }
 
-    function uMatrixMode(mode) {
-      if (mode == U_PROJECTION) {
-        activeMatrix = prMatrix;
-        activeStack = prStack;
-      } else if (mode == U_MODELVIEW) {
-        activeMatrix = mvMatrix;
-        activeStack = mvStack;
-      } else if (mode == U_TEXTURE) {
-        activeMatrix = txMatrix;
-        activeStack = txStack;
-      }
-    }
+    var xy = x * y;
+    var yz = y * z;
+    var zx = z * x;
+    var ys = y * s;
+    var xs = x * s;
+    var zs = z * s;
 
-    function uLoadIdentity() {
-	activeMatrix[0] = 1;
-	activeMatrix[1] = 0;
-	activeMatrix[2] = 0;
-	activeMatrix[3] = 0;
-	activeMatrix[4] = 0;
-	activeMatrix[5] = 1;
-	activeMatrix[6] = 0;
-	activeMatrix[7] = 0;
-	activeMatrix[8] = 0;
-	activeMatrix[9] = 0;
-	activeMatrix[10] = 1;
-	activeMatrix[11] = 0;
-	activeMatrix[12] = 0;
-	activeMatrix[13] = 0;
-	activeMatrix[14] = 0;
-	activeMatrix[15] = 1;
-    }
+    var rot = new Float32Array([omc * x * x + c, omc * xy - zs, omc * zx + ys, 0.0,
+      omc * xy + zs, omc * y * y + c, omc * yz - xs, 0.0,
+      omc * zx - ys, omc * yz + xs, omc * z * z + c, 0.0,
+      0.0, 0.0, 0.0, 1.0
+    ]);
+    uMultMatrix(rot);
+  }
 
-    function multiply(result, srcA, srcB) {
+  function uScalef(x, y, z) {
+    activeMatrix[0] *= x;
+    activeMatrix[1] *= x;
+    activeMatrix[2] *= x;
+    activeMatrix[3] *= x;
 
-	var tmp = new Float32Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+    activeMatrix[4] *= y;
+    activeMatrix[5] *= y;
+    activeMatrix[6] *= y;
+    activeMatrix[7] *= y;
 
-	for (var i = 0; i < 4; i++) {
-	    var a = 4*i;
-	    var b = a + 1;
-	    var c = a + 2;
-	    var d = a + 3;
-	    tmp[a] = srcA[a] * srcB[0] +
-		srcA[b] * srcB[4] +
-		srcA[c] * srcB[8] +
-		srcA[d] * srcB[12];
-	    tmp[b] = srcA[a] * srcB[1] +
-		srcA[b] * srcB[5] +
-		srcA[c] * srcB[9] +
-		srcA[d] * srcB[13];
-	    tmp[c] = srcA[a] * srcB[2] +
-		srcA[b] * srcB[6] +
-		srcA[c] * srcB[10] +
-		srcA[d] * srcB[14];
-	    tmp[d] = srcA[a] * srcB[3] +
-		srcA[b] * srcB[7] +
-		srcA[c] * srcB[11] +
-		srcA[d] * srcB[15];
-	}
-	for (var i = 0; i < 16; i++)
-	    result[i] = tmp[i];
-    }
+    activeMatrix[8] *= z;
+    activeMatrix[9] *= z;
+    activeMatrix[10] *= z;
+    activeMatrix[11] *= z;
+  }
 
-    function uMultMatrix(mat) {
-	multiply(activeMatrix, mat, activeMatrix);
-    }
+  function uOrthof(left, right, bottom, top, near, far) {
+    var dX = right - left;
+    var dY = top - bottom;
+    var dZ = far - near;
+    var orth = new Float32Array([2 / dX, 0, 0, 0,
+      0, 2 / dY, 0, 0,
+      0, 0, -2 / dZ, 0, -(right + left) / dX, -(top + bottom) / dY, -(near + far) / dZ, 1.0
+    ]);
+    uMultMatrix(orth);
+  }
 
-    function uTranslatef(x, y, z) {
-	var m = activeMatrix;
-	m[12] += m[0]*x + m[4]*y + m[8]*z;
-	m[13] += m[1]*x + m[5]*y + m[9]*z;
-	m[14] += m[2]*x + m[6]*y + m[10]*z;
-	m[15] += m[3]*x + m[7]*y + m[11]*z;
-    }
+  function uPushMatrix() {
+    var store = new Float32Array(16);
+    for (var i = 0; i < 16; i++)
+      store[i] = activeMatrix[i];
+    activeStack.push(store);
+  }
 
-    function uRotatef(angle, x, y, z) {
-	angle = -angle;
-	var c = Math.cos(angle * Math.PI / 180.0);
-	var s = Math.sin(angle * Math.PI / 180.0);
-	var omc = 1.0 - c;
-	var mag = Math.sqrt(x*x + y*y + z*z);
-	if (mag != 0.0 && mag != 1.0) {
-	    x = x/mag;
-	    y = y/mag;
-	    z = z/mag;
-	}
+  function uPopMatrix() {
+    var restore = activeStack.pop();
+    for (var i = 0; i < 16; i++)
+      activeMatrix[i] = restore[i];
+  }
 
-	var xy = x*y;
-	var yz = y*z;
-	var zx = z*x;
-	var ys = y*s;
-	var xs = x*s;
-	var zs = z*s;
+  function uColor4f(r, g, b, a) {
+    ucolr = r;
+    ucolg = g;
+    ucolb = b;
+    ucola = a;
+  }
 
-	var rot = new Float32Array([omc*x*x+c, omc*xy-zs, omc*zx+ys, 0.0,
-				    omc*xy+zs, omc*y*y+c, omc*yz-xs, 0.0,
-				    omc*zx-ys, omc*yz+xs, omc*z*z+c, 0.0,
-				    0.0,       0.0,       0.0,       1.0]);
-	uMultMatrix(rot);
-    }
+  function uPointSize(size) {
+    upointsize = size;
+  }
 
-    function uScalef(x, y, z) {
-	activeMatrix[0] *= x;
-	activeMatrix[1] *= x;
-	activeMatrix[2] *= x;
-	activeMatrix[3] *= x;
-
-	activeMatrix[4] *= y;
-	activeMatrix[5] *= y;
-	activeMatrix[6] *= y;
-	activeMatrix[7] *= y;
-
-	activeMatrix[8] *= z;
-	activeMatrix[9] *= z;
-	activeMatrix[10] *= z;
-	activeMatrix[11] *= z;
-    }
-
-    function uOrthof(left, right, bottom, top, near, far) {
-	var dX = right - left;
-	var dY = top - bottom;
-	var dZ = far - near;
-	var orth = new Float32Array([2/dX, 0, 0, 0,
-				     0, 2/dY, 0, 0,
-				     0, 0, -2/dZ, 0,
-				     -(right+left)/dX, -(top+bottom)/dY, -(near+far)/dZ, 1.0]);
-	uMultMatrix(orth);
-    }
-
-    function uPushMatrix() {
-	var store = new Float32Array(16);
-	for (var i = 0; i < 16; i++)
-	    store[i] = activeMatrix[i];
-	activeStack.push(store);
-    }
-
-    function uPopMatrix() {
-	var restore = activeStack.pop();
-	for (var i = 0; i < 16; i++)
-	    activeMatrix[i] = restore[i];
-    }
-
-    function uColor4f(r, g, b, a) {
-	ucolr = r;
-	ucolg = g;
-	ucolb = b;
-	ucola = a;
-    }
-
-    function uPointSize(size) {
-	upointsize = size;
-    }
-
-    function uVertexPointer(size, type, stride, buf) {
-	gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-	gl.vertexAttribPointer(vertexPos, size, type, false, size*4, 0);
-	gl.enableVertexAttribArray(vertexPos);
-    }
+  function uVertexPointer(size, type, stride, buf) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.vertexAttribPointer(vertexPos, size, type, false, size * 4, 0);
+    gl.enableVertexAttribArray(vertexPos);
+  }
 
 
-    function uColorPointer(size, type, stride, buf) {
-	gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-	gl.vertexAttribPointer(colorPos, size, type, false, size*4, 0);
-	gl.enableVertexAttribArray(colorPos);
-    }
+  function uColorPointer(size, type, stride, buf) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.vertexAttribPointer(colorPos, size, type, false, size * 4, 0);
+    gl.enableVertexAttribArray(colorPos);
+  }
 
-    function uTexCoordPointer(size, type, stride, buf) {
-	gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-	gl.vertexAttribPointer(texCoordPos, size, type, false, size*4, 0);
-	gl.enableVertexAttribArray(texCoordPos);
-    }
-
-
-    function uEnableClientState(state) {
-	if (state == U_TEXTURE_COORD_ARRAY)
-	    enablestex = true;
-	else if (state == U_COLOR_ARRAY)
-	    enablevco = true;
-    }
-    
-    function uDisableClientState(state) {
-	if (state == U_TEXTURE_COORD_ARRAY)
-	    enablestex = false;
-	else if (state == U_COLOR_ARRAY)
-	    enablevco = false; 
-    }
-
-    function uDrawArrays(mode, first, count) {
-	gl.uniform1i(enablestexloc, enablestex);
-	gl.uniform1i(enablevcoloc, enablevco);
-	gl.uniform1f(upointsizeloc, upointsize);
-	gl.uniform4f(ucolorloc, ucolr, ucolg, ucolb, ucola);
-	gl.activeTexture(gl.TEXTURE0);
-	gl.uniform1i(stextureloc, 0);  
-	multiply(mvpMatrix,mvMatrix,prMatrix);
-	gl.uniformMatrix4fv(mvpmatrixloc, false, mvpMatrix);
-	gl.uniformMatrix4fv(txmatrixloc, false, txMatrix);
-	if (!enablestex)
-	    gl.disableVertexAttribArray(texCoordPos);
-	if (!enablevco)
-	    gl.disableVertexAttribArray(colorPos);
-	gl.drawArrays(mode, first, count);
-    }
-
-    function checkError(source) {
-	var error = gl.getError();
-	if (error == gl.NO_ERROR)
-	    return;
-	throw Error("OpenGL Error from " + source + ": " + error);
-    }
+  function uTexCoordPointer(size, type, stride, buf) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.vertexAttribPointer(texCoordPos, size, type, false, size * 4, 0);
+    gl.enableVertexAttribArray(texCoordPos);
+  }
 
 
-    return {shake: shake};
-	
+  function uEnableClientState(state) {
+    if (state == U_TEXTURE_COORD_ARRAY)
+      enablestex = true;
+    else if (state == U_COLOR_ARRAY)
+      enablevco = true;
+  }
+
+  function uDisableClientState(state) {
+    if (state == U_TEXTURE_COORD_ARRAY)
+      enablestex = false;
+    else if (state == U_COLOR_ARRAY)
+      enablevco = false;
+  }
+
+  function uDrawArrays(mode, first, count) {
+    gl.uniform1i(enablestexloc, enablestex);
+    gl.uniform1i(enablevcoloc, enablevco);
+    gl.uniform1f(upointsizeloc, upointsize);
+    gl.uniform4f(ucolorloc, ucolr, ucolg, ucolb, ucola);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.uniform1i(stextureloc, 0);
+    multiply(mvpMatrix, mvMatrix, prMatrix);
+    gl.uniformMatrix4fv(mvpmatrixloc, false, mvpMatrix);
+    gl.uniformMatrix4fv(txmatrixloc, false, txMatrix);
+    if (!enablestex)
+      gl.disableVertexAttribArray(texCoordPos);
+    if (!enablevco)
+      gl.disableVertexAttribArray(colorPos);
+    gl.drawArrays(mode, first, count);
+  }
+
+  function checkError(source) {
+    var error = gl.getError();
+    if (error == gl.NO_ERROR)
+      return;
+    throw Error("OpenGL Error from " + source + ": " + error);
+  }
+
+
+  return {
+    shake: shake
+  };
+
 })();
+
 /**
  * @namespace
  * @type {Object} Visualization object
  */
 var vz = {
-  name      : 'MilkShake',
-  type      : 'visualization',
-  tags      : ['canvas', '2d'],
-  screen    : null,
-  canvas    : null,
-  ctx       : null,
-  width     : 0,
-  height    : 0,
-  bands     : [],
+  name: 'MilkShake',
+  type: 'visualization',
+  tags: ['canvas', '2d'],
+  screen: null,
+  canvas: null,
+  ctx: null,
+  width: 0,
+  height: 0,
+  bands: [],
   band_count: 0,
   initialized: false,
   options: {
@@ -27058,14 +27137,14 @@ var vz = {
     wave_color_right: 'green'
   },
   audio: {
-    audio: function (event) {
+    audio: function(event) {
       vz.redraw(event.audio);
       return true;
     },
-    pause: function (event) {
+    pause: function(event) {
       return true;
     },
-    reset: function (event) {
+    reset: function(event) {
       return true;
     }
   }
@@ -27075,50 +27154,50 @@ var vz = {
  * Redraw Visualization
  * @param audio
  */
-vz.redraw = function (audio) {
-//   if (!vz.initialized) return;
+vz.redraw = function(audio) {
+  //   if (!vz.initialized) return;
 
-//   var x, y, i, l,
-//     min = 100,
-//     max = -100;
+  //   var x, y, i, l,
+  //     min = 100,
+  //     max = -100;
 
-//   vz.ctx.clearRect(0, 0, vz.width, vz.height);
-//   vz.ctx.beginPath();
-//   vz.ctx.moveTo(0, vz.height / 2);
+  //   vz.ctx.clearRect(0, 0, vz.width, vz.height);
+  //   vz.ctx.beginPath();
+  //   vz.ctx.moveTo(0, vz.height / 2);
 
-//   vz.ctx.strokeStyle = vz.options.wave_color_left;
+  //   vz.ctx.strokeStyle = vz.options.wave_color_left;
 
-// //  console.log('audio', audio);
+  // //  console.log('audio', audio);
 
-//   for (i = 0, l = audio.wave.left.length; i < l; i++) {
-//     x = vz.width / l * i;
-//     y = (1 - audio.wave.left[i]) / 2 * vz.height;
-//     vz.ctx.lineTo(x, y);
-//   }
+  //   for (i = 0, l = audio.wave.left.length; i < l; i++) {
+  //     x = vz.width / l * i;
+  //     y = (1 - audio.wave.left[i]) / 2 * vz.height;
+  //     vz.ctx.lineTo(x, y);
+  //   }
 
-//   vz.ctx.stroke();
-//   vz.ctx.beginPath();
-//   vz.ctx.strokeStyle = vz.options.wave_color_right;
+  //   vz.ctx.stroke();
+  //   vz.ctx.beginPath();
+  //   vz.ctx.strokeStyle = vz.options.wave_color_right;
 
-//   for (i = 0, l = audio.wave.right.length; i < l; i++) {
-//     x = vz.width / l * i;
-//     y = (1 + audio.wave.right[i]) / 2 * vz.height;
-//     vz.ctx.lineTo(x, y);
-//   }
+  //   for (i = 0, l = audio.wave.right.length; i < l; i++) {
+  //     x = vz.width / l * i;
+  //     y = (1 + audio.wave.right[i]) / 2 * vz.height;
+  //     vz.ctx.lineTo(x, y);
+  //   }
 
-//   vz.ctx.stroke();
+  //   vz.ctx.stroke();
 };
 
 /**
  * Start visualization
  * @param options
  */
-vz.start = function (options) {
-  vz.bands         = options.bands;
-  vz.band_count    = vz.bands.length;
-  vz.screen        = options.screen;
-  vz.canvas        = document.createElement('canvas');
-  vz.canvas.width  = vz.width  = options.width;
+vz.start = function(options) {
+  vz.bands = options.bands;
+  vz.band_count = vz.bands.length;
+  vz.screen = options.screen;
+  vz.canvas = document.createElement('canvas');
+  vz.canvas.width = vz.width = options.width;
   vz.canvas.height = vz.height = options.height;
   vz.screen.appendChild(vz.canvas);
 
@@ -27134,7 +27213,7 @@ vz.start = function (options) {
 /**
  * Stop visualization
  */
-vz.stop = function () {
+vz.stop = function() {
   if (!vz.initialized) return;
   vz.screen.removeChild(vz.canvas);
   vz.canvas = null;
@@ -27146,13 +27225,13 @@ vz.stop = function () {
  * Start visualization fading in
  * @param options
  */
-vz.fadeIn = function (options, step) {
+vz.fadeIn = function(options, step) {
   vz.start(options);
   vz.ctx.globalAlpha = 0.0;
 
   step = step || 0.03;
 
-  function incrementalpha () {
+  function incrementalpha() {
     if (1 - vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 1.0) {
       vz.ctx.globalAlpha = 1;
     } else {
@@ -27167,12 +27246,12 @@ vz.fadeIn = function (options, step) {
 /**
  * Stop visualization fading out
  */
-vz.fadeOut = function (step) {
+vz.fadeOut = function(step) {
   if (!vz.initialized) return;
 
   step = step || 0.03;
 
-  function decrementalpha () {
+  function decrementalpha() {
     if (vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 0) {
       vz.ctx.globalAlpha = 0;
       vz.stop();
@@ -27190,19 +27269,19 @@ vz.fadeOut = function (step) {
  * @param width
  * @param height
  */
-vz.resize = function (width, height) {
+vz.resize = function(width, height) {
   if (!vz.initialized) return;
   vz.canvas.width = vz.width = width;
   vz.canvas.height = vz.height = height;
 };
 
 // Export API
-exports.name    = vz.name;
-exports.type    = vz.type;
-exports.tags    = vz.tags;
-exports.start   = vz.start;
-exports.stop    = vz.stop;
-exports.fadeIn  = vz.fadeIn;
+exports.name = vz.name;
+exports.type = vz.type;
+exports.tags = vz.tags;
+exports.start = vz.start;
+exports.stop = vz.stop;
+exports.fadeIn = vz.fadeIn;
 exports.fadeOut = vz.fadeOut;
-exports.resize  = vz.resize;
-exports.audio   = vz.audio;
+exports.resize = vz.resize;
+exports.audio = vz.audio;
