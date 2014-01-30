@@ -24,7 +24,7 @@ var RenderItem = Class.extend({
 	init: function(literal) {
 	    this.masterAlpha = 1.0;
 	    for (var prop in literal)
-		this[prop] = literal[prop];	    
+		this[prop] = literal[prop];
 	},
 
 	Draw: function () {}
@@ -84,7 +84,7 @@ var MilkdropWaveform = RenderItem.extend({
 		else if (context.music.vol >= this.modOpacityEnd) this.temp_a = this.a;
 		else this.temp_a = this.a*((context.music.vol-this.modOpacityStart)/(this.modOpacityEnd-this.modOpacityStart));
 	    } else this.temp_a = this.a;
-	    
+
 	    this.MaximizeColors(context);
 
 	    if (this.thick == 1)
@@ -1009,7 +1009,7 @@ var Darken = Filter.extend({
     });
 
 var Invert = Filter.extend({
-	Draw: function(context) {    
+	Draw: function(context) {
 	    uEnableClientState(U_VERTEX_ARRAY);
 	    gl.bindBuffer(gl.ARRAY_BUFFER, this.pointsbuf);
 	    gl.bufferData(gl.ARRAY_BUFFER, this.points, gl.STATIC_DRAW);
@@ -1018,7 +1018,7 @@ var Invert = Filter.extend({
 	    gl.enable(gl.BLEND);
 	    gl.blendFunc(gl.ONE_MINUS_DST_COLOR, gl.ZERO);
 	    uDrawArrays(gl.TRIANGLE_FAN,0,4);
-	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);   
+	    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 	    uDisableClientState(U_VERTEX_ARRAY);
 	}
     });
