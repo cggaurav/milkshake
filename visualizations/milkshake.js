@@ -106,6 +106,7 @@ var milk = (function() {
 
   function initGL(callback) {
 
+    console.log(gl);
 
     // app currently breaks here because g1 is null
     var vertexShader = loadShader(gl.VERTEX_SHADER,
@@ -497,7 +498,8 @@ vz.start = function(options) {
   vz.canvas.height = vz.height = options.height;
   vz.screen.appendChild(vz.canvas);
 
-  vz.ctx = vz.canvas.getContext('2d');
+//  vz.ctx = vz.canvas.getContext('2d');
+  vz.ctx = vz.canvas.getContext('webgl');
   vz.ctx.globalCompositeOperation = 'destination-over';
   vz.ctx.globalAlpha = 1;
 

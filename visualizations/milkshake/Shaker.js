@@ -1,5 +1,5 @@
 var Shaker = Class.extend({
-	
+
 	init: function() {
 	    this.settings = {
 		meshX: 32,
@@ -24,7 +24,7 @@ var Shaker = Class.extend({
 	    this.timestart = 0;
 	    this.count = 0;
 	    this.fpsstart = 0;
- 
+
 	    this.renderer = new Renderer(this.settings.windowWidth, this.settings.windowHeight,
 					 this.settings.meshX, this.settings.meshY,
 					 this.settings.textureSize, this.music);
@@ -33,7 +33,7 @@ var Shaker = Class.extend({
 	    this.presetNames = [];
 	    for (var presetName in Presets) {
 		this.presetNames.push(presetName);
-		Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName], 
+		Presets[presetName] = new MilkdropPreset(presetName, Presets[presetName],
 							 this.settings.meshX, this.settings.meshY);
 	    }
 
@@ -43,11 +43,11 @@ var Shaker = Class.extend({
 
 	    this.matcher = new RenderItemMatcher();
 	    this.merger = new MasterRenderItemMerge();
-	   
+
 	    this.merger.add(new ShapeMerge());
 	    this.merger.add(new BorderMerge());
 	    //this.matcher.distanceFunction().addMetric(new ShapeXYDistance());
-	    
+
 	    this.reset();
 	    this.renderer.reset(this.settings.windowWidth, this.settings.windowHeight);
 
@@ -67,7 +67,7 @@ var Shaker = Class.extend({
 	    this.timestart = 0;
 	    this.count = 0;
 	    this.fpsstart = 0;
-	    this.music.reset();	    
+	    this.music.reset();
 	},
 
 	renderFrame: function() {
