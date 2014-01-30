@@ -2,14 +2,14 @@ require([
   '$api/models',
   '$api/audio',
 //  -- Add visualizations below
-  'visualizations/waveform',
-  'visualizations/multiband',
-  'visualizations/multiband2',
-  'visualizations/globe',
-  'visualizations/boids/simple',
-  'visualizations/waveform-interp',
-  'visualizations/raymarching',
-  'visualizations/beatdetection',
+  // 'visualizations/waveform',
+  // 'visualizations/multiband',
+  // 'visualizations/multiband2',
+  // 'visualizations/globe',
+  // 'visualizations/boids/simple',
+  // 'visualizations/waveform-interp',
+  // 'visualizations/raymarching',
+  // 'visualizations/beatdetection',
   'visualizations/milkshake'
 //  'visualizations/sample'
 ], function (models, audio) {
