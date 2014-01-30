@@ -2,8 +2,8 @@ require([
   '$api/models',
   '$api/audio',
 //  -- Add visualizations below
-  // 'visualizations/waveform',
-  // 'visualizations/multiband',
+  'visualizations/waveform',
+  // 'visualizations/multiband'
   // 'visualizations/multiband2',
   // 'visualizations/globe',
   // 'visualizations/boids/simple',
@@ -150,7 +150,7 @@ require([
     getScreenSize();
 
     for (var i in running) {
-      visualizations[running[i]].resize(ww, wh);
+      // visualizations[running[i]].resize(ww, wh);
     }
   }
 

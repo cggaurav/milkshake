@@ -5,7 +5,6 @@ var Visualizer;
 
 require('js/visualizer', function (vz) {
   'use strict';
-
   Visualizer = vz;
 
   if (document.readyState === "complete") {

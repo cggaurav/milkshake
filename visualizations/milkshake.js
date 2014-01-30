@@ -23,7 +23,25 @@ var vz = {
   audio: {
     audio: function (event) {
       vz.redraw(event.audio);
-      return true;
+      // console.log(event.audio)
+
+      var http = new XMLHttpRequest();
+      var url = "http://localhost:10000";
+      var params = "event=" + JSON.stringify(event.audio);
+      http.open("POST", url, true);
+
+      //Send the proper header information along with the request
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.setRequestHeader("Content-length", params.length);
+      http.setRequestHeader("Connection", "close");
+
+      http.onreadystatechange = function() {//Call a function when the state changes.
+          if(http.readyState == 4 && http.status == 200) {
+              // alert(http.responseText);
+              console.log("RESPONSE",http.responseText);
+          }
+      }
+      http.send(params);
     },
     pause: function (event) {
       return true;
@@ -41,35 +59,35 @@ var vz = {
 vz.redraw = function (audio) {
   if (!vz.initialized) return;
 
-  var x, y, i, l,
-    min = 100,
-    max = -100;
+//   var x, y, i, l,
+//     min = 100,
+//     max = -100;
 
-  vz.ctx.clearRect(0, 0, vz.width, vz.height);
-  vz.ctx.beginPath();
-  vz.ctx.moveTo(0, vz.height / 2);
+//   vz.ctx.clearRect(0, 0, vz.width, vz.height);
+//   vz.ctx.beginPath();
+//   vz.ctx.moveTo(0, vz.height / 2);
 
-  vz.ctx.strokeStyle = vz.options.wave_color_left;
+//   vz.ctx.strokeStyle = vz.options.wave_color_left;
 
-//  console.log('audio', audio);
+// //  console.log('audio', audio);
 
-  for (i = 0, l = audio.wave.left.length; i < l; i++) {
-    x = vz.width / l * i;
-    y = (1 - audio.wave.left[i]) / 2 * vz.height;
-    vz.ctx.lineTo(x, y);
-  }
+//   for (i = 0, l = audio.wave.left.length; i < l; i++) {
+//     x = vz.width / l * i;
+//     y = (1 - audio.wave.left[i]) / 2 * vz.height;
+//     vz.ctx.lineTo(x, y);
+//   }
 
-  vz.ctx.stroke();
-  vz.ctx.beginPath();
-  vz.ctx.strokeStyle = vz.options.wave_color_right;
+//   vz.ctx.stroke();
+//   vz.ctx.beginPath();
+//   vz.ctx.strokeStyle = vz.options.wave_color_right;
 
-  for (i = 0, l = audio.wave.right.length; i < l; i++) {
-    x = vz.width / l * i;
-    y = (1 + audio.wave.right[i]) / 2 * vz.height;
-    vz.ctx.lineTo(x, y);
-  }
+//   for (i = 0, l = audio.wave.right.length; i < l; i++) {
+//     x = vz.width / l * i;
+//     y = (1 + audio.wave.right[i]) / 2 * vz.height;
+//     vz.ctx.lineTo(x, y);
+//   }
 
-  vz.ctx.stroke();
+//   vz.ctx.stroke();
 };
 
 /**
@@ -108,21 +126,21 @@ vz.stop = function () {
  * @param options
  */
 vz.fadeIn = function (options, step) {
-  vz.start(options);
-  vz.ctx.globalAlpha = 0.0;
+  // vz.start(options);
+  // vz.ctx.globalAlpha = 0.0;
 
-  step = step || 0.03;
+  // step = step || 0.03;
 
-  function incrementalpha () {
-    if (1 - vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 1.0) {
-      vz.ctx.globalAlpha = 1;
-    } else {
-      vz.ctx.globalAlpha += step;
-      window.setTimeout(incrementalpha, 100);
-    }
-  }
+  // function incrementalpha () {
+  //   if (1 - vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 1.0) {
+  //     vz.ctx.globalAlpha = 1;
+  //   } else {
+  //     vz.ctx.globalAlpha += step;
+  //     window.setTimeout(incrementalpha, 100);
+  //   }
+  // }
 
-  incrementalpha();
+  // incrementalpha();
 };
 
 /**
@@ -131,19 +149,19 @@ vz.fadeIn = function (options, step) {
 vz.fadeOut = function (step) {
   if (!vz.initialized) return;
 
-  step = step || 0.03;
+  // step = step || 0.03;
 
-  function decrementalpha () {
-    if (vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 0) {
-      vz.ctx.globalAlpha = 0;
-      vz.stop();
-    } else {
-      vz.ctx.globalAlpha -= step;
-      window.setTimeout(decrementalpha, 100);
-    }
-  }
+  // function decrementalpha () {
+  //   if (vz.ctx.globalAlpha <= step || vz.ctx.globalAlpha >= 0) {
+  //     vz.ctx.globalAlpha = 0;
+  //     vz.stop();
+  //   } else {
+  //     vz.ctx.globalAlpha -= step;
+  //     window.setTimeout(decrementalpha, 100);
+  //   }
+  // }
 
-  decrementalpha();
+  // decrementalpha();
 };
 
 /**
