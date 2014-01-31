@@ -1,5 +1,5 @@
 {
-  "BundleIdentifier" : "viz",
+  "BundleIdentifier" : "milkshake",
   "BundleType"       : "Application",
   "BundleVersion"    : "0.1.3",
   "VendorIdentifier" : "com.spotify",

@@ -1,8 +1,8 @@
 Milkshake
+=========
 
-Porting Winamp to Spotify
+[![Spotify MilkShake](http://img.youtube.com/vi/dUx19cxzvh8/0.jpg)](http://www.youtube.com/watch?v=dUx19cxzvh8)
 
-Go to /server
-npm install connect
-node server.js
-"spotify:app:viz" in Spotify and reload
+node server.js in /server
+
+spotify:app:milkshake
