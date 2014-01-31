@@ -118,14 +118,24 @@ var milk = (function(){
 
     			    var left;
     			    var right;
+
+                    function go(data){
+                        if(data.length > 0){
+                                console.log("S");
+                                // console.log('left',data[0].wave.left);
+                                left = data[0].wave.left;
+                                right = data[0].wave.right;
+                        }
+                    }
     			    // LETS GO!!!!	
     			    $.ajax({
     			         url:"http://localhost:10001",
-    			         dataType: 'json', // Notice! JSONP <-- P (lowercase)
+    			         dataType: 'jsonp', 
     			         success:function(data){
     			             // do stuff with json (in this case an array)
     			             if(data.length > 0){
-    			             	console.log("Success", data);
+                                console.log("S");
+    			             	// console.log('left',data[0].wave.left);
     			             	left = data[0].wave.left;
     			             	right = data[0].wave.right;
     			         	 }
@@ -136,7 +146,7 @@ var milk = (function(){
     			    });
     				// var left = this.waveformData.left;
     				// var right = this.waveformData.right;
-    				for (i = 0; i < 256; i++) {
+    				for (i = 0; i < 1024; i++) {
     				    left[i] = parseFloat(left[i]);
     				    right[i] = parseFloat(right[i]);
     				}
@@ -151,10 +161,10 @@ var milk = (function(){
     				"powered by <a href='http://soundcloud.com/'>soundcloud</a>";
     			},
     			onfinish: function() {
-    			    soundManager.stopAll();
-    			    if (audio.trackPos < audio.tracks.length - 1)
-    				audio.trackPos++;
-    			    soundManager.play(audio.tracks[audio.trackPos]);
+    			 //    soundManager.stopAll();
+    			 //    if (audio.trackPos < audio.tracks.length - 1)
+    				// audio.trackPos++;
+    			 //    soundManager.play(audio.tracks[audio.trackPos]);
     			}
     		 });
     	    }

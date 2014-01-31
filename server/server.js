@@ -48,7 +48,7 @@ function createServer(port, readqueue, writequeue) {
         if (POST['event'] && POST['event'].length > 0)
           writequeue.push(JSON.parse(POST['event']));
       });
-      res.writeHead(200, {'Content-Type': 'text/javascript'});
+      res.writeHead(200, {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin': '*'});
       res.end('{\"ok\":1}\n');
     }
   }).listen(port, '127.0.0.1');

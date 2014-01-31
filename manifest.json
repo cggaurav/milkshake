@@ -29,5 +29,11 @@
   },
   "SupportedLanguages": [
     "en"
+  ],
+  "RequiredPermissions": [
+      "https://*.spotify.com",
+      "https://spotify.com",
+      "https://localhost:10000",
+      "http://localhost:10000"
   ]
 }
