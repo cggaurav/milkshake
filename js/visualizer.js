@@ -150,7 +150,7 @@ require([
     getScreenSize();
 
     for (var i in running) {
-      // visualizations[running[i]].resize(ww, wh);
+      visualizations[running[i]].resize(ww, wh);
     }
   }
 

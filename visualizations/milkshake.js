@@ -170,6 +170,7 @@ vz.fadeOut = function (step) {
  * @param height
  */
 vz.resize = function (width, height) {
+  // console.log("RESIZE");
   if (!vz.initialized) return;
   vz.canvas.width = vz.width = width;
   vz.canvas.height = vz.height = height;
