@@ -116,13 +116,26 @@ var milk = (function(){
     			whileplaying: function() {
     			    if (typeof shaker != "undefined") {
 
-
+    			    var left;
+    			    var right;
     			    // LETS GO!!!!	
-    			    $.get( "http://localhost:10001/?callback=?", function( data ) {
-    			      console.log(data);
+    			    $.ajax({
+    			         url:"http://localhost:10001",
+    			         dataType: 'json', // Notice! JSONP <-- P (lowercase)
+    			         success:function(data){
+    			             // do stuff with json (in this case an array)
+    			             if(data.length > 0){
+    			             	console.log("Success", data);
+    			             	left = data[0].wave.left;
+    			             	right = data[0].wave.right;
+    			         	 }
+    			         },
+    			         error:function(err){
+    			             console.log("Error", err);
+    			         },
     			    });
-    				var left = this.waveformData.left;
-    				var right = this.waveformData.right;
+    				// var left = this.waveformData.left;
+    				// var right = this.waveformData.right;
     				for (i = 0; i < 256; i++) {
     				    left[i] = parseFloat(left[i]);
     				    right[i] = parseFloat(right[i]);

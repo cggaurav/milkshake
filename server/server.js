@@ -33,7 +33,7 @@ function createServer(port, readqueue, writequeue) {
   http.createServer(function (req, res) {
     if (req.method == 'GET') {
       var item = readqueue.pop();
-      res.writeHead(200, {'Content-Type': 'text/javascript'});
+      res.writeHead(200, {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin': '*'});
       var json = '[]';
       if (item) json = JSON.stringify([item]);
       res.end(json);
@@ -45,7 +45,7 @@ function createServer(port, readqueue, writequeue) {
       req.on('end', function () {
         var POST = qs.parse(body);
         console.log('POSTED', POST);
-        if (POST['event'])
+        if (POST['event'] && POST['event'].length > 0)
           writequeue.push(JSON.parse(POST['event']));
       });
       res.writeHead(200, {'Content-Type': 'text/javascript'});
