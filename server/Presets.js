@@ -1,163 +1,146 @@
 var Presets = {};
 
-Presets["Aderrasi - Blender.milk"] = {
+
+
+
+
+
+
+// wavy fractals - intense
+Presets["Rovastar - Harlequin's Dynamic Fractal (Crazed Spiral Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
-    fDecay: 0.98,
-    fVideoEchoZoom: 0.999997,
-    fVideoEchoAlpha: 0.4,
+    fDecay: 1.0,
+    fVideoEchoZoom: 0.999609,
+    fVideoEchoAlpha: 0.0,
     nVideoEchoOrientation: 0,
-    nWaveMode: 0,
+    nWaveMode: 7,
     bAdditiveWaves: 0,
     bWaveDots: 0,
-    bWaveThick: 1,
     bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
+    bMaximizeWaveColor: 1,
     bTexWrap: 1,
-    bDarkenCenter: 1,
+    bDarkenCenter: 0,
     bRedBlueStereo: 0,
     bBrighten: 0,
     bDarken: 0,
     bSolarize: 0,
     bInvert: 0,
-    fWaveAlpha: 100.0,
-    fWaveScale: 3.91582,
-    fWaveSmoothing: 0.5,
-    fWaveParam: -0.4,
-    fModWaveAlphaStart: 0.5,
-    fModWaveAlphaEnd: 1.0,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 1.0,
+    fWaveAlpha: 0.001,
+    fWaveScale: 0.6401,
+    fWaveSmoothing: 0.27,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
+    fWarpAnimSpeed: 5.99579,
+    fWarpScale: 1.331,
+    fZoomExponent: 1.01,
     fShader: 0.0,
-    zoom: 1.0,
-    rot: 0.0,
+    zoom: 0.998531,
+    rot: 0.002,
     cx: 0.5,
     cy: 0.5,
-    dx: 1e-05,
-    dy: 1e-05,
+    dx: 0.0,
+    dy: 0.0,
     warp: 0.01,
     sx: 1.0,
     sy: 1.0,
-    wave_r: 1.0,
-    wave_g: 1.0,
-    wave_b: 1.0,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
     wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.005,
-    ob_r: 1.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
+    wave_y: 0.96,
+    ob_size: 0.01,
+    ob_r: 0.0,
+    ob_g: 0.9,
+    ob_b: 0.2,
     ob_a: 1.0,
-    ib_size: 0.005,
-    ib_r: 1.0,
-    ib_g: 1.0,
-    ib_b: 1.0,
+    ib_size: 0.0,
+    ib_r: 0.5,
+    ib_g: 0.5,
+    ib_b: 0.5,
     ib_a: 1.0,
     nMotionVectorsX: 0.0,
-    nMotionVectorsY: 0.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 1.0,
+    nMotionVectorsY: 48.0,
+    mv_l: 5.0,
     mv_r: 1.0,
     mv_g: 1.0,
     mv_b: 1.0,
     mv_a: 0.0,
     per_pixel_code: function(_){with(_){
-      rot = rot - 0.1*min((2-rad)*bass_att,(2-rad)*treb_att);
-      grad = sqrt(x*x + y*y)*2;
-      dx = dx - 0.02*(1-rad);
-      dy = dy + 0.02*(1-rad);
-      zoom = zoom - max(grad*(bass/8 - treb/8), 0);
+      box=(1-rad)+0.5*abs(x*3-0.4*sin(q1))%2 + 0.5*abs(y*3+0.4*sin(q1))%2;
+      q1 = 8.05+(sin(x+0.137*time)-cos(y+0.213*time));
+      zoom = ifcond(above(box,1),q1*.1,zoom);
+      rot = ifcond(above(box,1),1*sin(0.385*time),rot);
     }},
     per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.9;
-      wave_g = 0.9 - 0.5*bass;
-      wave_b = 0.9 - 0.5*bass;
-      q1 = 0.05*sin(time*1.14);
-      q2 = 0.03*sin(time*0.93+2);
-      wave_x = wave_x + q1;
-      wave_y = wave_y + q2;
+      ob_r = 0.3 - 0.3*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
+      ob_g = 0.6- 0.4*sin(time*2.924);
+      ob_b = 0.35 - 0.3*cos(time*0.816);
+      cx = cx - 0.1*sin(time*0.342);
+      cy = cy + 0.1*sin(time*0.433);
+      warp =0;
+      ib_size = 0.02;
+      ib_r = ib_r + 0.5*sin(time*3.034);
+      ib_g = ib_g + 0.5*sin(time*2.547);
+      ib_b = ib_b - 0.5*sin(time*1.431);
+      dx = dx -0.008*sin(time*0.23);
+      dy = dy - 0.008*sin(time*0.2);
     }},
     shapes: [
-{enabled: 0,
- sides: 4,
- thickOutline: 0,
- textured: 0,
- x: 0.5,
- y: 0.5,
- rad: 1.0,
- ang: 0,
- tex_ang: 0,
- tex_zoom: 0.5,
- r: 1,
- g: 1,
- b: 1,
- a: 1,
- r2: 1,
- g2: 1,
- b2: 1,
- a2: 1,
- border_r: 0,
- border_g: 0,
- border_b: 0,
- border_a: 0,
- per_frame_code: function(_){with(_){
-   x = x + q1;
-   y = y + q2;
-   r = r + 0.9;
-   g = 0.9 - 0.5*bass;
-   b = 0.9 - 0.5*bass;
-   rad = rad + 0.1 * bass_att;
-	}}}
     ],
     waves: [
     ],
   };
 
-Presets["bmelgren - Godhead.milk"] = {
+
+// awesome fullscreen star thing
+Presets["Rovastar - The Awakening.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
-    fDecay: 0.975,
-    fVideoEchoZoom: 1.006596,
-    fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 5,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bModWaveAlphaByVolume: 1,
+    fDecay: 0.989,
+    fVideoEchoZoom: 1.483841,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 7,
+    bAdditiveWaves: 0,
+    bWaveDots: 1,
+    bModWaveAlphaByVolume: 0,
     bMaximizeWaveColor: 1,
     bTexWrap: 0,
-    bDarkenCenter: 1,
+    bDarkenCenter: 0,
+    bMotionVectorsOn: 0,
     bRedBlueStereo: 0,
+    nMotionVectorsX: 12,
+    nMotionVectorsY: 9,
     bBrighten: 0,
     bDarken: 0,
     bSolarize: 0,
     bInvert: 0,
-    fWaveAlpha: 4.099998,
-    fWaveScale: 1.285749,
-    fWaveSmoothing: 0.9,
-    fWaveParam: 0.6,
-    fModWaveAlphaStart: 0.71,
-    fModWaveAlphaEnd: 1.3,
+    fWaveAlpha: 0.8,
+    fWaveScale: 0.089269,
+    fWaveSmoothing: 0.72,
+    fWaveParam: -0.36,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
     fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
+    fWarpScale: 1.0,
     fZoomExponent: 1.0,
     fShader: 0.0,
-    zoom: 0.380217,
-    rot: 0.02,
+    zoom: 1.009963,
+    rot: 0.0,
     cx: 0.5,
     cy: 0.5,
     dx: 0.0,
     dy: 0.0,
-    warp: 0.198054,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
+    warp: 1.0,
+    sx: 0.999999,
+    sy: 0.99983,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
     wave_x: 0.5,
-    wave_y: 0.5,
+    wave_y: 0.06,
     ob_size: 0.01,
     ob_r: 0.0,
     ob_g: 0.0,
@@ -168,21 +151,18 @@ Presets["bmelgren - Godhead.milk"] = {
     ib_g: 0.25,
     ib_b: 0.25,
     ib_a: 0.0,
-    nMotionVectorsX: 12.0,
-    nMotionVectorsY: 9.0,
-    mv_l: 0.9,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
-    mv_a: 0.0,
     per_pixel_code: function(_){with(_){
-      rot=0.1*pow(ang,3);
-      zoom=sin(pow(rad,mid))+.8;
+      zoom = 0.974 + rad/10 + abs(sin(ang-rad)/10) +q1/10;
+      rot = -0.4 + treb*.001 + sin(treb+rad)/33 -q1/8;
     }},
     per_frame_code: function(_){with(_){
-      wave_r = bass-1;
-      wave_g = mid-1.2;
-      wave_b = treb-.5;
+      warp = 0;
+      wave_r = wave_r + .4*sin(time*.678);
+      wave_g = wave_g + .4*sin(time*.977);
+      wave_b = wave_b + .4*sin(time*.766);
+      decay = 1 - mid /20;
+      q1 = wave_r;
+      wave_mystery = -time/6;
     }},
     shapes: [
     ],
@@ -190,43 +170,45 @@ Presets["bmelgren - Godhead.milk"] = {
     ],
   };
 
-Presets["Che - Escape.milk"] = {
+  // awesome
+// kind of intense
+Presets["Rovastar & Unchained - Centre Of Gravity.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
-    fDecay: 0.95,
-    fVideoEchoZoom: 1.000498,
+    fDecay: 0.996,
+    fVideoEchoZoom: 1.0,
     fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 5,
-    bAdditiveWaves: 0,
-    bWaveDots: 1,
-    bWaveThick: 0,
+    nVideoEchoOrientation: 3,
+    nWaveMode: 0,
+    bAdditiveWaves: 1,
+    bWaveDots: 0,
+    bWaveThick: 1,
     bModWaveAlphaByVolume: 0,
     bMaximizeWaveColor: 0,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
+    bTexWrap: 0,
+    bDarkenCenter: 1,
     bRedBlueStereo: 0,
     bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
+    bDarken: 1,
+    bSolarize: 1,
     bInvert: 0,
-    fWaveAlpha: 1.000416,
-    fWaveScale: 0.608285,
-    fWaveSmoothing: 0.9,
+    fWaveAlpha: 0.818016,
+    fWaveScale: 0.653093,
+    fWaveSmoothing: 0.09,
     fWaveParam: 0.0,
-    fModWaveAlphaStart: 1.0,
-    fModWaveAlphaEnd: 1.0,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 1.000154,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
+    fWarpAnimSpeed: 5.9957,
+    fWarpScale: 1.331,
+    fZoomExponent: 0.999994,
     fShader: 0.0,
-    zoom: 1.000223,
-    rot: 0.0,
+    zoom: 1.0082,
+    rot: -0.76,
     cx: 0.5,
     cy: 0.5,
     dx: 0.0,
     dy: 0.0,
-    warp: 0.0,
+    warp: 0.4241,
     sx: 1.0,
     sy: 1.0,
     wave_r: 0.5,
@@ -234,83 +216,81 @@ Presets["Che - Escape.milk"] = {
     wave_b: 0.5,
     wave_x: 0.5,
     wave_y: 0.5,
-    ob_size: 0.15,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 0.0,
-    ib_size: 0.05,
-    ib_r: 0.25,
-    ib_g: 0.25,
-    ib_b: 0.25,
-    ib_a: 1.0,
-    nMotionVectorsX: 6.4,
-    nMotionVectorsY: 14.400005,
+    ob_size: 0.0,
+    ob_r: 0.5,
+    ob_g: 0.5,
+    ob_b: 0.5,
+    ob_a: 1.0,
+    ib_size: 0.0,
+    ib_r: 0.5,
+    ib_g: 0.5,
+    ib_b: 0.5,
+    ib_a: 0.0,
+    nMotionVectorsX: 0.0,
+    nMotionVectorsY: 0.0,
     mv_dx: 0.0,
-    mv_dy: -0.01,
-    mv_l: 0.35,
-    mv_r: 0.9,
-    mv_g: 0.5,
-    mv_b: 0.0,
+    mv_dy: 0.0,
+    mv_l: 5.0,
+    mv_r: 1.0,
+    mv_g: 0.0,
+    mv_b: 0.01,
     mv_a: 1.0,
     per_pixel_code: function(_){with(_){
-      zone=below(sin(sin(49*q7)*14*x-sin(36*q7)*14*y),-.2);
-      zoom=1+.33*q8*ifcond(zone,-.5+.1*sin(1.08*q6),.5+.1*sin(.96*q6));
-      zoomexp=exp(sin(ifcond(zone,q6,-q6)));
-      rot=q8*.03*sin(q6+q7+q7*zone);
+      c1=x*q1+sin(ang)*q4;
+      c2=y*q2+sin(ang)*q6;
+      radix=ifcond(above(q3,0),min(x-c2,y-c2),max(x*c1,y*c1));
+      radix=ifcond(above(q2,0),min(radix,rad),max(radix,rad));
+      rot=ifcond(above(q6,0),((sqrt(2)*0.5)-rad)*.18*q5,.2*q5*sin(rad*2.133*q7));
+      zoom=ifcond(above(q2,0),zoom,ifcond(above(q3,0),1+.07*sin(q4*.2*radix),1+.07*cos(radix*10*q4)));
+      zoomexp=ifcond(above(q2,0),zoomexp, ifcond(above(q3,0),1-.07*sin(q4*.2*radix), 1+.07*cos(radix*10*q4)))*rad;
     }},
     per_frame_code: function(_){with(_){
-      // timed sidon sensor
-      // le = signal level; desired average value = 2
-      le=1.4*bass_att+.1*bass+.5*treb;
-      pulse=above(le,th);
-      // pulsefreq = running average of interval between last 5 pulses
-      pulsefreq=ifcond(equal(pulsefreq,0),2,
-      ifcond(pulse,.8*pulsefreq+.2*(time-lastpulse),pulsefreq));
-      lastpulse=ifcond(pulse,time,lastpulse);
-      // bt = relative time; 0 = prev beat; 1 = expected beat
-      bt=(time-lastbeat)/(.5*beatfreq+.5*pulsefreq);
-      // hccp = handcicap for th driven by bt
-      hccp=(.03/(bt+.2))+.5*ifcond(band(above(bt,.8),below(bt,1.2)),
-      (pow(sin((bt-1)*7.854),4)-1),0);
-      beat=band(above(le,th+hccp),btblock);
-      btblock=1-above(le,th+hccp);
-      lastbeat=ifcond(beat,time,lastbeat);
-      beatfreq=ifcond(equal(beatfreq,0),2,
-      ifcond(beat,.8*beatfreq+.2*(time-lastbeat),beatfreq));
-      // th = threshold
-      th=ifcond(above(le,th),le+114/(le+10)-7.407,
-      th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
-      th=ifcond(above(th,6),6,th);
-      
-      q8=30/fps;
-      ccl=ccl+beat;
-      minorccl=minorccl+le*q8;
-      q7=ccl+.0002*minorccl;
-      q6=3.7*ccl+.01*minorccl;
-      ob_size=.3+.3*sin(16*ccl+.007*minorccl);
-      ib_a=.5+.4*sin(.01*minorccl+ccl);
-      wave_r=.7+.3*sin(.04*ccl+.01*minorccl);
-      wave_g=.7+.3*sin(.02*ccl+.012*minorccl);
-      wave_b=.3+.3*sin(36*ccl+.013*minorccl);
-      ib_r=.25+.25*sin(72*ccl+.016*minorccl);
-      ib_g=.25+.25*sin(48*ccl+.021*minorccl);
-      ib_b=.5+.3*sin(86*ccl)+.2*(.028*minorccl);
-      
-      echo_alpha=.5+.5*cos(68*ccl+.0041*minorccl);
-      echo_zoom=exp(sin(13.7*ccl+.017*minorccl));
-      echo_orient=ccl%4;
-      
-      mvrot=ccl%6;
-      mv_r=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.039,
-      ifcond(equal(mvrot,3),.137,.835)),ifcond(above(mvrot,1),.651,
-      ifcond(equal(mvrot,0),1,.773)));
-      mv_g=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.267,
-      ifcond(equal(mvrot,3),.886,.176)),ifcond(above(mvrot,1),.804,
-      ifcond(equal(mvrot,0),1,.38)));
-      mv_b=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.694,
-      ifcond(equal(mvrot,3),.776,.851)),ifcond(above(mvrot,1),.114,
-      ifcond(equal(mvrot,0),1,.145)));
+      old_bass_flop=bass_flop;
+      old_treb_flop=treb_flop;
+      old_mid_flop=mid_flop;
+      chaos=.9+.1*sin(pulse);
+      bass_thresh = above(bass_att,bass_thresh)*2 + (1-above(bass_att,bass_thresh))*((bass_thresh-1.6)*chaos+1.6);
+      bass_flop=abs(bass_flop-equal(bass_thresh,2));
+      treb_thresh=above(treb_att,treb_thresh)*2 + (1-above(treb_att,treb_thresh))*((treb_thresh-1.6)*chaos+1.6);
+      treb_flop=abs(treb_flop-equal(treb_thresh,2));
+      mid_thresh=above(mid_att,mid_thresh)*2 + (1-above(mid_att,mid_thresh))*((mid_thresh-1.6)*chaos+1.6);
+      mid_flop=abs(mid_flop-equal(mid_thresh,2));
+      bass_changed=bnot(equal(old_bass_flop,bass_flop));
+      mid_changed=bnot(equal(old_mid_flop,mid_flop));
+      treb_changed=bnot(equal(old_treb_flop,treb_flop));
+      bass_residual = bass_changed*sin(pulse*3) + bnot(bass_changed)*bass_residual;
+      treb_residual = treb_changed*sin(pulse*3) + bnot(treb_changed)*treb_residual;
+      mid_residual = mid_changed*sin(pulse*3) + bnot(mid_changed)*mid_residual;
+      pulse=ifcond(above(abs(pulse),3.14),-3.14,pulse+(bass_thresh+mid_thresh+treb_thresh)*.0035);
+      entropy=ifcond(bass_changed*mid_changed*treb_changed,(1+bass_flop+treb_flop+mid_flop)*(1+rand(3)),entropy);
+      q1=mid_residual;
+      q2=bass_residual;
+      q3=treb_residual;
+      q4=sin(pulse);
+      q5=cos(pulse*(.5+.1*entropy));
+      q6=sin(pulse*(.5+pow(.25,entropy)));
+      q7=above(q1,0)+above(q2,0)+above(q3,0)+above(q3,0)*treb_flop+above(q2,0)*bass_flop+above(q1,0)*mid_flop;
+      q8=entropy;
+      wave_r=wave_r+wave_r*q1;
+      wave_b=wave_b+wave_b*q2;
+      wave_g=wave_g+wave_g*q3;
+      ob_r=ob_r+ob_r*sin(q1+q2*2.14);
+      ob_b=ob_b+ob_b*sin(q2+q3*2.14);
+      ob_g=ob_g+ob_g*sin(q3+q1*2.14);
+      ib_r=ib_r+ib_r*cos(q5+q1*2.14);
+      ib_b=ib_b+ib_*cos(q5+q2*2.14);
+      ib_g=ib_g+ib_g*cos(q5+q3*2.14);
+      ob_a=.25+.25*sin(q2+q3*2.14);
+      ib_a=.25+.25*sin(q2*2.14+q3);
+      ob_size=.1+.1*sin(q3*3+q1);
+      ib_size=.1+.1*sin(q1*3+q3);
+      wave_mystery=.5*q6;
+      warp=0;
+      wave_mode=q8%7;
+      mv_x = 1.25;
+      mv_y = 1.25;
+      mv_dx = 0.1*sin(time);
+      mv_dy = -0.1*cos(time);
     }},
     shapes: [
     ],
@@ -318,234 +298,17 @@ Presets["Che - Escape.milk"] = {
     ],
   };
 
-Presets["Che - Terracarbon Stream.milk"] = {
+
+// awesome swirly thing
+Presets["Rozzor & Rovastar - Oozing Resistance (Waveform Mod).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
-    fVideoEchoZoom: 1.000499,
+    fVideoEchoZoom: 1.006596,
     fVideoEchoAlpha: 0.5,
     nVideoEchoOrientation: 1,
     nWaveMode: 3,
-    bAdditiveWaves: 0,
-    bWaveDots: 0,
-    bWaveThick: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.03074,
-    fWaveScale: 0.498516,
-    fWaveSmoothing: 0.0,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 1.0,
-    fModWaveAlphaEnd: 1.0,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 1.000158,
-    fShader: 0.0,
-    zoom: 1.000223,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.0,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.0,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.1,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 0.06,
-    ib_size: 0.035,
-    ib_r: 0.25,
-    ib_g: 0.45,
-    ib_b: 0.25,
-    ib_a: 0.29,
-    nMotionVectorsX: 19.199999,
-    nMotionVectorsY: 14.400005,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 2.5,
-    mv_r: 0.06,
-    mv_g: 1.0,
-    mv_b: 1.0,
-    mv_a: 0.2,
-    per_pixel_code: function(_){with(_){
-      dqv=above(x,.5)-above(y,.5);
-      rot=sin(sin(rad*(13+5*sin(.01*q2))+.06*q2)*q1*.01);
-      zoom=1+ifcond(q3,dqv,1)*.1*sin(7*ang+.03*q2);
-      zoom=ifcond(q4,ifcond(below(rad,.8*sqr(sin(.016*q2))),.75+.4*cos(.021*q2),zoom),zoom);
-    }},
-    init_code: function(_){with(_){
-      dle=1;
-    }},
-    per_frame_code: function(_){with(_){
-      // timed sidon sensor
-      // le = signal level; desired average value = 2
-      le=1.4*bass_att+.1*bass+.5*treb;
-      pulse=above(le,th);
-      // pulsefreq = running average of interval between last 5 pulses
-      pulsefreq=ifcond(equal(pulsefreq,0),2,
-      ifcond(pulse,.8*pulsefreq+.2*(time-lastpulse),pulsefreq));
-      lastpulse=ifcond(pulse,time,lastpulse);
-      // bt = relative time; 0 = prev beat; 1 = expected beat
-      bt=(time-lastbeat)/(.5*beatfreq+.5*pulsefreq);
-      // hccp = handcicap for th driven by bt
-      hccp=(.03/(bt+.2))+.5*ifcond(band(above(bt,.8),below(bt,1.2)),
-      (pow(sin((bt-1)*7.854),4)-1),0);
-      beat=band(above(le,th+hccp),btblock);
-      btblock=1-above(le,th+hccp);
-      lastbeat=ifcond(beat,time,lastbeat);
-      beatfreq=ifcond(equal(beatfreq,0),2,
-      ifcond(beat,.8*beatfreq+.2*(time-lastbeat),beatfreq));
-      // th = threshold
-      th=ifcond(above(le,th),le+114/(le+10)-7.407,
-      th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
-      th=ifcond(above(th,6),6,th);
-      thccl=thccl+(th-2.5144);
-      
-      q1=le;
-      q2=thccl+.2*leccl;
-      leccl=leccl+dle*le;
-      dle=ifcond(beat,-dle,dle);
-      bccl=bccl+beat;
-      
-      wave_r=.1+.8*sqr(sin(.011*thccl))+.1*sin(leccl*.061);
-      wave_g=.1+.8*sqr(sin(.013*thccl))+.1*cos(leccl*.067);
-      wave_b=.1+.8*sqr(cos(.017*thccl))+.1*sin(leccl*.065);
-      
-      ib_r=ib_r+.1*sin(1.3*time+.012*leccl);
-      ib_g=ib_g+.1*sin(1.7*time+.019*leccl);
-      ib_b=ib_b+.1*sin(1.9*time+.017*leccl);
-      mv_r=.5*(ib_r+wave_r);mv_g=.5*(ib_g+wave_g);mv_b=.5*(ib_b+wave_b);
-      mv_a=.5*sqr(sin(.01*leccl+bccl));
-      
-      echo_alpha=.5+.2*cos(.07*leccl+.02*thccl);
-      eo=ifcond(band(equal(bccl%3,0),beat),rand(4),eo);
-      q3=(equal(eo,2)+equal(eo,1))*equal(bccl%2,0);
-      q4=(equal(eo,0)+equal(eo,3))*equal(bccl%2,0);
-      echo_orient=eo;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
-
-Presets["CrystalHigh - mad ravetriping.milk"] = {
-    fRating: 5.0,
-    fGammaAdj: 1.0,
-    fDecay: 0.963999,
-    fVideoEchoZoom: 1.9027,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 0,
     bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bModWaveAlphaByVolume: 1,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 33.469448,
-    fWaveScale: 100.0,
-    fWaveSmoothing: 0.0,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.24,
-    fModWaveAlphaEnd: 1.300001,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
-    fZoomExponent: 1.0,
-    fShader: 0.0,
-    zoom: 1.009514,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.035,
-    ob_r: 0.34,
-    ob_g: 0.34,
-    ob_b: 0.34,
-    ob_a: 0.38,
-    ib_size: 0.02,
-    ib_r: 0.34,
-    ib_g: 0.34,
-    ib_b: 0.34,
-    ib_a: 0.21,
-    nMotionVectorsX: 28.0,
-    nMotionVectorsY: 9.0,
-    mv_l: 0.9,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
-    mv_a: 0.0,
-    per_frame_code: function(_){with(_){
-      MyVolume = min(bass+mid+treb,5);
-      decay = 1 - 0.01*MyVolume;
-      wave_r = 0.30 + 0.15*( 0.60*sin(0.980*time) + 0.40*sin(1.047*time) );
-      wave_r = ifcond(above(bass,1.2),wave_r + 0.35,wave_r);
-      wave_g = 0.30 + 0.15*( 0.60*sin(0.835*time) + 0.40*sin(1.081*time) );
-      wave_b = 0.30 + 0.15*( 0.60*sin(0.814*time) + 0.40*sin(1.011*time) );
-      wave_b = ifcond(above(wave_r,0.8),wave_b-0.25,wave_b);
-      ib_a = max(sin(time),0);
-      ib_size = 0.010 + 0.002*MyVolume;
-      ob_a = 0.380 + 0.1*MyVolume;
-      ob_size = 0.050 - 0.004*MyVoulme;
-      ib_r = 0.340 + 0.2*sin(time*0.5413);
-      ib_g = 0.340 + 0.2*sin(time*0.6459);
-      ib_b = 0.340 + 0.2*sin(time*0.7354);
-      ob_r = 0.340 + 0.2*sin(time*0.7251);
-      ob_r = ifcond(above(bass,1.2),ob_r + 0.35,ob_r);
-      ob_g = 0.340 + 0.2*sin(time*0.5315);
-      ob_b = 0.340 + 0.2*sin(time*0.6349);
-      ob_b = ifcond(above(ob_r,0.8),ob_b-0.25,ob_b);
-      zoom = max(sin(bass-bass_residual*10),0.2);
-      rot = mid_residual*2.5;
-      bass_thresh = above(bass_att,bass_thresh)*2 + (1-above(bass_att,bass_thresh))*((bass_thresh-1.3)*0.96+1.3);
-      bass_residual = equal(bass_thresh,2)*0.016*sin(time*7) + (1-equal(bass_thresh,2))*bass_residual;
-      mid_thresh = above(mid_att,mid_thresh)*2 + (1-above(mid_att,mid_thresh))*((mid_thresh-1.3)*0.92+1.3);
-      mid_residual = equal(mid_thresh,2)*0.013*sin(time*7) + (1-equal(mid_thresh,2))*mid_residual;
-      monitor = zoom;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
-
-Presets["Aderrasi - Candy Avian.milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.0,
-    fDecay: 1.0,
-    fVideoEchoZoom: 0.923483,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 5,
-    bAdditiveWaves: 0,
     bWaveDots: 0,
     bWaveThick: 1,
     bModWaveAlphaByVolume: 0,
@@ -556,69 +319,73 @@ Presets["Aderrasi - Candy Avian.milk"] = {
     bBrighten: 0,
     bDarken: 0,
     bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 2.063785,
-    fWaveScale: 0.724297,
-    fWaveSmoothing: 0.5,
-    fWaveParam: -0.3,
-    fModWaveAlphaStart: 0.5,
-    fModWaveAlphaEnd: 1.0,
+    bInvert: 1,
+    fWaveAlpha: 5.002776,
+    fWaveScale: 1.1864,
+    fWaveSmoothing: 0.63,
+    fWaveParam: -1.0,
+    fModWaveAlphaStart: 0.71,
+    fModWaveAlphaEnd: 1.3,
     fWarpAnimSpeed: 1.0,
-    fWarpScale: 2.500333,
+    fWarpScale: 1.331,
     fZoomExponent: 1.0,
-    fShader: 0.1,
-    zoom: 0.990099,
+    fShader: 0.0,
+    zoom: 0.999513,
     rot: 0.0,
     cx: 0.5,
-    cy: 0.41,
-    dx: -0.00399,
-    dy: 1e-05,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
     warp: 0.01,
     sx: 1.0,
     sy: 1.0,
-    wave_r: 1.0,
-    wave_g: 1.0,
+    wave_r: 0.0,
+    wave_g: 0.0,
     wave_b: 0.0,
     wave_x: 0.5,
     wave_y: 0.5,
     ob_size: 0.005,
-    ob_r: 0.0,
+    ob_r: 0.01,
     ob_g: 0.0,
     ob_b: 0.0,
-    ob_a: 0.2,
-    ib_size: 0.05,
-    ib_r: 0.0,
-    ib_g: 0.0,
-    ib_b: 0.0,
-    ib_a: 0.1,
-    nMotionVectorsX: 55.68,
-    nMotionVectorsY: 47.999996,
+    ob_a: 1.0,
+    ib_size: 0.26,
+    ib_r: 0.25,
+    ib_g: 0.25,
+    ib_b: 0.25,
+    ib_a: 0.0,
+    nMotionVectorsX: 64.0,
+    nMotionVectorsY: 48.0,
     mv_dx: 0.0,
     mv_dy: 0.0,
-    mv_l: 0.25,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
+    mv_l: 0.5,
+    mv_r: 0.35,
+    mv_g: 0.35,
+    mv_b: 0.35,
     mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      rot = 0.1*(rad+cos((5+5*sin(q8*1.211)*x)-0.5) -sin(((5+5*sin(q8*0.973))*y)-0.5));
+      dx = 0.005*(cos((5+5*sin(q8*1.311)*x)-0.5) -sin(((5+5*sin(q8*0.9431))*y)-0.5));
+      dy = 0.005*(cos((5+5*sin(q8*1.021)*x)-0.5) -sin(((5+5*sin(q8*0.987))*y)-0.5));
+      zoom =1- 0.005*(rad+cos((5+5*sin(q8*0.943)*x)-0.5) -sin(((5+5*sin(q8*1.0961))*y)-0.5));
+      cx = 1-rot * 2;
+    }},
     per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.4*sin(1.5*time) + 0.25*sin(2.14*time);
-      wave_b = wave_b + 0.41*sin(1.2*time) + 0.26*sin(2.11*time);
-      wave_g = wave_g + 0.4*sin(1.34*time) + 0.25*sin(2.34*time);
-      ib_r = 4;
-      ib_g = 0;
-      ib_b = 0;
-      wave_x = wave_x +
-      ifcond(above(wave_y,0.75),0.40*sin(time), 0.15*sin(time));
-      wave_y = wave_y + 0.30*cos(0.9*time);
-      cx = cx +
-      ifcond(above(wave_x,0.5), +0.0*sin(7*treb_att), -0.0*sin(7*mid_att));
-      cy = cy +
-      ifcond(above(wave_x,0.5), +0.0*cos(7*bass_att), -0.0*cos(7*mid_att));
-      ob_r = 0.5*sin(treb)*time;
-      ob_b = 0.5*sin(mid)*0.9*time;
-      ob_g = 0.5*sin(bass)*0.8*time;
-      warp = warp + ifcond(above(bass_att,1.5), 1.5, 0);
-      rot = rot + 0.08*sin(3*time);
+      ob_r = 0.5+0.5*sin(2*time);
+      ob_g = 0.5+0.5*sin(1.23*time);
+      ob_b = 0.5+0.5*sin(time*1.321);
+      wave_a =0;
+      q8 =oldq8+ 0.003*(pow(1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
+      oldq8 = q8;
+      warp=0;
+      sx = 1- 0.1*sin(q8)+0.05*sin(time);
+      wave_b = cos(time)  + abs(cos(time));
+      wave_g = abs(sin(time)) ;
+      wave_r = (-1 * cos(time))  + abs(-1 * cos(time)) + 0.2 * (cos(sin(time))+(abs(cos(sin(time)))+cos(sin(time))));
+      wave_r = 1 - ifcond(above(wave_r,1),1,ifcond(above(wave_r,0), abs(wave_r),0));
+      wave_g = 1 - ifcond(above(wave_g,1),1,ifcond(above(wave_g,0), abs(wave_g),0));
+      wave_b = 1 - ifcond(above(wave_b,1),1,ifcond(above(wave_b,0), abs(wave_b),0));
+
     }},
     shapes: [
     ],
@@ -626,48 +393,50 @@ Presets["Aderrasi - Candy Avian.milk"] = {
     ],
   };
 
-Presets["Aderrasi - Making Time (Swamp Mix).milk"] = {
-    fRating: 2.0,
+// awesome
+// green and chill
+Presets["Eo.S.+Phat Fractical_dancer - pulsate B.milk"] = {
+    fRating: 5.0,
     fGammaAdj: 1.0,
-    fDecay: 1.0,
-    fVideoEchoZoom: 1.0,
+    fDecay: 0.94,
+    fVideoEchoZoom: 0.597148,
     fVideoEchoAlpha: 0.0,
     nVideoEchoOrientation: 1,
-    nWaveMode: 5,
-    bAdditiveWaves: 0,
+    nWaveMode: 0,
+    bAdditiveWaves: 1,
     bWaveDots: 0,
-    bWaveThick: 1,
+    bWaveThick: 0,
     bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
+    bMaximizeWaveColor: 0,
     bTexWrap: 1,
     bDarkenCenter: 0,
     bRedBlueStereo: 0,
     bBrighten: 0,
-    bDarken: 0,
+    bDarken: 1,
     bSolarize: 0,
     bInvert: 0,
-    fWaveAlpha: 100.0,
-    fWaveScale: 1.599181,
-    fWaveSmoothing: 0.9,
-    fWaveParam: -0.2,
-    fModWaveAlphaStart: 0.5,
-    fModWaveAlphaEnd: 1.0,
+    fWaveAlpha: 0.001,
+    fWaveScale: 0.01,
+    fWaveSmoothing: 0.63,
+    fWaveParam: -1.0,
+    fModWaveAlphaStart: 0.71,
+    fModWaveAlphaEnd: 1.3,
     fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 1.0,
+    fWarpScale: 1.331,
+    fZoomExponent: 0.999998,
     fShader: 0.0,
-    zoom: 1.0,
+    zoom: 13.290894,
     rot: 0.0,
     cx: 0.5,
     cy: 0.5,
-    dx: 1e-05,
-    dy: 1e-05,
+    dx: -0.28,
+    dy: -0.32,
     warp: 0.01,
     sx: 1.0,
     sy: 1.0,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
+    wave_r: 0.65,
+    wave_g: 0.65,
+    wave_b: 0.65,
     wave_x: 0.5,
     wave_y: 0.5,
     ob_size: 0.0,
@@ -679,41 +448,353 @@ Presets["Aderrasi - Making Time (Swamp Mix).milk"] = {
     ib_r: 0.0,
     ib_g: 0.0,
     ib_b: 0.0,
-    ib_a: 0.0,
-    nMotionVectorsX: 0.0,
-    nMotionVectorsY: 0.0,
+    ib_a: 1.0,
+    nMotionVectorsX: 12.799995,
+    nMotionVectorsY: 9.600006,
     mv_dx: 0.0,
     mv_dy: 0.0,
     mv_l: 1.0,
     mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
+    mv_g: 0.91,
+    mv_b: 0.71,
     mv_a: 0.0,
     per_pixel_code: function(_){with(_){
-      thresh = above(bass_att,thresh)*2+(1-above(bass_att,thresh))*((thresh-1.3)*0.96+1.3);
-      dx_r = equal(thresh,2)*0.015*sin(5*time)+(1-equal(thresh,2))*dx_r;
-      dy_r = equal(thresh,2)*0.015*sin(6*time)+(1-equal(thresh,2))*dy_r;
-      rot = rot + 2*abs((0.9*dy_r)*bass)*sin(0.7*time);
-      zoom = zoom + 10*(0.2*rad*(3-bass/cos(rad/12)*2*tan(12)))*(0.002*sin(ang*(12*sin(8*bass))));
-      cx = cx + 0.3*sin(3*dy_r);
-      cy = cy + 0.3*cos(3*dx_r);
-      dy = dy + 1.7*dy_r;
-      dx = dx + 1.7*dx_r;
+      rd=sqrt( sqr( (x-0.5-q4)*1.7) + sqr( (y-0.5+q5)*1.2 ) )+0.001;
+      cx=0.5+q4;
+      cy=0.5-q5;
+      
+      zoom=pow(rd,sin(time)+2.5)*2.0;
+      zoom=max(zoom,0.1)
+      
+    }},
+    init_code: function(_){with(_){
+      
+      zoom=1;
+      xpos=0;
+      ypos=0;
     }},
     per_frame_code: function(_){with(_){
-      bass_tick = above(bass_att,bass_tick)*2 + (1-above(bass_att,bass_tick))*
-      ((bass_tick-1.3)*0.96+1.3);
-      treb_tick = above(treb_att,treb_tick)*2 + (1-above(treb_att,treb_tick))*
-      ((treb_tick-1.3)*0.96+1.3);
-      mid_tick = above(mid_att,mid_tick)*2 + (1-above(mid_att,mid_tick))*
-      ((mid_tick-1.3)*0.96+1.3);
-      bass_shift = equal(bass_tick,2)*0.95*sin(time*5) + (1-equal(bass_tick,2))*bass_shift;
-      treb_shift = equal(treb_tick,2)*0.95*sin(time*5) + (1-equal(treb_tick,2))*treb_shift;
-      mid_shift = equal(mid_tick,2)*0.95*sin(time*5) + (1-equal(mid_tick,2))*mid_shift;
-      wave_mystery = wave_mystery + 0.15*sin(time) + 0.2*sin(0.2*time);
-      wave_r = wave_r +bass_shift+0.3;
-      wave_g = wave_g+treb_shift;
-      wave_b = wave_b +mid_shift;
+      decay=1;
+      
+      vol= (bass+mid+treb)*0.55;
+      vol=vol;
+      
+      
+      mv_r = 0.5 + 0.4*sin(time*1.324);
+      mv_g = 0.5 + 0.4*cos(time*1.371);
+      
+      
+      
+      
+      zoom=.9;
+      
+      musictime=musictime+vol;
+      
+      q4=0;
+      q5=0;
+      //=sin(musictime*0.02)*0.3;
+      //q5=sin(musictime*0.01)*0.3;
+      
+      dx=sin(musictime*0.1)*0.07;
+      dy=cos(musictime*0.069)*0.07;
+      
+      
+      
+      
+      monitor=rot;
+    }},
+    shapes: [
+      {
+       enabled: 1,
+       sides: 100,
+       additive: 0,
+       thickOutline: 0,
+       textured: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.491382,
+       ang: 0.000000,
+       tex_ang: 0.000000,
+       tex_zoom: 1.000000,
+       r: 0.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.000000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.000000,
+       per_frame_code: function(_){with(_){
+         x=.5+q4;y=.5+q5;
+       }},
+      },
+      {
+       enabled: 1,
+       sides: 24,
+       additive: 0,
+       thickOutline: 0,
+       textured: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.018423,
+       ang: 0.000000,
+       tex_ang: 0.000000,
+       tex_zoom: 0.819541,
+       r: 1.000000,
+       g: 1.000000,
+       b: 0.000000,
+       a: 1.000000,
+       r2: 1.000000,
+       g2: 1.000000,
+       b2: 1.000000,
+       a2: 1.000000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.000000,
+       per_frame_code: function(_){with(_){
+         tex_ang=0.01;
+         x=.5-q4;
+         y=.5-q5;
+       }},
+      },
+      {
+       enabled: 0,
+       sides: 4,
+       additive: 0,
+       thickOutline: 0,
+       textured: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.100000,
+       ang: 0.000000,
+       tex_ang: 0.000000,
+       tex_zoom: 1.000000,
+       r: 1.000000,
+       g: 0.000000,
+       b: 0.000000,
+       a: 1.000000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.000000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.100000,
+      },
+      {
+       enabled: 0,
+       sides: 4,
+       additive: 0,
+       thickOutline: 0,
+       textured: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.100000,
+       ang: 0.000000,
+       tex_ang: 0.000000,
+       tex_zoom: 1.000000,
+       r: 1.000000,
+       g: 0.000000,
+       b: 0.000000,
+       a: 1.000000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.000000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.100000,
+      },
+    ],
+    waves: [
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+    ],
+  };
+
+
+// slimey looking stuff
+Presets["Rovastar - Harlequin's Fractal Encounter.milk"] = {
+    fRating: 4.0,
+    fGammaAdj: 1.0,
+    fDecay: 1.0,
+    fVideoEchoZoom: 0.999609,
+    fVideoEchoAlpha: 1.0,
+    nVideoEchoOrientation: 1,
+    nWaveMode: 0,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 1,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 1,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 7.014853,
+    fWaveScale: 0.01,
+    fWaveSmoothing: 0.27,
+    fWaveParam: -0.4,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
+    fWarpAnimSpeed: 5.99579,
+    fWarpScale: 1.331,
+    fZoomExponent: 1.01,
+    fShader: 0.0,
+    zoom: 0.998531,
+    rot: 0.002,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
+    wave_x: 0.1,
+    wave_y: 0.9,
+    ob_size: 0.01,
+    ob_r: 0.0,
+    ob_g: 0.9,
+    ob_b: 0.2,
+    ob_a: 1.0,
+    ib_size: 0.0,
+    ib_r: 0.5,
+    ib_g: 0.5,
+    ib_b: 0.5,
+    ib_a: 1.0,
+    nMotionVectorsX: 63.936001,
+    nMotionVectorsY: 48.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 1.0,
+    mv_r: 0.63,
+    mv_g: 0.2,
+    mv_b: 0.3,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      box =0.5+0.8*(2*x%4+2*y%2);
+      q1 = 8.05+0.3*(sin(pow(x,3)+0.177*time)-cos(pow(y,3)+0.223*time));
+      q7 = above(box,1);
+      zoom = ifcond(q7,(q1*.1) + q6*6 ,zoom);
+      rot = ifcond(q7,0.63*sin(0.5*rad+0.385*time + 0.12*sin(0.67*time) + 0.1*q4 + 0.12*q2 +q6*50),rot);
+      cx = cx - 0.05*sin(rad+2*q4);
+      cy = cy + 0.04*sin(((0.5*sqrt(2))-rad)-2*q2);
+      sx = ifcond(q7,sx+q6*18,sx);
+      sy = ifcond(q7,sy+q6*18,sy);
+    }},
+    per_frame_code: function(_){with(_){
+      ob_r = 0.4 - 0.3*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
+      ob_g = 0.5 - 0.46*sin(time*1.724);
+      ob_b = 0.65 - 0.3*cos(time*1.816);
+      warp =0;
+      ib_size = 0.025;
+      ib_r = ib_r + 0.5*(0.6*sin(time*3.034)+0.4*cos(time*2.14));
+      ib_g = ib_g + 0.5*(0.6*sin(time*3.147)+0.4*cos(time*2.015));
+      ib_b = ib_b - 0.5*(0.6*sin(time*3.431)+0.4*cos(time*1.842));
+      dx = dx -0.003*(0.6*sin(time*0.234) + 0.4*cos(time*0.437));
+      dy = dy - 0.003*(0.7*sin(time*0.213) + 0.3*cos(time*0.315));
+      volume = 0.15*(bass+bass_att+treb+treb_att+mid+mid_att);
+      xamptarg = ifcond(equal(frame%15,0),min(0.5*volume*bass_att,0.5),xamptarg);
+      xamp = xamp + 0.5*(xamptarg-xamp);
+      xdir = ifcond(above(abs(xpos),xamp),-sign(xpos),ifcond(below(abs(xspeed),0.1),2*above(xpos,0)-1,xdir));
+      xaccel = xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
+      xspeed = xspeed + xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
+      xpos = xpos + 0.001*xspeed;
+      q2 = xpos;
+      yamptarg = ifcond(equal(frame%15,0),min(0.3*volume*treb_att,0.5),yamptarg);
+      yamp = yamp + 0.5*(yamptarg-yamp);
+      ydir = ifcond(above(abs(ypos),yamp),-sign(ypos),ifcond(below(abs(yspeed),0.1),2*above(ypos,0)-1,ydir));
+      yaccel = ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
+      yspeed = yspeed + ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
+      ypos = ypos + 0.001*yspeed;
+      q4 = ypos;
+      bass_effect = max(max(bass,bass_att)-1.2,0);
+      echo_zoom = 1.32 + 0.3*(0.59*sin(q4+time*0.865) + 0.41*cos(q2+time*1.192)) + 0.05*bass_effect;
+      volume = 0.15*(bass_att+bass+mid+mid_att);
+      beatrate = ifcond(equal(beatrate,0),1,ifcond(below(volume,0.01),1,beatrate));
+      lastbeat = ifcond(equal(lastbeat,0),time,lastbeat);
+      meanbass_att = 0.1*(meanbass_att*9 + bass_att);
+      peakbass_att = ifcond(above(bass_att,peakbass_att),bass_att,peakbass_att);
+      beat = ifcond(above(volume,0.8),ifcond(below(peakbass_att - bass_att, 0.05*peakbass_att),ifcond(above(time - lastbeat,0.1+0.5*(beatrate-0.1)),1,0),0),0);
+      beatrate = max(ifcond(beat,ifcond(below(time-lastbeat,2*beatrate),0.1*(beatrate*9 + time - lastbeat),beatrate),beatrate),0.1);
+      peakbass_att = ifcond(equal(beat,0),ifcond(above(time - lastbeat,2*beatrate),peakbass_att*0.95,peakbass_att*0.995),bass_att);
+      lastbeat = ifcond(beat,time,lastbeat);
+      peakbass_att = max(ifcond(beat,bass_att,peakbass_att),1.1*meanbass_att);
+      mode = (mode+beat*(rand(3)+1))%4;
+      echo_orient = mode;
+      wave_a = 0;
+      q6 = beat;
     }},
     shapes: [
     ],
@@ -721,13 +802,473 @@ Presets["Aderrasi - Making Time (Swamp Mix).milk"] = {
     ],
   };
 
-Presets["Aderrasi - Flowing Form.milk"] = {
+  // circle thing
+Presets["Rovastar & Geiss - Dynamic Swirls 3 (Mysticial Awakening Mi.milk"] = {
+  fRating: 2.0,
+  fGammaAdj: 1.98,
+  fDecay: 1.0,
+  fVideoEchoZoom: 1.000154,
+  fVideoEchoAlpha: 0.5,
+  nVideoEchoOrientation: 1,
+  nWaveMode: 0,
+  bAdditiveWaves: 0,
+  bWaveDots: 0,
+  bWaveThick: 0,
+  bModWaveAlphaByVolume: 0,
+  bMaximizeWaveColor: 1,
+  bTexWrap: 0,
+  bDarkenCenter: 1,
+  bRedBlueStereo: 0,
+  bBrighten: 0,
+  bDarken: 0,
+  bSolarize: 0,
+  bInvert: 0,
+  fWaveAlpha: 1.0,
+  fWaveScale: 0.01,
+  fWaveSmoothing: 0.1,
+  fWaveParam: -0.472,
+  fModWaveAlphaStart: 0.75,
+  fModWaveAlphaEnd: 0.95,
+  fWarpAnimSpeed: 1.0,
+  fWarpScale: 1.331,
+  fZoomExponent: 0.972366,
+  fShader: 0.0,
+  zoom: 1.00496,
+  rot: 0.0,
+  cx: 0.5,
+  cy: 0.5,
+  dx: 0.0,
+  dy: 0.0,
+  warp: 0.000156,
+  sx: 0.999666,
+  sy: 0.9999,
+  wave_r: 0.65,
+  wave_g: 0.65,
+  wave_b: 0.65,
+  wave_x: 0.5,
+  wave_y: 0.51,
+  ob_size: 0.01,
+  ob_r: 0.0,
+  ob_g: 0.0,
+  ob_b: 0.0,
+  ob_a: 0.0,
+  ib_size: 0.01,
+  ib_r: 0.25,
+  ib_g: 0.25,
+  ib_b: 0.25,
+  ib_a: 0.0,
+  nMotionVectorsX: 64.0,
+  nMotionVectorsY: 48.0,
+  mv_dx: 0.0,
+  mv_dy: 0.0,
+  mv_l: 5.0,
+  mv_r: 0.0,
+  mv_g: 0.0,
+  mv_b: 1.0,
+  mv_a: 1.0,
+  per_pixel_code: function(_){with(_){
+    du = x*2-1 - q1;
+    dv = y*2-1 - q2;
+    dist = sqrt(du*du+dv*dv);
+    ang2 = atan2(du,dv);
+    mult = 0.008/(dist+0.4);
+    dx = mult*sin(ang2-1.5);
+    dy = mult*cos(ang2-1.5);
+    du = x*2-1 - q3;
+    dv = y*2-1 - q4;
+    dist = sqrt(du*du+dv*dv);
+    ang2 = atan2(du,dv);
+    mult = 0.008*sin(q8)/(dist+0.4);
+    dx = dx + mult*sin(ang2+1.5);
+    dy = dy + mult*cos(ang2+1.5);
+    rot = -0.01*rad*sin(q8);
+  }},
+  per_frame_code: function(_){with(_){
+    wave_r = wave_r + 0.350*( 0.60*sin(0.980*time) + 0.40*sin(1.047*time) );
+    wave_g = wave_g + 0.350*( 0.60*sin(0.835*time) + 0.40*sin(1.081*time) );
+    wave_b = wave_b + 0.350*( 0.60*sin(0.814*time) + 0.40*sin(1.011*time) );
+    q8 = oldq8+min(ifcond(above(bass+bass_att,2.8),q8+0.025*pow((bass+bass_att-1.5),5),0),1);
+    oldq8 = q8;
+    q8 = q8 + 0.1*time;
+    q1 = 0.62*( 0.60*sin(0.374*q8) + 0.40*sin(0.294*q8) );
+    q2 = 0.62*( 0.60*sin(0.393*q8) + 0.40*sin(0.223*q8) );
+    q3 = 0.62*( 0.60*sin(0.174*-q8) + 0.40*sin(0.364*q8) );
+    q4 = 0.62*( 0.60*sin(0.234*q8) + 0.40*sin(0.271*-q8) );
+    mv_x = 1.25;
+    mv_y = 1.25;
+    mv_a =1;
+  }},
+  shapes: [
+  ],
+  waves: [
+  ],
+};
+
+
+//awesome shapes going around
+Presets["Rovastar - The Chaos Of Colours (Drifting Mix).milk"] = {
     fRating: 3.0,
-    fGammaAdj: 1.0,
-    fDecay: 0.92,
-    fVideoEchoZoom: 1.343302,
+    fGammaAdj: 1.7,
+    fDecay: 1.0,
+    fVideoEchoZoom: 1.0,
     fVideoEchoAlpha: 0.0,
     nVideoEchoOrientation: 0,
+    nWaveMode: 0,
+    bAdditiveWaves: 1,
+    bWaveDots: 0,
+    bWaveThick: 0,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 0,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 0.001,
+    fWaveScale: 0.01,
+    fWaveSmoothing: 0.63,
+    fWaveParam: -1.0,
+    fModWaveAlphaStart: 0.71,
+    fModWaveAlphaEnd: 1.3,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.331,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 13.290894,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: -0.28,
+    dy: -0.32,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.65,
+    wave_g: 0.65,
+    wave_b: 0.65,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.0,
+    ob_r: 0.01,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 1.0,
+    ib_size: 0.0,
+    ib_r: 0.95,
+    ib_g: 0.85,
+    ib_b: 0.65,
+    ib_a: 1.0,
+    nMotionVectorsX: 64.0,
+    nMotionVectorsY: 0.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 0.9,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      zoom = 1+0.05*rad;
+    }},
+    per_frame_code: function(_){with(_){
+      ob_r = 0.5 + 0.4*sin(time*1.324);
+      ob_g = 0.5 + 0.4*cos(time*1.371);
+      ob_b = 0.5+0.4*sin(2.332*time);
+      ib_r = 0.5 + 0.25*sin(time*1.424);
+      ib_g = 0.25 + 0.25*cos(time*1.871);
+      ib_b = 1-ob_b;
+      volume = 0.15*(bass+bass_att+treb+treb_att+mid+mid_att);
+      xamptarg = ifcond(equal(frame%15,0),min(0.5*volume*bass_att,0.5),xamptarg);
+      xamp = xamp + 0.5*(xamptarg-xamp);
+      xdir = ifcond(above(abs(xpos),xamp),-sign(xpos),ifcond(below(abs(xspeed),0.1),2*above(xpos,0)-1,xdir));
+      xaccel = xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
+      xspeed = xspeed + xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
+      xpos = xpos + 0.001*xspeed;
+      dx = xpos*0.005;
+      yamptarg = ifcond(equal(frame%15,0),min(0.3*volume*treb_att,0.5),yamptarg);
+      yamp = yamp + 0.5*(yamptarg-yamp);
+      ydir = ifcond(above(abs(ypos),yamp),-sign(ypos),ifcond(below(abs(yspeed),0.1),2*above(ypos,0)-1,ydir));
+      yaccel = ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
+      yspeed = yspeed + ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
+      ypos = ypos + 0.001*yspeed;
+      dy = ypos*0.005;
+      rot = 10*(dx-dy);
+      wave_a = 0;
+      q8 =oldq8+ 0.0003*(pow(1+1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
+      oldq8 = q8;
+      q7 = 0.003*(pow(1+1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
+      monitor = rot;
+    }},
+    shapes: [
+      {
+       enabled: 1,
+       sides: 3,
+       additive: 0,
+       thickOutline: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.550000,
+       ang: 0.000000,
+       r: 1.000000,
+       g: 0.000000,
+       b: 0.000000,
+       a: 0.100000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.900000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.200000,
+       per_frame_code: function(_){with(_){
+         ang = time*1.4;
+         x = 0.5 + 0.08*cos(time*1.3) + 0.03*cos(time*0.7);
+         y = 0.5 + 0.08*sin(time*1.4) + 0.03*sin(time*0.7);
+         r = 0.5 + 0.5*sin(q8*0.613 + 1);
+         g = 0.5 + 0.5*sin(q8*0.763 + 2);
+         b = 0.5 + 0.5*sin(q8*0.771 + 5);
+         r2 = 0.5 + 0.5*sin(q8*0.635 + 4);
+         g2 = 0.5 + 0.5*sin(q8*0.616+ 1);
+         b2 = 0.5 + 0.5*sin(q8*0.538 + 3);
+       }},
+      },
+      {
+       enabled: 1,
+       sides: 32,
+       additive: 0,
+       thickOutline: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.400000,
+       ang: 0.000000,
+       r: 1.000000,
+       g: 0.000000,
+       b: 0.000000,
+       a: 1.000000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.300000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.200000,
+       per_frame_code: function(_){with(_){
+         ang = time*1.7;
+         x = 0.5 + 0.08*cos(time*1.1) + 0.03*cos(time*0.7);
+         y = 0.5 + 0.08*sin(time*1.1) + 0.03*sin(time*0.7);
+         r = 0.5 + 0.5*sin(q8*0.713 + 1);
+         g = 0.5 + 0.5*sin(q8*0.563 + 2);
+         b = 0.5 + 0.5*sin(q8*0.654 + 5);
+         r2 = 0.5 + 0.5*sin(q8*0.885 + 4);
+         g2 = 0.5 + 0.5*sin(q8*0.556+ 1);
+         b2 = 0.5 + 0.5*sin(q8*0.638 + 3);
+       }},
+      },
+      {
+       enabled: 1,
+       sides: 4,
+       additive: 0,
+       thickOutline: 0,
+       x: 0.500000,
+       y: 0.500000,
+       rad: 0.400000,
+       ang: 0.000000,
+       r: 1.000000,
+       g: 0.000000,
+       b: 0.000000,
+       a: 0.600000,
+       r2: 0.000000,
+       g2: 1.000000,
+       b2: 0.000000,
+       a2: 0.400000,
+       border_r: 1.000000,
+       border_g: 1.000000,
+       border_b: 1.000000,
+       border_a: 0.200000,
+       per_frame_code: function(_){with(_){
+         ang = time*1.24;
+         x = 0.5 - 0.08*cos(time*1.07) + 0.03*cos(time*0.7);
+         y = 0.5 - 0.08*sin(time*1.33) + 0.03*sin(time*0.7);
+         g = 0.5 + 0.5*sin(q8*0.713 + 1);
+         b = 0.5 + 0.5*cos(q8*0.563 + 2);
+         r = 0.5 + 0.5*sin(q8*0.654 + 5);
+         r2 = 0.5 + 0.5*cos(q8*0.885 + 4);
+         g2 = 0.5 + 0.5*cos(q8*0.556+ 1);
+         b2 = 0.5 + 0.5*sin(q8*0.638 + 3);
+       }},
+      },
+    ],
+    waves: [
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+      {
+       enabled: 0,
+       samples: 512,
+       sep: 0,
+       bSpectrum: 0,
+       bUseDots: 0,
+       bDrawThick: 0,
+       bAdditive: 0,
+       scaling: 1.000000,
+       smoothing: 0.500000,
+       r: 1.000000,
+       g: 1.000000,
+       b: 1.000000,
+       a: 1.000000,
+      },
+    ],
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // awesome
+  // grey fractals
+Presets["Geiss - Swirlie 4.milk"] = {
+    fRating: 1.0,
+    fGammaAdj: 1.994,
+    fDecay: 0.97,
+    fVideoEchoZoom: 2.0,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 1,
+    bAdditiveWaves: 1,
+    bWaveDots: 0,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 1,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bMotionVectorsOn: 0,
+    bRedBlueStereo: 0,
+    nMotionVectorsX: 12,
+    nMotionVectorsY: 9,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 4.499998,
+    fWaveScale: 1.524161,
+    fWaveSmoothing: 0.9,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
+    fWarpAnimSpeed: 0.334695,
+    fWarpScale: 3.928016,
+    fZoomExponent: 2.1,
+    fShader: 0.0,
+    zoom: 0.961,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 1.771011,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.65,
+    wave_g: 0.65,
+    wave_b: 0.65,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.0,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 0.5,
+    ib_size: 0.0285,
+    ib_r: 0.34,
+    ib_g: 0.34,
+    ib_b: 0.34,
+    ib_a: 0.1,
+    per_frame_code: function(_){with(_){
+      wave_x = wave_x + 0.2900*( 0.60*sin(2.121*time) + 0.40*sin(1.621*time) );
+      wave_y = wave_y + 0.2900*( 0.60*sin(1.742*time) + 0.40*sin(2.322*time) );
+      wave_r = wave_r + 0.350*( 0.60*sin(0.823*time) + 0.40*sin(0.916*time) );
+      wave_g = wave_g + 0.350*( 0.60*sin(0.900*time) + 0.40*sin(1.023*time) );
+      wave_b = wave_b + 0.350*( 0.60*sin(0.808*time) + 0.40*sin(0.949*time) );
+      blah = 0.5/(wave_r+wave_g+wave_b);
+      wave_r = wave_r*blah; wave_g = wave_g*blah; wave_b = wave_b*blah;
+      rot = rot + 0.35*( 0.60*sin(0.21*time) + 0.30*sin(0.339*time) );
+      cx = cx + 0.30*( 0.60*sin(0.374*time) + 0.14*sin(0.194*time) );
+      cy = cy + 0.37*( 0.60*sin(0.274*time) + 0.10*sin(0.394*time) );
+      dx = dx + 0.01*( 0.60*sin(0.324*time) + 0.40*sin(0.234*time) );
+      dy = dy + 0.01*( 0.60*sin(0.244*time) + 0.40*sin(0.264*time) );
+      ib_r = ib_r + 0.2*sin(time*0.5413);
+      ib_g = ib_g + 0.2*sin(time*0.6459);
+      ib_b = ib_b + 0.2*sin(time*0.7354);
+      blah = 12.4/(ib_r+ib_g+ib_b)*3;
+      ib_r = ib_r*blah; ib_g = ib_g*blah; ib_b = ib_b*blah;
+      
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };
+
+
+
+  // very cool
+// flashy awesome lines
+Presets["Fvese - The Tunnel (Final Stage Mix).milk"] = {
+    fRating: 2.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.995,
+    fVideoEchoZoom: 1.0,
+    fVideoEchoAlpha: 0.5,
+    nVideoEchoOrientation: 1,
     nWaveMode: 3,
     bAdditiveWaves: 0,
     bWaveDots: 0,
@@ -741,64 +1282,72 @@ Presets["Aderrasi - Flowing Form.milk"] = {
     bDarken: 0,
     bSolarize: 0,
     bInvert: 0,
-    fWaveAlpha: 100.0,
-    fWaveScale: 1.611957,
-    fWaveSmoothing: 0.0,
-    fWaveParam: 0.08,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 0.999834,
-    fWarpScale: 100.0,
-    fZoomExponent: 1.200114,
-    fShader: 1.0,
-    zoom: 1.010011,
+    fWaveAlpha: 1.0,
+    fWaveScale: 0.241456,
+    fWaveSmoothing: 0.09,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 0.5,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 0.741921,
+    fShader: 0.0,
+    zoom: 1.0,
     rot: 0.0,
     cx: 0.5,
     cy: 0.5,
-    dx: 0.02,
-    dy: 0.02,
-    warp: 0.059958,
-    sx: 0.999998,
-    sy: 1.0,
-    wave_r: 0.6,
-    wave_g: 0.6,
-    wave_b: 0.3,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.01,
+    sx: 0.9999,
+    sy: 0.9999,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
     wave_x: 0.5,
     wave_y: 0.5,
-    ob_size: 0.1,
-    ob_r: 0.5,
-    ob_g: 0.5,
-    ob_b: 0.1,
-    ob_a: 0.5,
-    ib_size: 0.0,
-    ib_r: 0.55,
-    ib_g: 0.25,
-    ib_b: 0.05,
-    ib_a: 0.7,
-    nMotionVectorsX: 12.0,
-    nMotionVectorsY: 9.0,
+    ob_size: 0.005,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.4,
+    ob_a: 0.0,
+    ib_size: 0.005,
+    ib_r: 0.0,
+    ib_g: 0.3,
+    ib_b: 0.0,
+    ib_a: 1.0,
+    nMotionVectorsX: 6.4,
+    nMotionVectorsY: 1.440001,
     mv_dx: 0.0,
     mv_dy: 0.0,
-    mv_l: 0.9,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
+    mv_l: 0.0,
+    mv_r: 0.7599,
+    mv_g: 0.48,
+    mv_b: 0.39,
     mv_a: 0.0,
     per_pixel_code: function(_){with(_){
-      sx=sx+0.5*cos((y*2-1)*6+time*1.53+(x*2-1)*3.2);
-      sy=sy+0.5*cos((x*2-1)*8+time*1.71+(y*2-1)*4.3);
-      zoom = zoom - 0.01*ang;
+      zoom = ifcond(below(q1,0),0.5*x,ifcond(equal(q2,0),0.9*(1-x),ifcond(above(q3,0),0.9*y,0.9*(1-y)))) + 0.6 - 0.13*(min(q3,0.3));
+      
     }},
     per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.400*( 0.60*sin(0.933*time) + 0.40*sin(1.045*time) );
-      wave_g = wave_g + 0.400*( 0.60*sin(0.900*time) + 0.40*sin(0.956*time) );
-      wave_b = wave_b + 0.400*( 0.60*sin(0.910*time) + 0.40*sin(0.920*time) );
-      zoom = zoom + 0.023*( 0.60*sin(0.339*time) + 0.40*sin(0.276*time) );
-      rot = rot + 0.030*( 0.60*sin(0.381*time) + 0.40*sin(0.579*time) );
-      decay = decay - 0.01*equal(frame%200,0);
-      ob_r = wave_g;
-      ob_g = wave_b;
-      ob_b = wave_r;
+      wave_r = wave_r + 0.45*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
+      wave_b = wave_b - 0.4*(0.5*sin(time*4.782)+0.5*cos(time*0.722));
+      wave_g = wave_g + 0.4*sin(time*1.931);
+      vol=0.15*(bass_att+bass+mid+mid_att);
+      dx_r=ifcond(equal(q3,0),ifcond(above(x,xpos),dx*q1-xpos,dx+q2-xpos),dx);
+      dy_r=ifcond(equal(q3,0),ifcond(above(y,ypos),dy*q1-ypos,dy+q2-ypos),dy);
+      rot = rot+0.05*( 0.60*sin(0.381*time) + 0.40*sin(0.479*time) );
+      mytime=.7;
+      q1=sin(time*mytime*4);
+      q2=cos(time*mytime*2);
+      q3=abs(rad-.5)*(q2*q1);
+      xpos=.5/vol;
+      ypos=.5/vol;
+      wave_x=.5+0.1*sin(time+rand(100)/100);
+      wave_y=.5+0.1*cos(time+rand(100)/100);
+      ib_r=q3+q2;
+      ib_b=q2+q1;
+      ib_g=q1+q3;
     }},
     shapes: [
     ],
@@ -806,6 +1355,288 @@ Presets["Aderrasi - Flowing Form.milk"] = {
     ],
   };
 
+
+
+
+
+
+
+Presets["Rovastar - Decreasing Dreams (Extended Movement Mix).milk"] = {
+  fRating: 3.0,
+  fGammaAdj: 1.9,
+  fDecay: 0.97,
+  fVideoEchoZoom: 2.0,
+  fVideoEchoAlpha: 0.0,
+  nVideoEchoOrientation: 0,
+  nWaveMode: 3,
+  bAdditiveWaves: 0,
+  bWaveDots: 1,
+  bWaveThick: 1,
+  bModWaveAlphaByVolume: 0,
+  bMaximizeWaveColor: 1,
+  bTexWrap: 0,
+  bDarkenCenter: 0,
+  bRedBlueStereo: 0,
+  bBrighten: 0,
+  bDarken: 0,
+  bSolarize: 0,
+  bInvert: 0,
+  fWaveAlpha: 0.8,
+  fWaveScale: 0.893664,
+  fWaveSmoothing: 0.6,
+  fWaveParam: 0.0,
+  fModWaveAlphaStart: 0.75,
+  fModWaveAlphaEnd: 0.95,
+  fWarpAnimSpeed: 1.0,
+  fWarpScale: 2.853,
+  fZoomExponent: 1.0,
+  fShader: 0.0,
+  zoom: 0.995,
+  rot: 0.0,
+  cx: 0.5,
+  cy: 0.5,
+  dx: 0.0,
+  dy: 0.0,
+  warp: 0.0,
+  sx: 1.0,
+  sy: 1.0,
+  wave_r: 0.6,
+  wave_g: 0.6,
+  wave_b: 0.6,
+  wave_x: 0.5,
+  wave_y: 0.5,
+  ob_size: 0.01,
+  ob_r: 0.0,
+  ob_g: 0.0,
+  ob_b: 0.0,
+  ob_a: 1.0,
+  ib_size: 0.01,
+  ib_r: 1.0,
+  ib_g: 0.25,
+  ib_b: 0.25,
+  ib_a: 1.0,
+  nMotionVectorsX: 64.0,
+  nMotionVectorsY: 48.0,
+  mv_dx: -0.002,
+  mv_dy: 0.0,
+  mv_l: 0.0,
+  mv_r: 1.0,
+  mv_g: 0.0,
+  mv_b: 0.0,
+  mv_a: 0.0,
+  per_pixel_code: function(_){with(_){
+    newx =x- q1;
+    newy =y- q2;
+    newrad = min(sqrt((newx)*(newx)+0.5625*(newy)*(newy))*2,sqrt(2));
+    dy=0.007*sin((1.3-newrad)*(1.3-newrad)*(q3));
+    dx=-0.007*cos((1.3-newrad)*(1.3-newrad)*(q3));
+  }},
+  per_frame_code: function(_){with(_){
+    wave_r = wave_r + 0.200*( 0.60*sin(0.933*time) + 0.40*sin(1.045*time) );
+    wave_g = wave_g + 0.200*( 0.60*sin(0.900*time) + 0.40*sin(0.956*time) );
+    wave_b = wave_b + 0.200*( 0.60*sin(0.910*time) + 0.40*sin(0.920*time) );
+    warp=0;
+    zoom =1;
+    rot=0;
+    decay =0.985;
+    //decay =1;
+    
+    ib_r = 0.666 - 0.333*sin(time*1.234);
+    ib_g = 0.666+0.333*sin(time*2.123);
+    ib_b = 0.01+0.1*treb;
+    
+    movement =movement + 0.5*(((bass+bass_att + 0.075*pow((bass+0.6*bass_att+0.2*treb_att),3)))/fps);
+    movement = ifcond(above(movement,10000), 0, movement);
+    
+    q1 = 0.5+0.1*sin(movement);
+    q2 = 0.5-0.1*cos(0.781*movement);
+    q3 = (35+15*sin(time*0.3426)+0.8*bass);
+    wave_x = q1;
+    wave_y = 1- q2;
+  }},
+  shapes: [
+    {
+     enabled: 1,
+     sides: 100,
+     additive: 0,
+     thickOutline: 0,
+     textured: 0,
+     x: 0.500000,
+     y: 0.500000,
+     rad: 0.330038,
+     ang: 0.000000,
+     tex_ang: 0.000000,
+     tex_zoom: 1.000000,
+     r: 1.000000,
+     g: 0.000000,
+     b: 0.000000,
+     a: 1.000000,
+     r2: 0.000000,
+     g2: 1.000000,
+     b2: 0.000000,
+     a2: 0.000000,
+     border_r: 1.000000,
+     border_g: 1.000000,
+     border_b: 1.000000,
+     border_a: 0.000000,
+     per_frame_code: function(_){with(_){
+       x = q1;
+       y = 1- q2;
+       r = 0.5 + 0.49*sin(time*0.467);
+       b = 0.5 + 0.49*sin(time*0.568);
+       g = 0.5 + 0.49*sin(time*0.669);
+       r2 = 0.1*(bass+bass_att);
+       b2 = r2;
+       g2 = r2;
+       rad = r2 + 0.2;
+     }},
+    },
+    {
+     enabled: 0,
+     sides: 4,
+     additive: 0,
+     thickOutline: 0,
+     textured: 0,
+     x: 0.500000,
+     y: 0.500000,
+     rad: 0.100000,
+     ang: 0.000000,
+     tex_ang: 0.000000,
+     tex_zoom: 1.000000,
+     r: 1.000000,
+     g: 0.000000,
+     b: 0.000000,
+     a: 1.000000,
+     r2: 0.000000,
+     g2: 1.000000,
+     b2: 0.000000,
+     a2: 0.000000,
+     border_r: 1.000000,
+     border_g: 1.000000,
+     border_b: 1.000000,
+     border_a: 0.100000,
+    },
+    {
+     enabled: 0,
+     sides: 4,
+     additive: 0,
+     thickOutline: 0,
+     textured: 0,
+     x: 0.500000,
+     y: 0.500000,
+     rad: 0.100000,
+     ang: 0.000000,
+     tex_ang: 0.000000,
+     tex_zoom: 1.000000,
+     r: 1.000000,
+     g: 0.000000,
+     b: 0.000000,
+     a: 1.000000,
+     r2: 0.000000,
+     g2: 1.000000,
+     b2: 0.000000,
+     a2: 0.000000,
+     border_r: 1.000000,
+     border_g: 1.000000,
+     border_b: 1.000000,
+     border_a: 0.100000,
+    },
+    {
+     enabled: 0,
+     sides: 4,
+     additive: 0,
+     thickOutline: 0,
+     textured: 0,
+     x: 0.500000,
+     y: 0.500000,
+     rad: 0.100000,
+     ang: 0.000000,
+     tex_ang: 0.000000,
+     tex_zoom: 1.000000,
+     r: 1.000000,
+     g: 0.000000,
+     b: 0.000000,
+     a: 1.000000,
+     r2: 0.000000,
+     g2: 1.000000,
+     b2: 0.000000,
+     a2: 0.000000,
+     border_r: 1.000000,
+     border_g: 1.000000,
+     border_b: 1.000000,
+     border_a: 0.100000,
+    },
+  ],
+  waves: [
+    {
+     enabled: 0,
+     samples: 512,
+     sep: 0,
+     bSpectrum: 0,
+     bUseDots: 0,
+     bDrawThick: 0,
+     bAdditive: 0,
+     scaling: 1.000000,
+     smoothing: 0.500000,
+     r: 1.000000,
+     g: 1.000000,
+     b: 1.000000,
+     a: 1.000000,
+    },
+    {
+     enabled: 0,
+     samples: 512,
+     sep: 0,
+     bSpectrum: 0,
+     bUseDots: 0,
+     bDrawThick: 0,
+     bAdditive: 0,
+     scaling: 1.000000,
+     smoothing: 0.500000,
+     r: 1.000000,
+     g: 1.000000,
+     b: 1.000000,
+     a: 1.000000,
+    },
+    {
+     enabled: 0,
+     samples: 512,
+     sep: 0,
+     bSpectrum: 0,
+     bUseDots: 0,
+     bDrawThick: 0,
+     bAdditive: 0,
+     scaling: 1.000000,
+     smoothing: 0.500000,
+     r: 1.000000,
+     g: 1.000000,
+     b: 1.000000,
+     a: 1.000000,
+    },
+    {
+     enabled: 0,
+     samples: 512,
+     sep: 0,
+     bSpectrum: 0,
+     bUseDots: 0,
+     bDrawThick: 0,
+     bAdditive: 0,
+     scaling: 1.000000,
+     smoothing: 0.500000,
+     r: 1.000000,
+     g: 1.000000,
+     b: 1.000000,
+     a: 1.000000,
+    },
+  ],
+};
+
+
+
+
+
+
+  // cool
 Presets["CatalystTheElder - Electric Rosebud_Phat_texture_edit.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
@@ -1054,7 +1885,842 @@ Presets["CatalystTheElder - Electric Rosebud_Phat_texture_edit.milk"] = {
     ],
   };
 
-Presets["Eo.S. - skylight a3 [trip colors flux2]_phat_Multi_shaped2_zoe_colours5.milk"] = {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Presets["Aderrasi - Blender.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.98,
+    fVideoEchoZoom: 0.999997,
+    fVideoEchoAlpha: 0.4,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 0,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 1,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 1,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 100.0,
+    fWaveScale: 3.91582,
+    fWaveSmoothing: 0.5,
+    fWaveParam: -0.4,
+    fModWaveAlphaStart: 0.5,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 1.0,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 1e-05,
+    dy: 1e-05,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 1.0,
+    wave_g: 1.0,
+    wave_b: 1.0,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.005,
+    ob_r: 1.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 1.0,
+    ib_size: 0.005,
+    ib_r: 1.0,
+    ib_g: 1.0,
+    ib_b: 1.0,
+    ib_a: 1.0,
+    nMotionVectorsX: 0.0,
+    nMotionVectorsY: 0.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 1.0,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      rot = rot - 0.1*min((2-rad)*bass_att,(2-rad)*treb_att);
+      grad = sqrt(x*x + y*y)*2;
+      dx = dx - 0.02*(1-rad);
+      dy = dy + 0.02*(1-rad);
+      zoom = zoom - max(grad*(bass/8 - treb/8), 0);
+    }},
+    per_frame_code: function(_){with(_){
+      wave_r = wave_r + 0.9;
+      wave_g = 0.9 - 0.5*bass;
+      wave_b = 0.9 - 0.5*bass;
+      q1 = 0.05*sin(time*1.14);
+      q2 = 0.03*sin(time*0.93+2);
+      wave_x = wave_x + q1;
+      wave_y = wave_y + q2;
+    }},
+    shapes: [
+{enabled: 0,
+ sides: 4,
+ thickOutline: 0,
+ textured: 0,
+ x: 0.5,
+ y: 0.5,
+ rad: 1.0,
+ ang: 0,
+ tex_ang: 0,
+ tex_zoom: 0.5,
+ r: 1,
+ g: 1,
+ b: 1,
+ a: 1,
+ r2: 1,
+ g2: 1,
+ b2: 1,
+ a2: 1,
+ border_r: 0,
+ border_g: 0,
+ border_b: 0,
+ border_a: 0,
+ per_frame_code: function(_){with(_){
+   x = x + q1;
+   y = y + q2;
+   r = r + 0.9;
+   g = 0.9 - 0.5*bass;
+   b = 0.9 - 0.5*bass;
+   rad = rad + 0.1 * bass_att;
+	}}}
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["bmelgren - Godhead.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 2.0,
+    fDecay: 0.975,
+    fVideoEchoZoom: 1.006596,
+    fVideoEchoAlpha: 0.5,
+    nVideoEchoOrientation: 1,
+    nWaveMode: 5,
+    bAdditiveWaves: 1,
+    bWaveDots: 0,
+    bModWaveAlphaByVolume: 1,
+    bMaximizeWaveColor: 1,
+    bTexWrap: 0,
+    bDarkenCenter: 1,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 4.099998,
+    fWaveScale: 1.285749,
+    fWaveSmoothing: 0.9,
+    fWaveParam: 0.6,
+    fModWaveAlphaStart: 0.71,
+    fModWaveAlphaEnd: 1.3,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.331,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 0.380217,
+    rot: 0.02,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.198054,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.65,
+    wave_g: 0.65,
+    wave_b: 0.65,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.01,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 0.0,
+    ib_size: 0.01,
+    ib_r: 0.25,
+    ib_g: 0.25,
+    ib_b: 0.25,
+    ib_a: 0.0,
+    nMotionVectorsX: 12.0,
+    nMotionVectorsY: 9.0,
+    mv_l: 0.9,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      rot=0.1*pow(ang,3);
+      zoom=sin(pow(rad,mid))+.8;
+    }},
+    per_frame_code: function(_){with(_){
+      wave_r = bass-1;
+      wave_g = mid-1.2;
+      wave_b = treb-.5;
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["Che - Escape.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.95,
+    fVideoEchoZoom: 1.000498,
+    fVideoEchoAlpha: 0.5,
+    nVideoEchoOrientation: 1,
+    nWaveMode: 5,
+    bAdditiveWaves: 0,
+    bWaveDots: 1,
+    bWaveThick: 0,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 1.000416,
+    fWaveScale: 0.608285,
+    fWaveSmoothing: 0.9,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 1.0,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 1.000154,
+    fShader: 0.0,
+    zoom: 1.000223,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.0,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.15,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 0.0,
+    ib_size: 0.05,
+    ib_r: 0.25,
+    ib_g: 0.25,
+    ib_b: 0.25,
+    ib_a: 1.0,
+    nMotionVectorsX: 6.4,
+    nMotionVectorsY: 14.400005,
+    mv_dx: 0.0,
+    mv_dy: -0.01,
+    mv_l: 0.35,
+    mv_r: 0.9,
+    mv_g: 0.5,
+    mv_b: 0.0,
+    mv_a: 1.0,
+    per_pixel_code: function(_){with(_){
+      zone=below(sin(sin(49*q7)*14*x-sin(36*q7)*14*y),-.2);
+      zoom=1+.33*q8*ifcond(zone,-.5+.1*sin(1.08*q6),.5+.1*sin(.96*q6));
+      zoomexp=exp(sin(ifcond(zone,q6,-q6)));
+      rot=q8*.03*sin(q6+q7+q7*zone);
+    }},
+    per_frame_code: function(_){with(_){
+      // timed sidon sensor
+      // le = signal level; desired average value = 2
+      le=1.4*bass_att+.1*bass+.5*treb;
+      pulse=above(le,th);
+      // pulsefreq = running average of interval between last 5 pulses
+      pulsefreq=ifcond(equal(pulsefreq,0),2,
+      ifcond(pulse,.8*pulsefreq+.2*(time-lastpulse),pulsefreq));
+      lastpulse=ifcond(pulse,time,lastpulse);
+      // bt = relative time; 0 = prev beat; 1 = expected beat
+      bt=(time-lastbeat)/(.5*beatfreq+.5*pulsefreq);
+      // hccp = handcicap for th driven by bt
+      hccp=(.03/(bt+.2))+.5*ifcond(band(above(bt,.8),below(bt,1.2)),
+      (pow(sin((bt-1)*7.854),4)-1),0);
+      beat=band(above(le,th+hccp),btblock);
+      btblock=1-above(le,th+hccp);
+      lastbeat=ifcond(beat,time,lastbeat);
+      beatfreq=ifcond(equal(beatfreq,0),2,
+      ifcond(beat,.8*beatfreq+.2*(time-lastbeat),beatfreq));
+      // th = threshold
+      th=ifcond(above(le,th),le+114/(le+10)-7.407,
+      th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
+      th=ifcond(above(th,6),6,th);
+      
+      q8=30/fps;
+      ccl=ccl+beat;
+      minorccl=minorccl+le*q8;
+      q7=ccl+.0002*minorccl;
+      q6=3.7*ccl+.01*minorccl;
+      ob_size=.3+.3*sin(16*ccl+.007*minorccl);
+      ib_a=.5+.4*sin(.01*minorccl+ccl);
+      wave_r=.7+.3*sin(.04*ccl+.01*minorccl);
+      wave_g=.7+.3*sin(.02*ccl+.012*minorccl);
+      wave_b=.3+.3*sin(36*ccl+.013*minorccl);
+      ib_r=.25+.25*sin(72*ccl+.016*minorccl);
+      ib_g=.25+.25*sin(48*ccl+.021*minorccl);
+      ib_b=.5+.3*sin(86*ccl)+.2*(.028*minorccl);
+      
+      echo_alpha=.5+.5*cos(68*ccl+.0041*minorccl);
+      echo_zoom=exp(sin(13.7*ccl+.017*minorccl));
+      echo_orient=ccl%4;
+      
+      mvrot=ccl%6;
+      mv_r=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.039,
+      ifcond(equal(mvrot,3),.137,.835)),ifcond(above(mvrot,1),.651,
+      ifcond(equal(mvrot,0),1,.773)));
+      mv_g=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.267,
+      ifcond(equal(mvrot,3),.886,.176)),ifcond(above(mvrot,1),.804,
+      ifcond(equal(mvrot,0),1,.38)));
+      mv_b=ifcond(above(mvrot,2),ifcond(above(mvrot,4),.694,
+      ifcond(equal(mvrot,3),.776,.851)),ifcond(above(mvrot,1),.114,
+      ifcond(equal(mvrot,0),1,.145)));
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["Che - Terracarbon Stream.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 1.0,
+    fVideoEchoZoom: 1.000499,
+    fVideoEchoAlpha: 0.5,
+    nVideoEchoOrientation: 1,
+    nWaveMode: 3,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 0,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 0.03074,
+    fWaveScale: 0.498516,
+    fWaveSmoothing: 0.0,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 1.0,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 1.000158,
+    fShader: 0.0,
+    zoom: 1.000223,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.0,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.0,
+    wave_g: 0.5,
+    wave_b: 0.5,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.1,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 0.06,
+    ib_size: 0.035,
+    ib_r: 0.25,
+    ib_g: 0.45,
+    ib_b: 0.25,
+    ib_a: 0.29,
+    nMotionVectorsX: 19.199999,
+    nMotionVectorsY: 14.400005,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 2.5,
+    mv_r: 0.06,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.2,
+    per_pixel_code: function(_){with(_){
+      dqv=above(x,.5)-above(y,.5);
+      rot=sin(sin(rad*(13+5*sin(.01*q2))+.06*q2)*q1*.01);
+      zoom=1+ifcond(q3,dqv,1)*.1*sin(7*ang+.03*q2);
+      zoom=ifcond(q4,ifcond(below(rad,.8*sqr(sin(.016*q2))),.75+.4*cos(.021*q2),zoom),zoom);
+    }},
+    init_code: function(_){with(_){
+      dle=1;
+    }},
+    per_frame_code: function(_){with(_){
+      // timed sidon sensor
+      // le = signal level; desired average value = 2
+      le=1.4*bass_att+.1*bass+.5*treb;
+      pulse=above(le,th);
+      // pulsefreq = running average of interval between last 5 pulses
+      pulsefreq=ifcond(equal(pulsefreq,0),2,
+      ifcond(pulse,.8*pulsefreq+.2*(time-lastpulse),pulsefreq));
+      lastpulse=ifcond(pulse,time,lastpulse);
+      // bt = relative time; 0 = prev beat; 1 = expected beat
+      bt=(time-lastbeat)/(.5*beatfreq+.5*pulsefreq);
+      // hccp = handcicap for th driven by bt
+      hccp=(.03/(bt+.2))+.5*ifcond(band(above(bt,.8),below(bt,1.2)),
+      (pow(sin((bt-1)*7.854),4)-1),0);
+      beat=band(above(le,th+hccp),btblock);
+      btblock=1-above(le,th+hccp);
+      lastbeat=ifcond(beat,time,lastbeat);
+      beatfreq=ifcond(equal(beatfreq,0),2,
+      ifcond(beat,.8*beatfreq+.2*(time-lastbeat),beatfreq));
+      // th = threshold
+      th=ifcond(above(le,th),le+114/(le+10)-7.407,
+      th+th*.07/(th-12)+below(th,2.7)*.1*(2.7-th));
+      th=ifcond(above(th,6),6,th);
+      thccl=thccl+(th-2.5144);
+      
+      q1=le;
+      q2=thccl+.2*leccl;
+      leccl=leccl+dle*le;
+      dle=ifcond(beat,-dle,dle);
+      bccl=bccl+beat;
+      
+      wave_r=.1+.8*sqr(sin(.011*thccl))+.1*sin(leccl*.061);
+      wave_g=.1+.8*sqr(sin(.013*thccl))+.1*cos(leccl*.067);
+      wave_b=.1+.8*sqr(cos(.017*thccl))+.1*sin(leccl*.065);
+      
+      ib_r=ib_r+.1*sin(1.3*time+.012*leccl);
+      ib_g=ib_g+.1*sin(1.7*time+.019*leccl);
+      ib_b=ib_b+.1*sin(1.9*time+.017*leccl);
+      mv_r=.5*(ib_r+wave_r);mv_g=.5*(ib_g+wave_g);mv_b=.5*(ib_b+wave_b);
+      mv_a=.5*sqr(sin(.01*leccl+bccl));
+      
+      echo_alpha=.5+.2*cos(.07*leccl+.02*thccl);
+      eo=ifcond(band(equal(bccl%3,0),beat),rand(4),eo);
+      q3=(equal(eo,2)+equal(eo,1))*equal(bccl%2,0);
+      q4=(equal(eo,0)+equal(eo,3))*equal(bccl%2,0);
+      echo_orient=eo;
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["CrystalHigh - mad ravetriping.milk"] = {
+    fRating: 5.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.963999,
+    fVideoEchoZoom: 1.9027,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 0,
+    bAdditiveWaves: 1,
+    bWaveDots: 0,
+    bModWaveAlphaByVolume: 1,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 33.469448,
+    fWaveScale: 100.0,
+    fWaveSmoothing: 0.0,
+    fWaveParam: 0.0,
+    fModWaveAlphaStart: 0.24,
+    fModWaveAlphaEnd: 1.300001,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.331,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 1.009514,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.0,
+    dy: 0.0,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.65,
+    wave_g: 0.65,
+    wave_b: 0.65,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.035,
+    ob_r: 0.34,
+    ob_g: 0.34,
+    ob_b: 0.34,
+    ob_a: 0.38,
+    ib_size: 0.02,
+    ib_r: 0.34,
+    ib_g: 0.34,
+    ib_b: 0.34,
+    ib_a: 0.21,
+    nMotionVectorsX: 28.0,
+    nMotionVectorsY: 9.0,
+    mv_l: 0.9,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_frame_code: function(_){with(_){
+      MyVolume = min(bass+mid+treb,5);
+      decay = 1 - 0.01*MyVolume;
+      wave_r = 0.30 + 0.15*( 0.60*sin(0.980*time) + 0.40*sin(1.047*time) );
+      wave_r = ifcond(above(bass,1.2),wave_r + 0.35,wave_r);
+      wave_g = 0.30 + 0.15*( 0.60*sin(0.835*time) + 0.40*sin(1.081*time) );
+      wave_b = 0.30 + 0.15*( 0.60*sin(0.814*time) + 0.40*sin(1.011*time) );
+      wave_b = ifcond(above(wave_r,0.8),wave_b-0.25,wave_b);
+      ib_a = max(sin(time),0);
+      ib_size = 0.010 + 0.002*MyVolume;
+      ob_a = 0.380 + 0.1*MyVolume;
+      ob_size = 0.050 - 0.004*MyVoulme;
+      ib_r = 0.340 + 0.2*sin(time*0.5413);
+      ib_g = 0.340 + 0.2*sin(time*0.6459);
+      ib_b = 0.340 + 0.2*sin(time*0.7354);
+      ob_r = 0.340 + 0.2*sin(time*0.7251);
+      ob_r = ifcond(above(bass,1.2),ob_r + 0.35,ob_r);
+      ob_g = 0.340 + 0.2*sin(time*0.5315);
+      ob_b = 0.340 + 0.2*sin(time*0.6349);
+      ob_b = ifcond(above(ob_r,0.8),ob_b-0.25,ob_b);
+      zoom = max(sin(bass-bass_residual*10),0.2);
+      rot = mid_residual*2.5;
+      bass_thresh = above(bass_att,bass_thresh)*2 + (1-above(bass_att,bass_thresh))*((bass_thresh-1.3)*0.96+1.3);
+      bass_residual = equal(bass_thresh,2)*0.016*sin(time*7) + (1-equal(bass_thresh,2))*bass_residual;
+      mid_thresh = above(mid_att,mid_thresh)*2 + (1-above(mid_att,mid_thresh))*((mid_thresh-1.3)*0.92+1.3);
+      mid_residual = equal(mid_thresh,2)*0.013*sin(time*7) + (1-equal(mid_thresh,2))*mid_residual;
+      monitor = zoom;
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["Aderrasi - Candy Avian.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 1.0,
+    fVideoEchoZoom: 0.923483,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 5,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 1,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 0,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 2.063785,
+    fWaveScale: 0.724297,
+    fWaveSmoothing: 0.5,
+    fWaveParam: -0.3,
+    fModWaveAlphaStart: 0.5,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 2.500333,
+    fZoomExponent: 1.0,
+    fShader: 0.1,
+    zoom: 0.990099,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.41,
+    dx: -0.00399,
+    dy: 1e-05,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 1.0,
+    wave_g: 1.0,
+    wave_b: 0.0,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.005,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 0.2,
+    ib_size: 0.05,
+    ib_r: 0.0,
+    ib_g: 0.0,
+    ib_b: 0.0,
+    ib_a: 0.1,
+    nMotionVectorsX: 55.68,
+    nMotionVectorsY: 47.999996,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 0.25,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_frame_code: function(_){with(_){
+      wave_r = wave_r + 0.4*sin(1.5*time) + 0.25*sin(2.14*time);
+      wave_b = wave_b + 0.41*sin(1.2*time) + 0.26*sin(2.11*time);
+      wave_g = wave_g + 0.4*sin(1.34*time) + 0.25*sin(2.34*time);
+      ib_r = 4;
+      ib_g = 0;
+      ib_b = 0;
+      wave_x = wave_x +
+      ifcond(above(wave_y,0.75),0.40*sin(time), 0.15*sin(time));
+      wave_y = wave_y + 0.30*cos(0.9*time);
+      cx = cx +
+      ifcond(above(wave_x,0.5), +0.0*sin(7*treb_att), -0.0*sin(7*mid_att));
+      cy = cy +
+      ifcond(above(wave_x,0.5), +0.0*cos(7*bass_att), -0.0*cos(7*mid_att));
+      ob_r = 0.5*sin(treb)*time;
+      ob_b = 0.5*sin(mid)*0.9*time;
+      ob_g = 0.5*sin(bass)*0.8*time;
+      warp = warp + ifcond(above(bass_att,1.5), 1.5, 0);
+      rot = rot + 0.08*sin(3*time);
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+/*Presets["Aderrasi - Making Time (Swamp Mix).milk"] = {
+    fRating: 2.0,
+    fGammaAdj: 1.0,
+    fDecay: 1.0,
+    fVideoEchoZoom: 1.0,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 1,
+    nWaveMode: 5,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 1,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 1,
+    bTexWrap: 1,
+    bDarkenCenter: 0,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 100.0,
+    fWaveScale: 1.599181,
+    fWaveSmoothing: 0.9,
+    fWaveParam: -0.2,
+    fModWaveAlphaStart: 0.5,
+    fModWaveAlphaEnd: 1.0,
+    fWarpAnimSpeed: 1.0,
+    fWarpScale: 1.0,
+    fZoomExponent: 1.0,
+    fShader: 0.0,
+    zoom: 1.0,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 1e-05,
+    dy: 1e-05,
+    warp: 0.01,
+    sx: 1.0,
+    sy: 1.0,
+    wave_r: 0.5,
+    wave_g: 0.5,
+    wave_b: 0.5,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.0,
+    ob_r: 0.0,
+    ob_g: 0.0,
+    ob_b: 0.0,
+    ob_a: 1.0,
+    ib_size: 0.005,
+    ib_r: 0.0,
+    ib_g: 0.0,
+    ib_b: 0.0,
+    ib_a: 0.0,
+    nMotionVectorsX: 0.0,
+    nMotionVectorsY: 0.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 1.0,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      thresh = above(bass_att,thresh)*2+(1-above(bass_att,thresh))*((thresh-1.3)*0.96+1.3);
+      dx_r = equal(thresh,2)*0.015*sin(5*time)+(1-equal(thresh,2))*dx_r;
+      dy_r = equal(thresh,2)*0.015*sin(6*time)+(1-equal(thresh,2))*dy_r;
+      rot = rot + 2*abs((0.9*dy_r)*bass)*sin(0.7*time);
+      zoom = zoom + 10*(0.2*rad*(3-bass/cos(rad/12)*2*tan(12)))*(0.002*sin(ang*(12*sin(8*bass))));
+      cx = cx + 0.3*sin(3*dy_r);
+      cy = cy + 0.3*cos(3*dx_r);
+      dy = dy + 1.7*dy_r;
+      dx = dx + 1.7*dx_r;
+    }},
+    per_frame_code: function(_){with(_){
+      bass_tick = above(bass_att,bass_tick)*2 + (1-above(bass_att,bass_tick))*
+      ((bass_tick-1.3)*0.96+1.3);
+      treb_tick = above(treb_att,treb_tick)*2 + (1-above(treb_att,treb_tick))*
+      ((treb_tick-1.3)*0.96+1.3);
+      mid_tick = above(mid_att,mid_tick)*2 + (1-above(mid_att,mid_tick))*
+      ((mid_tick-1.3)*0.96+1.3);
+      bass_shift = equal(bass_tick,2)*0.95*sin(time*5) + (1-equal(bass_tick,2))*bass_shift;
+      treb_shift = equal(treb_tick,2)*0.95*sin(time*5) + (1-equal(treb_tick,2))*treb_shift;
+      mid_shift = equal(mid_tick,2)*0.95*sin(time*5) + (1-equal(mid_tick,2))*mid_shift;
+      wave_mystery = wave_mystery + 0.15*sin(time) + 0.2*sin(0.2*time);
+      wave_r = wave_r +bass_shift+0.3;
+      wave_g = wave_g+treb_shift;
+      wave_b = wave_b +mid_shift;
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+// cool
+
+/*Presets["Aderrasi - Flowing Form.milk"] = {
+    fRating: 3.0,
+    fGammaAdj: 1.0,
+    fDecay: 0.92,
+    fVideoEchoZoom: 1.343302,
+    fVideoEchoAlpha: 0.0,
+    nVideoEchoOrientation: 0,
+    nWaveMode: 3,
+    bAdditiveWaves: 0,
+    bWaveDots: 0,
+    bWaveThick: 0,
+    bModWaveAlphaByVolume: 0,
+    bMaximizeWaveColor: 0,
+    bTexWrap: 1,
+    bDarkenCenter: 1,
+    bRedBlueStereo: 0,
+    bBrighten: 0,
+    bDarken: 0,
+    bSolarize: 0,
+    bInvert: 0,
+    fWaveAlpha: 100.0,
+    fWaveScale: 1.611957,
+    fWaveSmoothing: 0.0,
+    fWaveParam: 0.08,
+    fModWaveAlphaStart: 0.75,
+    fModWaveAlphaEnd: 0.95,
+    fWarpAnimSpeed: 0.999834,
+    fWarpScale: 100.0,
+    fZoomExponent: 1.200114,
+    fShader: 1.0,
+    zoom: 1.010011,
+    rot: 0.0,
+    cx: 0.5,
+    cy: 0.5,
+    dx: 0.02,
+    dy: 0.02,
+    warp: 0.059958,
+    sx: 0.999998,
+    sy: 1.0,
+    wave_r: 0.6,
+    wave_g: 0.6,
+    wave_b: 0.3,
+    wave_x: 0.5,
+    wave_y: 0.5,
+    ob_size: 0.1,
+    ob_r: 0.5,
+    ob_g: 0.5,
+    ob_b: 0.1,
+    ob_a: 0.5,
+    ib_size: 0.0,
+    ib_r: 0.55,
+    ib_g: 0.25,
+    ib_b: 0.05,
+    ib_a: 0.7,
+    nMotionVectorsX: 12.0,
+    nMotionVectorsY: 9.0,
+    mv_dx: 0.0,
+    mv_dy: 0.0,
+    mv_l: 0.9,
+    mv_r: 1.0,
+    mv_g: 1.0,
+    mv_b: 1.0,
+    mv_a: 0.0,
+    per_pixel_code: function(_){with(_){
+      sx=sx+0.5*cos((y*2-1)*6+time*1.53+(x*2-1)*3.2);
+      sy=sy+0.5*cos((x*2-1)*8+time*1.71+(y*2-1)*4.3);
+      zoom = zoom - 0.01*ang;
+    }},
+    per_frame_code: function(_){with(_){
+      wave_r = wave_r + 0.400*( 0.60*sin(0.933*time) + 0.40*sin(1.045*time) );
+      wave_g = wave_g + 0.400*( 0.60*sin(0.900*time) + 0.40*sin(0.956*time) );
+      wave_b = wave_b + 0.400*( 0.60*sin(0.910*time) + 0.40*sin(0.920*time) );
+      zoom = zoom + 0.023*( 0.60*sin(0.339*time) + 0.40*sin(0.276*time) );
+      rot = rot + 0.030*( 0.60*sin(0.381*time) + 0.40*sin(0.579*time) );
+      decay = decay - 0.01*equal(frame%200,0);
+      ob_r = wave_g;
+      ob_g = wave_b;
+      ob_b = wave_r;
+    }},
+    shapes: [
+    ],
+    waves: [
+    ],
+  };*/
+
+
+
+/*Presets["Eo.S. - skylight a3 [trip colors flux2]_phat_Multi_shaped2_zoe_colours5.milk"] = {
     fRating: 5.0,
     fGammaAdj: 1.0,
     fDecay: 0.5,
@@ -1362,9 +3028,9 @@ Presets["Eo.S. - skylight a3 [trip colors flux2]_phat_Multi_shaped2_zoe_colours5
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Eo.S.+Phat Cool Bug_arm.milk"] = {
+/*Presets["Eo.S.+Phat Cool Bug_arm.milk"] = {
     fRating: 5.0,
     fGammaAdj: 1.0,
     fDecay: 0.94,
@@ -1630,9 +3296,9 @@ Presets["Eo.S.+Phat Cool Bug_arm.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  };*/
 
-Presets["Eo.S.+Phat Cool Bug_arm_textured.milk"] = {
+/*Presets["Eo.S.+Phat Cool Bug_arm_textured.milk"] = {
     fRating: 5.0,
     fGammaAdj: 1.0,
     fDecay: 0.94,
@@ -1898,384 +3564,14 @@ Presets["Eo.S.+Phat Cool Bug_arm_textured.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  };*/
 
-Presets["Eo.S.+Phat Fractical_dancer - pulsate B.milk"] = {
-    fRating: 5.0,
-    fGammaAdj: 1.0,
-    fDecay: 0.94,
-    fVideoEchoZoom: 0.597148,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 0,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bWaveThick: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 1,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.001,
-    fWaveScale: 0.01,
-    fWaveSmoothing: 0.63,
-    fWaveParam: -1.0,
-    fModWaveAlphaStart: 0.71,
-    fModWaveAlphaEnd: 1.3,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
-    fZoomExponent: 0.999998,
-    fShader: 0.0,
-    zoom: 13.290894,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: -0.28,
-    dy: -0.32,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.0,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 1.0,
-    ib_size: 0.005,
-    ib_r: 0.0,
-    ib_g: 0.0,
-    ib_b: 0.0,
-    ib_a: 1.0,
-    nMotionVectorsX: 12.799995,
-    nMotionVectorsY: 9.600006,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 1.0,
-    mv_r: 1.0,
-    mv_g: 0.91,
-    mv_b: 0.71,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      rd=sqrt( sqr( (x-0.5-q4)*1.7) + sqr( (y-0.5+q5)*1.2 ) )+0.001;
-      cx=0.5+q4;
-      cy=0.5-q5;
-      
-      zoom=pow(rd,sin(time)+2.5)*2.0;
-      zoom=max(zoom,0.1)
-      
-    }},
-    init_code: function(_){with(_){
-      
-      zoom=1;
-      xpos=0;
-      ypos=0;
-    }},
-    per_frame_code: function(_){with(_){
-      decay=1;
-      
-      vol= (bass+mid+treb)*0.55;
-      vol=vol;
-      
-      
-      mv_r = 0.5 + 0.4*sin(time*1.324);
-      mv_g = 0.5 + 0.4*cos(time*1.371);
-      
-      
-      
-      
-      zoom=.9;
-      
-      musictime=musictime+vol;
-      
-      q4=0;
-      q5=0;
-      //=sin(musictime*0.02)*0.3;
-      //q5=sin(musictime*0.01)*0.3;
-      
-      dx=sin(musictime*0.1)*0.07;
-      dy=cos(musictime*0.069)*0.07;
-      
-      
-      
-      
-      monitor=rot;
-    }},
-    shapes: [
-      {
-       enabled: 1,
-       sides: 100,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.491382,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 0.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.000000,
-       per_frame_code: function(_){with(_){
-         x=.5+q4;y=.5+q5;
-       }},
-      },
-      {
-       enabled: 1,
-       sides: 24,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.018423,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 0.819541,
-       r: 1.000000,
-       g: 1.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 1.000000,
-       g2: 1.000000,
-       b2: 1.000000,
-       a2: 1.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.000000,
-       per_frame_code: function(_){with(_){
-         tex_ang=0.01;
-         x=.5-q4;
-         y=.5-q5;
-       }},
-      },
-      {
-       enabled: 0,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.100000,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.100000,
-      },
-      {
-       enabled: 0,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.100000,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.100000,
-      },
-    ],
-    waves: [
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-    ],
-  };
 
-Presets["Fvese - The Tunnel (Final Stage Mix).milk"] = {
-    fRating: 2.0,
-    fGammaAdj: 1.0,
-    fDecay: 0.995,
-    fVideoEchoZoom: 1.0,
-    fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 3,
-    bAdditiveWaves: 0,
-    bWaveDots: 0,
-    bWaveThick: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 1,
-    bDarkenCenter: 1,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 1.0,
-    fWaveScale: 0.241456,
-    fWaveSmoothing: 0.09,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.5,
-    fModWaveAlphaEnd: 1.0,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 0.741921,
-    fShader: 0.0,
-    zoom: 1.0,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.01,
-    sx: 0.9999,
-    sy: 0.9999,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.005,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.4,
-    ob_a: 0.0,
-    ib_size: 0.005,
-    ib_r: 0.0,
-    ib_g: 0.3,
-    ib_b: 0.0,
-    ib_a: 1.0,
-    nMotionVectorsX: 6.4,
-    nMotionVectorsY: 1.440001,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 0.0,
-    mv_r: 0.7599,
-    mv_g: 0.48,
-    mv_b: 0.39,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      zoom = ifcond(below(q1,0),0.5*x,ifcond(equal(q2,0),0.9*(1-x),ifcond(above(q3,0),0.9*y,0.9*(1-y)))) + 0.6 - 0.13*(min(q3,0.3));
-      
-    }},
-    per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.45*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
-      wave_b = wave_b - 0.4*(0.5*sin(time*4.782)+0.5*cos(time*0.722));
-      wave_g = wave_g + 0.4*sin(time*1.931);
-      vol=0.15*(bass_att+bass+mid+mid_att);
-      dx_r=ifcond(equal(q3,0),ifcond(above(x,xpos),dx*q1-xpos,dx+q2-xpos),dx);
-      dy_r=ifcond(equal(q3,0),ifcond(above(y,ypos),dy*q1-ypos,dy+q2-ypos),dy);
-      rot = rot+0.05*( 0.60*sin(0.381*time) + 0.40*sin(0.479*time) );
-      mytime=.7;
-      q1=sin(time*mytime*4);
-      q2=cos(time*mytime*2);
-      q3=abs(rad-.5)*(q2*q1);
-      xpos=.5/vol;
-      ypos=.5/vol;
-      wave_x=.5+0.1*sin(time+rand(100)/100);
-      wave_y=.5+0.1*cos(time+rand(100)/100);
-      ib_r=q3+q2;
-      ib_b=q2+q1;
-      ib_g=q1+q3;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Geiss and Rovastar - The Chaos Of Colours (sprouting dimentia mix).milk"] = {
+
+
+// pretty cool
+/*Presets["Geiss and Rovastar - The Chaos Of Colours (sprouting dimentia mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.7,
     fDecay: 0.94,
@@ -2671,9 +3967,10 @@ Presets["Idiot & Rovastar - Altars Of Madness 2 (X.42 Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Idiot - Texture Boxes (Remix 2).milk"] = {
+// squares going around
+/*Presets["Idiot - Texture Boxes (Remix 2).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.9,
@@ -2754,8 +4051,8 @@ Presets["Idiot - Texture Boxes (Remix 2).milk"] = {
       q6=treb_c;
       q7=mid_c;
       q8=vol_c;
-      
-      
+
+
     }},
     shapes: [
       {
@@ -2953,9 +4250,10 @@ Presets["Idiot - Texture Boxes (Remix 2).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Idiot - Texture Boxes (Remix).milk"] = {
+// more boxes
+/*Presets["Idiot - Texture Boxes (Remix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.9,
@@ -3236,9 +4534,10 @@ Presets["Idiot - Texture Boxes (Remix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Idiot24-7 - Ascending to heaven 2.milk"] = {
+// cool
+/*Presets["Idiot24-7 - Ascending to heaven 2.milk"] = {
     fRating: 4.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -3386,9 +4685,9 @@ Presets["Illusion & Che - Return Of The King.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Illusion & Che - The Piper.milk"] = {
+/*Presets["Illusion & Che - The Piper.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 0.99,
@@ -3465,9 +4764,9 @@ Presets["Illusion & Che - The Piper.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Illusion & Unchained - Frozen Eye 1.milk"] = {
+/*Presets["Illusion & Unchained - Frozen Eye 1.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -3550,95 +4849,12 @@ Presets["Illusion & Unchained - Frozen Eye 1.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Harlequin's Dynamic Fractal (Crazed Spiral Mix).milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.0,
-    fDecay: 1.0,
-    fVideoEchoZoom: 0.999609,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 7,
-    bAdditiveWaves: 0,
-    bWaveDots: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.001,
-    fWaveScale: 0.6401,
-    fWaveSmoothing: 0.27,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 5.99579,
-    fWarpScale: 1.331,
-    fZoomExponent: 1.01,
-    fShader: 0.0,
-    zoom: 0.998531,
-    rot: 0.002,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.5,
-    wave_y: 0.96,
-    ob_size: 0.01,
-    ob_r: 0.0,
-    ob_g: 0.9,
-    ob_b: 0.2,
-    ob_a: 1.0,
-    ib_size: 0.0,
-    ib_r: 0.5,
-    ib_g: 0.5,
-    ib_b: 0.5,
-    ib_a: 1.0,
-    nMotionVectorsX: 0.0,
-    nMotionVectorsY: 48.0,
-    mv_l: 5.0,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      box=(1-rad)+0.5*abs(x*3-0.4*sin(q1))%2 + 0.5*abs(y*3+0.4*sin(q1))%2;
-      q1 = 8.05+(sin(x+0.137*time)-cos(y+0.213*time));
-      zoom = ifcond(above(box,1),q1*.1,zoom);
-      rot = ifcond(above(box,1),1*sin(0.385*time),rot);
-    }},
-    per_frame_code: function(_){with(_){
-      ob_r = 0.3 - 0.3*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
-      ob_g = 0.6- 0.4*sin(time*2.924);
-      ob_b = 0.35 - 0.3*cos(time*0.816);
-      cx = cx - 0.1*sin(time*0.342);
-      cy = cy + 0.1*sin(time*0.433);
-      warp =0;
-      ib_size = 0.02;
-      ib_r = ib_r + 0.5*sin(time*3.034);
-      ib_g = ib_g + 0.5*sin(time*2.547);
-      ib_b = ib_b - 0.5*sin(time*1.431);
-      dx = dx -0.008*sin(time*0.23);
-      dy = dy - 0.008*sin(time*0.2);
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Phat_Eo.S. - our own personal demon.milk"] = {
+
+
+/*Presets["Phat_Eo.S. - our own personal demon.milk"] = {
     fRating: 0.0,
     fGammaAdj: 1.0,
     fDecay: 0.925,
@@ -4019,9 +5235,10 @@ Presets["Phat_Eo.S. - our own personal demon.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Phat_Rovastar - What_does_your_soul_look_like.milk"] = {
+// cool
+/*Presets["Phat_Rovastar - What_does_your_soul_look_like.milk"] = {
     fRating: 5.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -4313,9 +5530,9 @@ Presets["Phat_Rovastar - What_does_your_soul_look_like.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Phat_Rovastar_Eo.S. spiral_faces.milk"] = {
+/*Presets["Phat_Rovastar_Eo.S. spiral_faces.milk"] = {
     fRating: 0.0,
     fGammaAdj: 1.0,
     fDecay: 0.925,
@@ -4696,9 +5913,9 @@ Presets["Phat_Rovastar_Eo.S. spiral_faces.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Pithlit & Illusion - Symetric pattern.milk"] = {
+/*Presets["Pithlit & Illusion - Symetric pattern.milk"] = {
     fRating: 3.5,
     fGammaAdj: 1.0,
     fDecay: 0.999,
@@ -5204,9 +6421,9 @@ Presets["Rovastar - Twilight Tunnel.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar & Rocke - Headspin.milk"] = {
+/*Presets["Rovastar & Rocke - Headspin.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.99,
@@ -5297,135 +6514,11 @@ Presets["Rovastar & Rocke - Headspin.milk"] = {
     ],
     waves: [
     ],
-  };
+  };*/
 
-Presets["Rovastar & Unchained - Centre Of Gravity.milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.0,
-    fDecay: 0.996,
-    fVideoEchoZoom: 1.0,
-    fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 3,
-    nWaveMode: 0,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bWaveThick: 1,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 0,
-    bDarkenCenter: 1,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 1,
-    bSolarize: 1,
-    bInvert: 0,
-    fWaveAlpha: 0.818016,
-    fWaveScale: 0.653093,
-    fWaveSmoothing: 0.09,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 5.9957,
-    fWarpScale: 1.331,
-    fZoomExponent: 0.999994,
-    fShader: 0.0,
-    zoom: 1.0082,
-    rot: -0.76,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.4241,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.0,
-    ob_r: 0.5,
-    ob_g: 0.5,
-    ob_b: 0.5,
-    ob_a: 1.0,
-    ib_size: 0.0,
-    ib_r: 0.5,
-    ib_g: 0.5,
-    ib_b: 0.5,
-    ib_a: 0.0,
-    nMotionVectorsX: 0.0,
-    nMotionVectorsY: 0.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 5.0,
-    mv_r: 1.0,
-    mv_g: 0.0,
-    mv_b: 0.01,
-    mv_a: 1.0,
-    per_pixel_code: function(_){with(_){
-      c1=x*q1+sin(ang)*q4;
-      c2=y*q2+sin(ang)*q6;
-      radix=ifcond(above(q3,0),min(x-c2,y-c2),max(x*c1,y*c1));
-      radix=ifcond(above(q2,0),min(radix,rad),max(radix,rad));
-      rot=ifcond(above(q6,0),((sqrt(2)*0.5)-rad)*.18*q5,.2*q5*sin(rad*2.133*q7));
-      zoom=ifcond(above(q2,0),zoom,ifcond(above(q3,0),1+.07*sin(q4*.2*radix),1+.07*cos(radix*10*q4)));
-      zoomexp=ifcond(above(q2,0),zoomexp, ifcond(above(q3,0),1-.07*sin(q4*.2*radix), 1+.07*cos(radix*10*q4)))*rad;
-    }},
-    per_frame_code: function(_){with(_){
-      old_bass_flop=bass_flop;
-      old_treb_flop=treb_flop;
-      old_mid_flop=mid_flop;
-      chaos=.9+.1*sin(pulse);
-      bass_thresh = above(bass_att,bass_thresh)*2 + (1-above(bass_att,bass_thresh))*((bass_thresh-1.6)*chaos+1.6);
-      bass_flop=abs(bass_flop-equal(bass_thresh,2));
-      treb_thresh=above(treb_att,treb_thresh)*2 + (1-above(treb_att,treb_thresh))*((treb_thresh-1.6)*chaos+1.6);
-      treb_flop=abs(treb_flop-equal(treb_thresh,2));
-      mid_thresh=above(mid_att,mid_thresh)*2 + (1-above(mid_att,mid_thresh))*((mid_thresh-1.6)*chaos+1.6);
-      mid_flop=abs(mid_flop-equal(mid_thresh,2));
-      bass_changed=bnot(equal(old_bass_flop,bass_flop));
-      mid_changed=bnot(equal(old_mid_flop,mid_flop));
-      treb_changed=bnot(equal(old_treb_flop,treb_flop));
-      bass_residual = bass_changed*sin(pulse*3) + bnot(bass_changed)*bass_residual;
-      treb_residual = treb_changed*sin(pulse*3) + bnot(treb_changed)*treb_residual;
-      mid_residual = mid_changed*sin(pulse*3) + bnot(mid_changed)*mid_residual;
-      pulse=ifcond(above(abs(pulse),3.14),-3.14,pulse+(bass_thresh+mid_thresh+treb_thresh)*.0035);
-      entropy=ifcond(bass_changed*mid_changed*treb_changed,(1+bass_flop+treb_flop+mid_flop)*(1+rand(3)),entropy);
-      q1=mid_residual;
-      q2=bass_residual;
-      q3=treb_residual;
-      q4=sin(pulse);
-      q5=cos(pulse*(.5+.1*entropy));
-      q6=sin(pulse*(.5+pow(.25,entropy)));
-      q7=above(q1,0)+above(q2,0)+above(q3,0)+above(q3,0)*treb_flop+above(q2,0)*bass_flop+above(q1,0)*mid_flop;
-      q8=entropy;
-      wave_r=wave_r+wave_r*q1;
-      wave_b=wave_b+wave_b*q2;
-      wave_g=wave_g+wave_g*q3;
-      ob_r=ob_r+ob_r*sin(q1+q2*2.14);
-      ob_b=ob_b+ob_b*sin(q2+q3*2.14);
-      ob_g=ob_g+ob_g*sin(q3+q1*2.14);
-      ib_r=ib_r+ib_r*cos(q5+q1*2.14);
-      ib_b=ib_b+ib_*cos(q5+q2*2.14);
-      ib_g=ib_g+ib_g*cos(q5+q3*2.14);
-      ob_a=.25+.25*sin(q2+q3*2.14);
-      ib_a=.25+.25*sin(q2*2.14+q3);
-      ob_size=.1+.1*sin(q3*3+q1);
-      ib_size=.1+.1*sin(q1*3+q3);
-      wave_mystery=.5*q6;
-      warp=0;
-      wave_mode=q8%7;
-      mv_x = 1.25;
-      mv_y = 1.25;
-      mv_dx = 0.1*sin(time);
-      mv_dy = -0.1*cos(time);
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Rovastar - A Million Miles from Earth (Pathfinder Mix).milk"] = {
+
+/*Presets["Rovastar - A Million Miles from Earth (Pathfinder Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -5505,9 +6598,9 @@ Presets["Rovastar - A Million Miles from Earth (Pathfinder Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Altars Of Harlequin's Madness (Dark Disorder Mix.milk"] = {
+/*Presets["Rovastar - Altars Of Harlequin's Madness (Dark Disorder Mix.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -5774,9 +6867,9 @@ Presets["Rovastar - Altars Of Harlequin's Madness (Dark Disorder Mix.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Explosive Minds.milk"] = {
+/*Presets["Rovastar - Explosive Minds.milk"] = {
     fRating: 5.0,
     fGammaAdj: 2.0,
     fDecay: 1.0,
@@ -5856,9 +6949,9 @@ Presets["Rovastar - Explosive Minds.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Fractopia (Upspoken Mix).milk"] = {
+/*Presets["Rovastar - Fractopia (Upspoken Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 1.0,
@@ -6145,9 +7238,9 @@ Presets["Rovastar - Fractopia (Upspoken Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Forgotten Moon.milk"] = {
+/*Presets["Rovastar - Forgotten Moon.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -6231,9 +7324,9 @@ Presets["Rovastar - Forgotten Moon.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Magic Carpet.milk"] = {
+/*Presets["Rovastar - Magic Carpet.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.98,
     fDecay: 0.994,
@@ -6317,9 +7410,9 @@ Presets["Rovastar - Magic Carpet.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Omnipresence Resurrection.milk"] = {
+/*Presets["Rovastar - Omnipresence Resurrection.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.7,
     fDecay: 0.97,
@@ -6416,9 +7509,9 @@ Presets["Rovastar - Omnipresence Resurrection.milk"] = {
     ],
     waves: [
     ],
-  };
+  };*/
 
-Presets["Rovastar - Timeless Voyage.milk"] = {
+/*Presets["Rovastar - Timeless Voyage.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -6495,9 +7588,9 @@ Presets["Rovastar - Timeless Voyage.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rozzer & Neuro - Starover (Semicolon Mix).milk"] = {
+/*Presets["Rozzer & Neuro - Starover (Semicolon Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.7,
     fDecay: 0.97,
@@ -6599,9 +7692,9 @@ Presets["Rozzer & Neuro - Starover (Semicolon Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Unchained - Cranked On Failure.milk"] = {
+/*Presets["Unchained - Cranked On Failure.milk"] = {
     fRating: 2.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -6706,9 +7799,9 @@ Presets["Unchained - Cranked On Failure.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Aimless (Gravity Directive Mix).milk"] = {
+/*Presets["Aderrasi - Aimless (Gravity Directive Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -6789,9 +7882,9 @@ Presets["Aderrasi - Aimless (Gravity Directive Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Aimless (Spirogravity Mix).milk"] = {
+/*Presets["Aderrasi - Aimless (Spirogravity Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -6872,9 +7965,9 @@ Presets["Aderrasi - Aimless (Spirogravity Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
+/*Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 0.95,
@@ -6962,9 +8055,10 @@ Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Antidote (Aqualung Mix).milk"] = {
+// cool
+/*Presets["Aderrasi - Antidote (Aqualung Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -7053,9 +8147,9 @@ Presets["Aderrasi - Antidote (Aqualung Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Airhandler (Menagerie Mix).milk"] = {
+/*Presets["Aderrasi - Airhandler (Menagerie Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.7,
     fDecay: 0.99,
@@ -7140,9 +8234,9 @@ Presets["Aderrasi - Airhandler (Menagerie Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Anchorpulse (Pulse Of A Ghast II Mix).milk"] = {
+/*Presets["Aderrasi - Anchorpulse (Pulse Of A Ghast II Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.7,
     fDecay: 0.99,
@@ -7234,9 +8328,9 @@ Presets["Aderrasi - Anchorpulse (Pulse Of A Ghast II Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
+/*Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 0.95,
@@ -7324,9 +8418,10 @@ Presets["Aderrasi - Anchorpulse (Verified Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Antidote (Side Effects Mix).milk"] = {
+
+/*Presets["Aderrasi - Antidote (Side Effects Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -7413,9 +8508,10 @@ Presets["Aderrasi - Antidote (Side Effects Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Antidote.milk"] = {
+// cool
+/*Presets["Aderrasi - Antidote.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -7499,9 +8595,9 @@ Presets["Aderrasi - Antidote.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Antique Abyss.milk"] = {
+/*Presets["Aderrasi - Antique Abyss.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.7,
     fDecay: 0.98,
@@ -7588,9 +8684,9 @@ Presets["Aderrasi - Antique Abyss.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Ashes Of Air (Remix).milk"] = {
+/*Presets["Aderrasi - Ashes Of Air (Remix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.001,
     fDecay: 1.0,
@@ -7668,9 +8764,9 @@ Presets["Aderrasi - Ashes Of Air (Remix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Bitterfeld (Crystal Border Mix).milk"] = {
+/*Presets["Aderrasi - Bitterfeld (Crystal Border Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -7758,9 +8854,9 @@ Presets["Aderrasi - Bitterfeld (Crystal Border Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  };*/
 
-Presets["Aderrasi - Brakefreak.milk"] = {
+/*Presets["Aderrasi - Brakefreak.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 0.98,
@@ -7849,9 +8945,9 @@ Presets["Aderrasi - Brakefreak.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Chromatic Abyss (The Other Side).milk"] = {
+/*Presets["Aderrasi - Chromatic Abyss (The Other Side).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -7929,9 +9025,9 @@ Presets["Aderrasi - Chromatic Abyss (The Other Side).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Contortion (Xenomorph Mix).milk"] = {
+/*Presets["Aderrasi - Contortion (Xenomorph Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.301,
     fDecay: 1.0,
@@ -8023,9 +9119,9 @@ Presets["Aderrasi - Contortion (Xenomorph Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Dark Matter (Converse Mix).milk"] = {
+/*Presets["Aderrasi - Dark Matter (Converse Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 0.99,
@@ -8113,9 +9209,9 @@ Presets["Aderrasi - Dark Matter (Converse Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Aderrasi - Multiviola.milk"] = {
+/*Presets["Aderrasi - Multiviola.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -8199,9 +9295,9 @@ Presets["Aderrasi - Multiviola.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Bmelgren & Krash - Rainbow Orb Peacock (Lonely Signal Gone .milk"] = {
+/*Presets["Bmelgren & Krash - Rainbow Orb Peacock (Lonely Signal Gone .milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.56,
     fDecay: 1.0,
@@ -8279,9 +9375,9 @@ Presets["Bmelgren & Krash - Rainbow Orb Peacock (Lonely Signal Gone .milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["bmelgren - Take this highway.milk"] = {
+/*Presets["bmelgren - Take this highway.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.925,
@@ -8355,9 +9451,9 @@ Presets["bmelgren - Take this highway.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["EvilJim - Ice Drops.milk"] = {
+/*Presets["EvilJim - Ice Drops.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 0.99,
@@ -8424,9 +9520,9 @@ Presets["EvilJim - Ice Drops.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Fvese - Lifesavor Anyone.milk"] = {
+/*Presets["Fvese - Lifesavor Anyone.milk"] = {
     fRating: 2.5,
     fGammaAdj: 1.0,
     fDecay: 0.98,
@@ -8501,9 +9597,9 @@ Presets["Fvese - Lifesavor Anyone.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Fvese - Window Reflection 6.milk"] = {
+/*Presets["Fvese - Window Reflection 6.milk"] = {
     fRating: 5.0,
     fGammaAdj: 1.0,
     fDecay: 0.995,
@@ -8596,9 +9692,9 @@ Presets["Fvese - Window Reflection 6.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss & Rovastar - Notions Of Tonality 2.milk"] = {
+/*Presets["Geiss & Rovastar - Notions Of Tonality 2.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.693,
     fDecay: 0.97,
@@ -8696,9 +9792,10 @@ Presets["Geiss & Rovastar - Notions Of Tonality 2.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss & Rovastar - Tokamak (Naked Intrusion Mix).milk"] = {
+// pretty cool
+/*Presets["Geiss & Rovastar - Tokamak (Naked Intrusion Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.993,
     fDecay: 0.98,
@@ -8786,9 +9883,9 @@ Presets["Geiss & Rovastar - Tokamak (Naked Intrusion Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Cosmic Dust 2.milk"] = {
+/*Presets["Geiss - Cosmic Dust 2.milk"] = {
     fRating: 4.0,
     fGammaAdj: 1.9,
     fDecay: 0.98,
@@ -8864,9 +9961,9 @@ Presets["Geiss - Cosmic Dust 2.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Cruzin'.milk"] = {
+/*Presets["Geiss - Cruzin'.milk"] = {
     fGammaAdj: 2.0,
     fDecay: 0.98,
     fVideoEchoZoom: 2.0,
@@ -8933,9 +10030,9 @@ Presets["Geiss - Cruzin'.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Downward Spiral.milk"] = {
+/*Presets["Geiss - Downward Spiral.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.9,
     fDecay: 0.98,
@@ -9010,9 +10107,9 @@ Presets["Geiss - Downward Spiral.milk"] = {
     ],
     waves: [
     ],
-  };
+  };*/
 
-Presets["Geiss - Dynamic Swirls 1.milk"] = {
+/*Presets["Geiss - Dynamic Swirls 1.milk"] = {
     fGammaAdj: 2.7,
     fDecay: 0.97,
     fVideoEchoZoom: 2.0,
@@ -9088,9 +10185,9 @@ Presets["Geiss - Dynamic Swirls 1.milk"] = {
     ],
     waves: [
     ],
-  };
+  };*/
 
-Presets["Geiss - Dynamic Swirls 2.milk"] = {
+/*Presets["Geiss - Dynamic Swirls 2.milk"] = {
     fGammaAdj: 2.7,
     fDecay: 0.98,
     fVideoEchoZoom: 2.0,
@@ -9166,9 +10263,9 @@ Presets["Geiss - Dynamic Swirls 2.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Eggs.milk"] = {
+/*Presets["Geiss - Eggs.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.97,
@@ -9230,9 +10327,9 @@ Presets["Geiss - Eggs.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - El Cubismo.milk"] = {
+/*Presets["Geiss - El Cubismo.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.97,
@@ -9295,9 +10392,9 @@ Presets["Geiss - El Cubismo.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Oldskool Mellowstyle.milk"] = {
+/*Presets["Geiss - Oldskool Mellowstyle.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.5,
     fDecay: 0.98,
@@ -9373,91 +10470,11 @@ Presets["Geiss - Oldskool Mellowstyle.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Geiss - Swirlie 4.milk"] = {
-    fRating: 1.0,
-    fGammaAdj: 1.994,
-    fDecay: 0.97,
-    fVideoEchoZoom: 2.0,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 1,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bMotionVectorsOn: 0,
-    bRedBlueStereo: 0,
-    nMotionVectorsX: 12,
-    nMotionVectorsY: 9,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 4.499998,
-    fWaveScale: 1.524161,
-    fWaveSmoothing: 0.9,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 0.334695,
-    fWarpScale: 3.928016,
-    fZoomExponent: 2.1,
-    fShader: 0.0,
-    zoom: 0.961,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 1.771011,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.0,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 0.5,
-    ib_size: 0.0285,
-    ib_r: 0.34,
-    ib_g: 0.34,
-    ib_b: 0.34,
-    ib_a: 0.1,
-    per_frame_code: function(_){with(_){
-      wave_x = wave_x + 0.2900*( 0.60*sin(2.121*time) + 0.40*sin(1.621*time) );
-      wave_y = wave_y + 0.2900*( 0.60*sin(1.742*time) + 0.40*sin(2.322*time) );
-      wave_r = wave_r + 0.350*( 0.60*sin(0.823*time) + 0.40*sin(0.916*time) );
-      wave_g = wave_g + 0.350*( 0.60*sin(0.900*time) + 0.40*sin(1.023*time) );
-      wave_b = wave_b + 0.350*( 0.60*sin(0.808*time) + 0.40*sin(0.949*time) );
-      blah = 0.5/(wave_r+wave_g+wave_b);
-      wave_r = wave_r*blah; wave_g = wave_g*blah; wave_b = wave_b*blah;
-      rot = rot + 0.35*( 0.60*sin(0.21*time) + 0.30*sin(0.339*time) );
-      cx = cx + 0.30*( 0.60*sin(0.374*time) + 0.14*sin(0.194*time) );
-      cy = cy + 0.37*( 0.60*sin(0.274*time) + 0.10*sin(0.394*time) );
-      dx = dx + 0.01*( 0.60*sin(0.324*time) + 0.40*sin(0.234*time) );
-      dy = dy + 0.01*( 0.60*sin(0.244*time) + 0.40*sin(0.264*time) );
-      ib_r = ib_r + 0.2*sin(time*0.5413);
-      ib_g = ib_g + 0.2*sin(time*0.6459);
-      ib_b = ib_b + 0.2*sin(time*0.7354);
-      blah = 12.4/(ib_r+ib_g+ib_b)*3;
-      ib_r = ib_r*blah; ib_g = ib_g*blah; ib_b = ib_b*blah;
-      
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Geiss - Swirlie 5.milk"] = {
+
+/*Presets["Geiss - Swirlie 5.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.994,
     fDecay: 0.99,
@@ -9531,9 +10548,9 @@ Presets["Geiss - Swirlie 5.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash & Rovastar - Altars of Madness (Mad Ocean Mix).milk"] = {
+/*Presets["Krash & Rovastar - Altars of Madness (Mad Ocean Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.98,
     fDecay: 1.0,
@@ -9635,9 +10652,9 @@ Presets["Krash & Rovastar - Altars of Madness (Mad Ocean Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash & TEcHNO - Rhythmic Mantas.milk"] = {
+/*Presets["Krash & TEcHNO - Rhythmic Mantas.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.7,
     fDecay: 0.995,
@@ -9726,9 +10743,9 @@ Presets["Krash & TEcHNO - Rhythmic Mantas.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash - Digital Flame.milk"] = {
+/*Presets["Krash - Digital Flame.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.9,
@@ -9815,9 +10832,9 @@ Presets["Krash - Digital Flame.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash - Dynamic Borders 1.milk"] = {
+/*Presets["Krash - Dynamic Borders 1.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.7,
     fDecay: 0.99,
@@ -9911,9 +10928,9 @@ Presets["Krash - Dynamic Borders 1.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash - Interwoven (Nightmare Weft Mix).milk"] = {
+/*Presets["Krash - Interwoven (Nightmare Weft Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 1.0,
@@ -10020,9 +11037,9 @@ Presets["Krash - Interwoven (Nightmare Weft Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Krash - War Machine (Shifting Complexity Mix).milk"] = {
+/* Presets["Krash - War Machine (Shifting Complexity Mix).milk"] = {
     fRating: 4.0,
     fGammaAdj: 2.0,
     fDecay: 1.0,
@@ -10120,9 +11137,9 @@ Presets["Krash - War Machine (Shifting Complexity Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["nil - Can't Stop the Cramming.milk"] = {
+/*Presets["nil - Can't Stop the Cramming.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.0,
     fDecay: 0.992,
@@ -10200,9 +11217,9 @@ Presets["nil - Can't Stop the Cramming.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Phat_Eo.S._Algorithm.milk"] = {
+/*Presets["Phat_Eo.S._Algorithm.milk"] = {
     fRating: 0.0,
     fGammaAdj: 1.0,
     fDecay: 0.925,
@@ -10586,9 +11603,9 @@ Presets["Phat_Eo.S._Algorithm.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  };*/
 
-Presets["Rovastar & Geiss - Dynamic Swirls 3 (Broken Destiny Mix).milk"] = {
+/*Presets["Rovastar & Geiss - Dynamic Swirls 3 (Broken Destiny Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 2.994,
     fDecay: 0.981,
@@ -10686,110 +11703,11 @@ Presets["Rovastar & Geiss - Dynamic Swirls 3 (Broken Destiny Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar & Geiss - Dynamic Swirls 3 (Mysticial Awakening Mi.milk"] = {
-    fRating: 2.0,
-    fGammaAdj: 1.98,
-    fDecay: 1.0,
-    fVideoEchoZoom: 1.000154,
-    fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 0,
-    bAdditiveWaves: 0,
-    bWaveDots: 0,
-    bWaveThick: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 0,
-    bDarkenCenter: 1,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 1.0,
-    fWaveScale: 0.01,
-    fWaveSmoothing: 0.1,
-    fWaveParam: -0.472,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
-    fZoomExponent: 0.972366,
-    fShader: 0.0,
-    zoom: 1.00496,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.000156,
-    sx: 0.999666,
-    sy: 0.9999,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
-    wave_x: 0.5,
-    wave_y: 0.51,
-    ob_size: 0.01,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 0.0,
-    ib_size: 0.01,
-    ib_r: 0.25,
-    ib_g: 0.25,
-    ib_b: 0.25,
-    ib_a: 0.0,
-    nMotionVectorsX: 64.0,
-    nMotionVectorsY: 48.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 5.0,
-    mv_r: 0.0,
-    mv_g: 0.0,
-    mv_b: 1.0,
-    mv_a: 1.0,
-    per_pixel_code: function(_){with(_){
-      du = x*2-1 - q1;
-      dv = y*2-1 - q2;
-      dist = sqrt(du*du+dv*dv);
-      ang2 = atan2(du,dv);
-      mult = 0.008/(dist+0.4);
-      dx = mult*sin(ang2-1.5);
-      dy = mult*cos(ang2-1.5);
-      du = x*2-1 - q3;
-      dv = y*2-1 - q4;
-      dist = sqrt(du*du+dv*dv);
-      ang2 = atan2(du,dv);
-      mult = 0.008*sin(q8)/(dist+0.4);
-      dx = dx + mult*sin(ang2+1.5);
-      dy = dy + mult*cos(ang2+1.5);
-      rot = -0.01*rad*sin(q8);
-    }},
-    per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.350*( 0.60*sin(0.980*time) + 0.40*sin(1.047*time) );
-      wave_g = wave_g + 0.350*( 0.60*sin(0.835*time) + 0.40*sin(1.081*time) );
-      wave_b = wave_b + 0.350*( 0.60*sin(0.814*time) + 0.40*sin(1.011*time) );
-      q8 = oldq8+min(ifcond(above(bass+bass_att,2.8),q8+0.025*pow((bass+bass_att-1.5),5),0),1);
-      oldq8 = q8;
-      q8 = q8 + 0.1*time;
-      q1 = 0.62*( 0.60*sin(0.374*q8) + 0.40*sin(0.294*q8) );
-      q2 = 0.62*( 0.60*sin(0.393*q8) + 0.40*sin(0.223*q8) );
-      q3 = 0.62*( 0.60*sin(0.174*-q8) + 0.40*sin(0.364*q8) );
-      q4 = 0.62*( 0.60*sin(0.234*q8) + 0.40*sin(0.271*-q8) );
-      mv_x = 1.25;
-      mv_y = 1.25;
-      mv_a =1;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Rovastar & Geiss - Dynamic Swirls 3 (Poltergiest Mix).milk"] = {
+
+/*Presets["Rovastar & Geiss - Dynamic Swirls 3 (Poltergiest Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 2.994,
     fDecay: 0.9,
@@ -10904,9 +11822,9 @@ Presets["Rovastar & Geiss - Dynamic Swirls 3 (Poltergiest Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar & Geiss - Dynamic Swirls 3 (Twisted Truth Mix).milk"] = {
+/*Presets["Rovastar & Geiss - Dynamic Swirls 3 (Twisted Truth Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 2.994,
     fDecay: 0.965,
@@ -11011,9 +11929,9 @@ Presets["Rovastar & Geiss - Dynamic Swirls 3 (Twisted Truth Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar & Geiss - Dynamic Swirls 3 (Voyage Of Twisted Souls Mix).milk"] = {
+/*Presets["Rovastar & Geiss - Dynamic Swirls 3 (Voyage Of Twisted Souls Mix).milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.993,
     fDecay: 0.98,
@@ -11119,9 +12037,9 @@ Presets["Rovastar & Geiss - Dynamic Swirls 3 (Voyage Of Twisted Souls Mix).milk"
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar & Geiss - Surface (Vectrip Mix).milk"] = {
+/*Presets["Rovastar & Geiss - Surface (Vectrip Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.7,
     fDecay: 0.98,
@@ -11221,9 +12139,9 @@ Presets["Rovastar & Geiss - Surface (Vectrip Mix).milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar & Idiot24-7 - Balk Acid.milk"] = {
+/*Presets["Rovastar & Idiot24-7 - Balk Acid.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.0,
     fDecay: 1.0,
@@ -11306,9 +12224,9 @@ Presets["Rovastar & Idiot24-7 - Balk Acid.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Altars Of Madness (Duel Mix).milk"] = {
+/*Presets["Rovastar - Altars Of Madness (Duel Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.98,
     fDecay: 1.0,
@@ -11559,9 +12477,9 @@ Presets["Rovastar - Altars Of Madness (Duel Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Bellanova (New Wave Mix).milk"] = {
+/*Presets["Rovastar - Bellanova (New Wave Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -11823,9 +12741,9 @@ Presets["Rovastar - Bellanova (New Wave Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Chapel Of Ghouls.milk"] = {
+/*Presets["Rovastar - Chapel Of Ghouls.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.98,
     fDecay: 1.0,
@@ -12143,9 +13061,9 @@ Presets["Rovastar - Chapel Of Ghouls.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Cosmic Echoes 2.milk"] = {
+/*Presets["Rovastar - Cosmic Echoes 2.milk"] = {
     fRating: 2.0,
     fGammaAdj: 1.84,
     fDecay: 0.9,
@@ -12224,9 +13142,9 @@ Presets["Rovastar - Cosmic Echoes 2.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Cosmic Mosaic (Active Mix).milk"] = {
+/*Presets["Rovastar - Cosmic Mosaic (Active Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -12477,279 +13395,11 @@ Presets["Rovastar - Cosmic Mosaic (Active Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Decreasing Dreams (Extended Movement Mix).milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.9,
-    fDecay: 0.97,
-    fVideoEchoZoom: 2.0,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 3,
-    bAdditiveWaves: 0,
-    bWaveDots: 1,
-    bWaveThick: 1,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 0,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.8,
-    fWaveScale: 0.893664,
-    fWaveSmoothing: 0.6,
-    fWaveParam: 0.0,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 2.853,
-    fZoomExponent: 1.0,
-    fShader: 0.0,
-    zoom: 0.995,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.0,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.6,
-    wave_g: 0.6,
-    wave_b: 0.6,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.01,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 1.0,
-    ib_size: 0.01,
-    ib_r: 1.0,
-    ib_g: 0.25,
-    ib_b: 0.25,
-    ib_a: 1.0,
-    nMotionVectorsX: 64.0,
-    nMotionVectorsY: 48.0,
-    mv_dx: -0.002,
-    mv_dy: 0.0,
-    mv_l: 0.0,
-    mv_r: 1.0,
-    mv_g: 0.0,
-    mv_b: 0.0,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      newx =x- q1;
-      newy =y- q2;
-      newrad = min(sqrt((newx)*(newx)+0.5625*(newy)*(newy))*2,sqrt(2));
-      dy=0.007*sin((1.3-newrad)*(1.3-newrad)*(q3));
-      dx=-0.007*cos((1.3-newrad)*(1.3-newrad)*(q3));
-    }},
-    per_frame_code: function(_){with(_){
-      wave_r = wave_r + 0.200*( 0.60*sin(0.933*time) + 0.40*sin(1.045*time) );
-      wave_g = wave_g + 0.200*( 0.60*sin(0.900*time) + 0.40*sin(0.956*time) );
-      wave_b = wave_b + 0.200*( 0.60*sin(0.910*time) + 0.40*sin(0.920*time) );
-      warp=0;
-      zoom =1;
-      rot=0;
-      decay =0.985;
-      //decay =1;
-      
-      ib_r = 0.666 - 0.333*sin(time*1.234);
-      ib_g = 0.666+0.333*sin(time*2.123);
-      ib_b = 0.01+0.1*treb;
-      
-      movement =movement + 0.5*(((bass+bass_att + 0.075*pow((bass+0.6*bass_att+0.2*treb_att),3)))/fps);
-      movement = ifcond(above(movement,10000), 0, movement);
-      
-      q1 = 0.5+0.1*sin(movement);
-      q2 = 0.5-0.1*cos(0.781*movement);
-      q3 = (35+15*sin(time*0.3426)+0.8*bass);
-      wave_x = q1;
-      wave_y = 1- q2;
-    }},
-    shapes: [
-      {
-       enabled: 1,
-       sides: 100,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.330038,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.000000,
-       per_frame_code: function(_){with(_){
-         x = q1;
-         y = 1- q2;
-         r = 0.5 + 0.49*sin(time*0.467);
-         b = 0.5 + 0.49*sin(time*0.568);
-         g = 0.5 + 0.49*sin(time*0.669);
-         r2 = 0.1*(bass+bass_att);
-         b2 = r2;
-         g2 = r2;
-         rad = r2 + 0.2;
-       }},
-      },
-      {
-       enabled: 0,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.100000,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.100000,
-      },
-      {
-       enabled: 0,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.100000,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.100000,
-      },
-      {
-       enabled: 0,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       textured: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.100000,
-       ang: 0.000000,
-       tex_ang: 0.000000,
-       tex_zoom: 1.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.000000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.100000,
-      },
-    ],
-    waves: [
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-    ],
-  };
 
-Presets["Rovastar - Fractopia (Fractal Havok Mix).milk"] = {
+
+/*Presets["Rovastar - Fractopia (Fractal Havok Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 1.0,
@@ -13010,9 +13660,9 @@ Presets["Rovastar - Fractopia (Fractal Havok Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Future Speakers.milk"] = {
+/*Presets["Rovastar - Future Speakers.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.9,
     fDecay: 0.97,
@@ -13324,132 +13974,12 @@ Presets["Rovastar - Future Speakers.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Harlequin's Fractal Encounter.milk"] = {
-    fRating: 4.0,
-    fGammaAdj: 1.0,
-    fDecay: 1.0,
-    fVideoEchoZoom: 0.999609,
-    fVideoEchoAlpha: 1.0,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 0,
-    bAdditiveWaves: 0,
-    bWaveDots: 0,
-    bWaveThick: 1,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 1,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 7.014853,
-    fWaveScale: 0.01,
-    fWaveSmoothing: 0.27,
-    fWaveParam: -0.4,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 5.99579,
-    fWarpScale: 1.331,
-    fZoomExponent: 1.01,
-    fShader: 0.0,
-    zoom: 0.998531,
-    rot: 0.002,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.1,
-    wave_y: 0.9,
-    ob_size: 0.01,
-    ob_r: 0.0,
-    ob_g: 0.9,
-    ob_b: 0.2,
-    ob_a: 1.0,
-    ib_size: 0.0,
-    ib_r: 0.5,
-    ib_g: 0.5,
-    ib_b: 0.5,
-    ib_a: 1.0,
-    nMotionVectorsX: 63.936001,
-    nMotionVectorsY: 48.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 1.0,
-    mv_r: 0.63,
-    mv_g: 0.2,
-    mv_b: 0.3,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      box =0.5+0.8*(2*x%4+2*y%2);
-      q1 = 8.05+0.3*(sin(pow(x,3)+0.177*time)-cos(pow(y,3)+0.223*time));
-      q7 = above(box,1);
-      zoom = ifcond(q7,(q1*.1) + q6*6 ,zoom);
-      rot = ifcond(q7,0.63*sin(0.5*rad+0.385*time + 0.12*sin(0.67*time) + 0.1*q4 + 0.12*q2 +q6*50),rot);
-      cx = cx - 0.05*sin(rad+2*q4);
-      cy = cy + 0.04*sin(((0.5*sqrt(2))-rad)-2*q2);
-      sx = ifcond(q7,sx+q6*18,sx);
-      sy = ifcond(q7,sy+q6*18,sy);
-    }},
-    per_frame_code: function(_){with(_){
-      ob_r = 0.4 - 0.3*(0.5*sin(time*0.701)+ 0.3*cos(time*0.438));
-      ob_g = 0.5 - 0.46*sin(time*1.724);
-      ob_b = 0.65 - 0.3*cos(time*1.816);
-      warp =0;
-      ib_size = 0.025;
-      ib_r = ib_r + 0.5*(0.6*sin(time*3.034)+0.4*cos(time*2.14));
-      ib_g = ib_g + 0.5*(0.6*sin(time*3.147)+0.4*cos(time*2.015));
-      ib_b = ib_b - 0.5*(0.6*sin(time*3.431)+0.4*cos(time*1.842));
-      dx = dx -0.003*(0.6*sin(time*0.234) + 0.4*cos(time*0.437));
-      dy = dy - 0.003*(0.7*sin(time*0.213) + 0.3*cos(time*0.315));
-      volume = 0.15*(bass+bass_att+treb+treb_att+mid+mid_att);
-      xamptarg = ifcond(equal(frame%15,0),min(0.5*volume*bass_att,0.5),xamptarg);
-      xamp = xamp + 0.5*(xamptarg-xamp);
-      xdir = ifcond(above(abs(xpos),xamp),-sign(xpos),ifcond(below(abs(xspeed),0.1),2*above(xpos,0)-1,xdir));
-      xaccel = xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
-      xspeed = xspeed + xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
-      xpos = xpos + 0.001*xspeed;
-      q2 = xpos;
-      yamptarg = ifcond(equal(frame%15,0),min(0.3*volume*treb_att,0.5),yamptarg);
-      yamp = yamp + 0.5*(yamptarg-yamp);
-      ydir = ifcond(above(abs(ypos),yamp),-sign(ypos),ifcond(below(abs(yspeed),0.1),2*above(ypos,0)-1,ydir));
-      yaccel = ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
-      yspeed = yspeed + ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
-      ypos = ypos + 0.001*yspeed;
-      q4 = ypos;
-      bass_effect = max(max(bass,bass_att)-1.2,0);
-      echo_zoom = 1.32 + 0.3*(0.59*sin(q4+time*0.865) + 0.41*cos(q2+time*1.192)) + 0.05*bass_effect;
-      volume = 0.15*(bass_att+bass+mid+mid_att);
-      beatrate = ifcond(equal(beatrate,0),1,ifcond(below(volume,0.01),1,beatrate));
-      lastbeat = ifcond(equal(lastbeat,0),time,lastbeat);
-      meanbass_att = 0.1*(meanbass_att*9 + bass_att);
-      peakbass_att = ifcond(above(bass_att,peakbass_att),bass_att,peakbass_att);
-      beat = ifcond(above(volume,0.8),ifcond(below(peakbass_att - bass_att, 0.05*peakbass_att),ifcond(above(time - lastbeat,0.1+0.5*(beatrate-0.1)),1,0),0),0);
-      beatrate = max(ifcond(beat,ifcond(below(time-lastbeat,2*beatrate),0.1*(beatrate*9 + time - lastbeat),beatrate),beatrate),0.1);
-      peakbass_att = ifcond(equal(beat,0),ifcond(above(time - lastbeat,2*beatrate),peakbass_att*0.95,peakbass_att*0.995),bass_att);
-      lastbeat = ifcond(beat,time,lastbeat);
-      peakbass_att = max(ifcond(beat,bass_att,peakbass_att),1.1*meanbass_att);
-      mode = (mode+beat*(rand(3)+1))%4;
-      echo_orient = mode;
-      wave_a = 0;
-      q6 = beat;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Rovastar - Inner Thoughts (Dark Secret Mix).milk"] = {
+
+
+/*Presets["Rovastar - Inner Thoughts (Dark Secret Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.98,
     fDecay: 0.9,
@@ -13744,9 +14274,9 @@ Presets["Rovastar - Inner Thoughts (Dark Secret Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  };*/
 
-Presets["Rovastar - Kalideostars (Round  Round Mix).milk"] = {
+/*Presets["Rovastar - Kalideostars (Round  Round Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.994,
     fDecay: 1.0,
@@ -13984,9 +14514,9 @@ Presets["Rovastar - Kalideostars (Round  Round Mix).milk"] = {
        }},
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Kalideostars.milk"] = {
+/*Presets["Rovastar - Kalideostars.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.5,
     fDecay: 1.0,
@@ -14224,9 +14754,9 @@ Presets["Rovastar - Kalideostars.milk"] = {
        }},
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Pandora's Volcano.milk"] = {
+/*Presets["Rovastar - Pandora's Volcano.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.925,
@@ -14304,9 +14834,9 @@ Presets["Rovastar - Pandora's Volcano.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Parallel Universe.milk"] = {
+/*Presets["Rovastar - Parallel Universe.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.99,
@@ -14397,9 +14927,9 @@ Presets["Rovastar - Parallel Universe.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar - Sea Shells.milk"] = {
+/*Presets["Rovastar - Sea Shells.milk"] = {
     fRating: 3.0,
     fGammaAdj: 1.9,
     fDecay: 0.97,
@@ -14668,9 +15198,9 @@ Presets["Rovastar - Sea Shells.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */   
 
-Presets["Rovastar - Sunflower Passion (Simple Mix).milk"] = {
+/*Presets["Rovastar - Sunflower Passion (Simple Mix).milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -14970,9 +15500,9 @@ Presets["Rovastar - Sunflower Passion (Simple Mix).milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - Sunflower Passion.milk"] = {
+/*Presets["Rovastar - Sunflower Passion.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -15276,329 +15806,10 @@ Presets["Rovastar - Sunflower Passion.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar - The Awakening.milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 2.0,
-    fDecay: 0.989,
-    fVideoEchoZoom: 1.483841,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 7,
-    bAdditiveWaves: 0,
-    bWaveDots: 1,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 1,
-    bTexWrap: 0,
-    bDarkenCenter: 0,
-    bMotionVectorsOn: 0,
-    bRedBlueStereo: 0,
-    nMotionVectorsX: 12,
-    nMotionVectorsY: 9,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.8,
-    fWaveScale: 0.089269,
-    fWaveSmoothing: 0.72,
-    fWaveParam: -0.36,
-    fModWaveAlphaStart: 0.75,
-    fModWaveAlphaEnd: 0.95,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.0,
-    fZoomExponent: 1.0,
-    fShader: 0.0,
-    zoom: 1.009963,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 1.0,
-    sx: 0.999999,
-    sy: 0.99983,
-    wave_r: 0.5,
-    wave_g: 0.5,
-    wave_b: 0.5,
-    wave_x: 0.5,
-    wave_y: 0.06,
-    ob_size: 0.01,
-    ob_r: 0.0,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 0.0,
-    ib_size: 0.01,
-    ib_r: 0.25,
-    ib_g: 0.25,
-    ib_b: 0.25,
-    ib_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      zoom = 0.974 + rad/10 + abs(sin(ang-rad)/10) +q1/10;
-      rot = -0.4 + treb*.001 + sin(treb+rad)/33 -q1/8;
-    }},
-    per_frame_code: function(_){with(_){
-      warp = 0;
-      wave_r = wave_r + .4*sin(time*.678);
-      wave_g = wave_g + .4*sin(time*.977);
-      wave_b = wave_b + .4*sin(time*.766);
-      decay = 1 - mid /20;
-      q1 = wave_r;
-      wave_mystery = -time/6;
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
-Presets["Rovastar - The Chaos Of Colours (Drifting Mix).milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.7,
-    fDecay: 1.0,
-    fVideoEchoZoom: 1.0,
-    fVideoEchoAlpha: 0.0,
-    nVideoEchoOrientation: 0,
-    nWaveMode: 0,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bWaveThick: 0,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 0,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 0,
-    fWaveAlpha: 0.001,
-    fWaveScale: 0.01,
-    fWaveSmoothing: 0.63,
-    fWaveParam: -1.0,
-    fModWaveAlphaStart: 0.71,
-    fModWaveAlphaEnd: 1.3,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
-    fZoomExponent: 1.0,
-    fShader: 0.0,
-    zoom: 13.290894,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: -0.28,
-    dy: -0.32,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.65,
-    wave_g: 0.65,
-    wave_b: 0.65,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.0,
-    ob_r: 0.01,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 1.0,
-    ib_size: 0.0,
-    ib_r: 0.95,
-    ib_g: 0.85,
-    ib_b: 0.65,
-    ib_a: 1.0,
-    nMotionVectorsX: 64.0,
-    nMotionVectorsY: 0.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 0.9,
-    mv_r: 1.0,
-    mv_g: 1.0,
-    mv_b: 1.0,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      zoom = 1+0.05*rad;
-    }},
-    per_frame_code: function(_){with(_){
-      ob_r = 0.5 + 0.4*sin(time*1.324);
-      ob_g = 0.5 + 0.4*cos(time*1.371);
-      ob_b = 0.5+0.4*sin(2.332*time);
-      ib_r = 0.5 + 0.25*sin(time*1.424);
-      ib_g = 0.25 + 0.25*cos(time*1.871);
-      ib_b = 1-ob_b;
-      volume = 0.15*(bass+bass_att+treb+treb_att+mid+mid_att);
-      xamptarg = ifcond(equal(frame%15,0),min(0.5*volume*bass_att,0.5),xamptarg);
-      xamp = xamp + 0.5*(xamptarg-xamp);
-      xdir = ifcond(above(abs(xpos),xamp),-sign(xpos),ifcond(below(abs(xspeed),0.1),2*above(xpos,0)-1,xdir));
-      xaccel = xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
-      xspeed = xspeed + xdir*xamp - xpos - xspeed*0.055*below(abs(xpos),xamp);
-      xpos = xpos + 0.001*xspeed;
-      dx = xpos*0.005;
-      yamptarg = ifcond(equal(frame%15,0),min(0.3*volume*treb_att,0.5),yamptarg);
-      yamp = yamp + 0.5*(yamptarg-yamp);
-      ydir = ifcond(above(abs(ypos),yamp),-sign(ypos),ifcond(below(abs(yspeed),0.1),2*above(ypos,0)-1,ydir));
-      yaccel = ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
-      yspeed = yspeed + ydir*yamp - ypos - yspeed*0.055*below(abs(ypos),yamp);
-      ypos = ypos + 0.001*yspeed;
-      dy = ypos*0.005;
-      rot = 10*(dx-dy);
-      wave_a = 0;
-      q8 =oldq8+ 0.0003*(pow(1+1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
-      oldq8 = q8;
-      q7 = 0.003*(pow(1+1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
-      monitor = rot;
-    }},
-    shapes: [
-      {
-       enabled: 1,
-       sides: 3,
-       additive: 0,
-       thickOutline: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.550000,
-       ang: 0.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 0.100000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.900000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.200000,
-       per_frame_code: function(_){with(_){
-         ang = time*1.4;
-         x = 0.5 + 0.08*cos(time*1.3) + 0.03*cos(time*0.7);
-         y = 0.5 + 0.08*sin(time*1.4) + 0.03*sin(time*0.7);
-         r = 0.5 + 0.5*sin(q8*0.613 + 1);
-         g = 0.5 + 0.5*sin(q8*0.763 + 2);
-         b = 0.5 + 0.5*sin(q8*0.771 + 5);
-         r2 = 0.5 + 0.5*sin(q8*0.635 + 4);
-         g2 = 0.5 + 0.5*sin(q8*0.616+ 1);
-         b2 = 0.5 + 0.5*sin(q8*0.538 + 3);
-       }},
-      },
-      {
-       enabled: 1,
-       sides: 32,
-       additive: 0,
-       thickOutline: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.400000,
-       ang: 0.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 1.000000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.300000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.200000,
-       per_frame_code: function(_){with(_){
-         ang = time*1.7;
-         x = 0.5 + 0.08*cos(time*1.1) + 0.03*cos(time*0.7);
-         y = 0.5 + 0.08*sin(time*1.1) + 0.03*sin(time*0.7);
-         r = 0.5 + 0.5*sin(q8*0.713 + 1);
-         g = 0.5 + 0.5*sin(q8*0.563 + 2);
-         b = 0.5 + 0.5*sin(q8*0.654 + 5);
-         r2 = 0.5 + 0.5*sin(q8*0.885 + 4);
-         g2 = 0.5 + 0.5*sin(q8*0.556+ 1);
-         b2 = 0.5 + 0.5*sin(q8*0.638 + 3);
-       }},
-      },
-      {
-       enabled: 1,
-       sides: 4,
-       additive: 0,
-       thickOutline: 0,
-       x: 0.500000,
-       y: 0.500000,
-       rad: 0.400000,
-       ang: 0.000000,
-       r: 1.000000,
-       g: 0.000000,
-       b: 0.000000,
-       a: 0.600000,
-       r2: 0.000000,
-       g2: 1.000000,
-       b2: 0.000000,
-       a2: 0.400000,
-       border_r: 1.000000,
-       border_g: 1.000000,
-       border_b: 1.000000,
-       border_a: 0.200000,
-       per_frame_code: function(_){with(_){
-         ang = time*1.24;
-         x = 0.5 - 0.08*cos(time*1.07) + 0.03*cos(time*0.7);
-         y = 0.5 - 0.08*sin(time*1.33) + 0.03*sin(time*0.7);
-         g = 0.5 + 0.5*sin(q8*0.713 + 1);
-         b = 0.5 + 0.5*cos(q8*0.563 + 2);
-         r = 0.5 + 0.5*sin(q8*0.654 + 5);
-         r2 = 0.5 + 0.5*cos(q8*0.885 + 4);
-         g2 = 0.5 + 0.5*cos(q8*0.556+ 1);
-         b2 = 0.5 + 0.5*sin(q8*0.638 + 3);
-       }},
-      },
-    ],
-    waves: [
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-      {
-       enabled: 0,
-       samples: 512,
-       sep: 0,
-       bSpectrum: 0,
-       bUseDots: 0,
-       bDrawThick: 0,
-       bAdditive: 0,
-       scaling: 1.000000,
-       smoothing: 0.500000,
-       r: 1.000000,
-       g: 1.000000,
-       b: 1.000000,
-       a: 1.000000,
-      },
-    ],
-  };
-
-Presets["Rovastar - Twilight Tunnel.milk"] = {
+/*Presets["Rovastar - Twilight Tunnel.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.96,
@@ -15860,9 +16071,9 @@ Presets["Rovastar - Twilight Tunnel.milk"] = {
        a: 1.000000,
       },
     ],
-  };
+  }; */
 
-Presets["Rovastar and Krash - Hallucinogenic Pyramids (Extra Beat Ti.milk"] = {
+/*Presets["Rovastar and Krash - Hallucinogenic Pyramids (Extra Beat Ti.milk"] = {
     fRating: 2.0,
     fGammaAdj: 2.0,
     fDecay: 0.98,
@@ -15953,9 +16164,9 @@ Presets["Rovastar and Krash - Hallucinogenic Pyramids (Extra Beat Ti.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rovastar and Unchained - Braindance Visions.milk"] = {
+/*Presets["Rovastar and Unchained - Braindance Visions.milk"] = {
     fRating: 3.0,
     fGammaAdj: 2.0,
     fDecay: 0.935,
@@ -16032,100 +16243,8 @@ Presets["Rovastar and Unchained - Braindance Visions.milk"] = {
     ],
     waves: [
     ],
-  };
+  }; */
 
-Presets["Rozzor & Rovastar - Oozing Resistance (Waveform Mod).milk"] = {
-    fRating: 3.0,
-    fGammaAdj: 1.0,
-    fDecay: 1.0,
-    fVideoEchoZoom: 1.006596,
-    fVideoEchoAlpha: 0.5,
-    nVideoEchoOrientation: 1,
-    nWaveMode: 3,
-    bAdditiveWaves: 1,
-    bWaveDots: 0,
-    bWaveThick: 1,
-    bModWaveAlphaByVolume: 0,
-    bMaximizeWaveColor: 0,
-    bTexWrap: 0,
-    bDarkenCenter: 0,
-    bRedBlueStereo: 0,
-    bBrighten: 0,
-    bDarken: 0,
-    bSolarize: 0,
-    bInvert: 1,
-    fWaveAlpha: 5.002776,
-    fWaveScale: 1.1864,
-    fWaveSmoothing: 0.63,
-    fWaveParam: -1.0,
-    fModWaveAlphaStart: 0.71,
-    fModWaveAlphaEnd: 1.3,
-    fWarpAnimSpeed: 1.0,
-    fWarpScale: 1.331,
-    fZoomExponent: 1.0,
-    fShader: 0.0,
-    zoom: 0.999513,
-    rot: 0.0,
-    cx: 0.5,
-    cy: 0.5,
-    dx: 0.0,
-    dy: 0.0,
-    warp: 0.01,
-    sx: 1.0,
-    sy: 1.0,
-    wave_r: 0.0,
-    wave_g: 0.0,
-    wave_b: 0.0,
-    wave_x: 0.5,
-    wave_y: 0.5,
-    ob_size: 0.005,
-    ob_r: 0.01,
-    ob_g: 0.0,
-    ob_b: 0.0,
-    ob_a: 1.0,
-    ib_size: 0.26,
-    ib_r: 0.25,
-    ib_g: 0.25,
-    ib_b: 0.25,
-    ib_a: 0.0,
-    nMotionVectorsX: 64.0,
-    nMotionVectorsY: 48.0,
-    mv_dx: 0.0,
-    mv_dy: 0.0,
-    mv_l: 0.5,
-    mv_r: 0.35,
-    mv_g: 0.35,
-    mv_b: 0.35,
-    mv_a: 0.0,
-    per_pixel_code: function(_){with(_){
-      rot = 0.1*(rad+cos((5+5*sin(q8*1.211)*x)-0.5) -sin(((5+5*sin(q8*0.973))*y)-0.5));
-      dx = 0.005*(cos((5+5*sin(q8*1.311)*x)-0.5) -sin(((5+5*sin(q8*0.9431))*y)-0.5));
-      dy = 0.005*(cos((5+5*sin(q8*1.021)*x)-0.5) -sin(((5+5*sin(q8*0.987))*y)-0.5));
-      zoom =1- 0.005*(rad+cos((5+5*sin(q8*0.943)*x)-0.5) -sin(((5+5*sin(q8*1.0961))*y)-0.5));
-      cx = 1-rot * 2;
-    }},
-    per_frame_code: function(_){with(_){
-      ob_r = 0.5+0.5*sin(2*time);
-      ob_g = 0.5+0.5*sin(1.23*time);
-      ob_b = 0.5+0.5*sin(time*1.321);
-      wave_a =0;
-      q8 =oldq8+ 0.003*(pow(1.2*bass+0.4*bass_att+0.1*treb+0.1*treb_att+0.1*mid+0.1*mid_att,6)/fps);
-      oldq8 = q8;
-      warp=0;
-      sx = 1- 0.1*sin(q8)+0.05*sin(time);
-      wave_b = cos(time)  + abs(cos(time));
-      wave_g = abs(sin(time)) ;
-      wave_r = (-1 * cos(time))  + abs(-1 * cos(time)) + 0.2 * (cos(sin(time))+(abs(cos(sin(time)))+cos(sin(time))));
-      wave_r = 1 - ifcond(above(wave_r,1),1,ifcond(above(wave_r,0), abs(wave_r),0));
-      wave_g = 1 - ifcond(above(wave_g,1),1,ifcond(above(wave_g,0), abs(wave_g),0));
-      wave_b = 1 - ifcond(above(wave_b,1),1,ifcond(above(wave_b,0), abs(wave_b),0));
-      
-    }},
-    shapes: [
-    ],
-    waves: [
-    ],
-  };
 
 Presets["shifter - flashburn.milk"] = {
     fRating: 3.0,

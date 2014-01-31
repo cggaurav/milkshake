@@ -35,8 +35,8 @@
 var milk = (function(){
 
 
-    /* 
-     * JavaScipt Class Includes 
+    /*
+     * JavaScipt Class Includes
      */
 
     var req = new XMLHttpRequest();
