@@ -22,10 +22,10 @@
     "en": "Audio spectrum visualizer"
   },
   "AppIcon": {
-    "18x18": "images/visualizer-18x18.png",
-    "36x18": "images/visualizer-36x18.png",
-    "64x64": "images/visualizer-64x64.png",
-    "128x128": "images/visualizer-128x128.png"
+    "18x18": "images/winamp-18x18.png",
+    "36x18": "images/winamp-36x18.png",
+    "64x64": "images/winamp-64x64.png",
+    "128x128": "images/winamp-128x128.png"
   },
   "SupportedLanguages": [
     "en"
