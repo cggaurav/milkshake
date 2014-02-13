@@ -7,7 +7,7 @@ Caveat
 ---
 This is still a ugly hack, we are working to port the visualizations into Spotify's environment.
 
-Start
+Start [ Demo branch ]
 ---
 ```
 node ./server/server.js
