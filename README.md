@@ -1,20 +1,29 @@
-Audio API - Sample Visualizer App
-=================================
+Milkshake: Winamp MilkdDrop Visualizations in Spotify
+======
 
-This app is provided as an example to developers interested in the new Audio API.
-The goal of this app is to demonstrate how to use the Audio Api to create a Visualizer.
-By no means this is a finished product and is not inteded to be used in production.
-This is strictly a demo.
+[![Spotify MilkShake](http://img.youtube.com/vi/ztRrsHhH2f0/0.jpg)](http://www.youtube.com/watch?v=ztRrsHhH2f0)
+
+Caveat 
+---
+This is still a ugly hack, we are working to port the visualizations into Spotify's environment.
+
+Start
+---
+```
+node ./server/server.js
+
+spotify:app:milkshake
+```
+
 
 API
 ---
-
 For more information about the Audio API, please visit:
 
 https://developer.spotify.com/docs/apps/api/1.0/api-audio.html
 
 
-Getting Started
+Spotify Apps
 ---------------
 
 In order to run this application, follow the instructions on the [developer website](https://developer.spotify.com/technologies/apps/guidelines/developer/)
