@@ -1,7 +1,9 @@
-Milkshake: Winamp MilkdDrop Visualizations in Spotify
+Milkshake: Winamp MilkDrop Visualizations in Spotify
 ======
 
 [![Spotify MilkShake](http://img.youtube.com/vi/ztRrsHhH2f0/0.jpg)](http://www.youtube.com/watch?v=ztRrsHhH2f0)
+
+MilkShake recreates the stunning visualizations of Milkdrop, attempting to be a MilkDrop port to Spotify.
 
 Caveat 
 ---
